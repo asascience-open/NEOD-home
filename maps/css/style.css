@@ -160,10 +160,10 @@ span#scale {
   padding-top: 0 !important;
 }
 
-/*#legendModal {
+#legendModal {
   top: 106px;
   left: 392px;
-}*/
+}
 
 #legendModal .modal-body {
   font-size: 11px;
