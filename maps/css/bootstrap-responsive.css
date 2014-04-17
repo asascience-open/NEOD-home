@@ -1099,6 +1099,9 @@
     padding-right: 10px;
     padding-left: 10px;
   }
+  .brand img {
+    width: 313px;
+  }
 }
 
 @media (max-width: 1154px){
