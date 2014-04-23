@@ -45,8 +45,24 @@ button {
   margin-top: 0;
 }
 
-#mapList button {
+
+#mapList .btn {
+  font-size: 13px !important;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.35);
   border-bottom: none;
+  background-image: linear-gradient(to bottom, #ffffff, rgb(209, 210, 212));
+}
+
+#mapList .btn:hover {
+  background-color: rgb(153, 153, 153);
+  background-position: 0 -28px;
+}
+
+#mapList .btn.active {
+  background-color: rgb(104, 115, 150);
+  background-image: none;
 }
 
 #mapDiv {
@@ -73,8 +89,20 @@ button {
   -moz-border-radius-bottomleft: 4px;
 }
 
-.sub-theme-buttons button {
+.sub-theme-buttons .btn {
   border-top: none;
+  background-color: rgb(149, 156, 180);
+  background-image: linear-gradient(to bottom, #cccccc, rgb(149, 156, 180));
+}
+
+.sub-theme-buttons .btn.active {
+  background-color: rgb(104, 115, 150);
+  background-image: none;
+}
+
+.sub-theme-buttons .btn:hover {
+  background-color: rgb(125, 135, 165);
+  background-position: 0 -28px;
 }
 
 #mapControls {
