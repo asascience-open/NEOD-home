@@ -1100,11 +1100,14 @@
     padding-left: 10px;
   }
   .brand img {
-    width: 313px;
+    width: 259px;
+    /*width: 299px;*/
+    padding-left: 6px;
+    padding-top: 3px;
   }
 }
 
-@media (max-width: 1154px){
+@media (max-width: 1012px){
   #mapList{display: none;}
 }
 
