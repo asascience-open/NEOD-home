@@ -31,6 +31,10 @@ button {
   }
 }
 
+.nav-collapse ul.nav {
+  line-height: 15px;
+}
+
 .dropdown-toggle .caret {
   margin-top: 8px;
 }
@@ -45,8 +49,35 @@ button {
   margin-top: 0;
 }
 
+.navbar .carousel {
+  display: none;
+  margin: 0 auto 0 auto;
+  width: 224px;
+}
 
-#mapList .btn {
+  .navbar .carousel .item {
+    text-align: center;
+  }
+
+  .navbar .carousel .carousel-control {
+    font-size: 40px;
+    width: 30px;
+    height: 30px;
+    line-height: 24px;
+    top: 23px;
+    border: none;
+  }
+
+    .navbar .carousel .carousel-control.left {
+      left: -46px;
+    }
+
+    .navbar .carousel .carousel-control.right {
+      right: -46px;
+    }
+
+#mapList .btn,
+.carousel .btn {
   font-size: 13px !important;
   font-weight: bold;
   color: #fff;
@@ -55,12 +86,14 @@ button {
   background-image: linear-gradient(to bottom, #ffffff, rgb(209, 210, 212));
 }
 
-#mapList .btn:hover {
+#mapList .btn:hover,
+.carousel .btn:hover {
   background-color: rgb(153, 153, 153);
   background-position: 0 -28px;
 }
 
-#mapList .btn.active {
+#mapList .btn.active,
+.carousel .btn.active {
   background-color: rgb(104, 115, 150);
   background-image: none;
 }
@@ -158,12 +191,21 @@ button {
     border-bottom-right-radius: 0px !important;
 }
 
+.no-bottom-border-radius {
+    -webkit-border-bottom-right-radius: 0px !important;
+    -webkit-border-bottom-left-radius: 0px !important;
+    -moz-border-radius-bottomright: 0px !important;
+    -moz-border-radius-bottomleft: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+}
+
 .no-border-radius {
     -webkit-border-top-right-radius: 0px !important;
     -webkit-border-bottom-right-radius: 0px !important;
     -webkit-border-top-left-radius: 0px !important;
     -webkit-border-bottom-left-radius: 0px !important;
-    -moz-border-radius-bottomright: 0px !important;
+    -moz-border-radius-topright: 0px !important;
     -moz-border-radius-bottomright: 0px !important;
     -moz-border-radius-topleft: 0px !important;
     -moz-border-radius-bottomleft: 0px !important;
@@ -233,6 +275,7 @@ span#scale {
   width: 298px;
   margin: 0;
   position: absolute;
+  display: none;
 }
 
   #legendModal .modal-header .alert-info{

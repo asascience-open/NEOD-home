@@ -965,7 +965,7 @@
   }
   .navbar-fixed-top .navbar-inner,
   .navbar-fixed-bottom .navbar-inner {
-    padding: 5px;
+    padding: 5px 5px 0 5px;
   }
   .navbar .container {
     width: auto;
@@ -1107,8 +1107,13 @@
   }
 }
 
-@media (max-width: 1012px){
-  #mapList{display: none;}
+@media (max-width: 1168px){
+  #mapList{
+    display: none;
+  }
+  #mapCarousel {
+    display: block;
+  }
 }
 
 @media (min-width: 980px) {

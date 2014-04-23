@@ -83,6 +83,42 @@
                         </ul>
                     </div>
                 </div>
+                <div id='mapCarousel' class='carousel slide'>
+                    <div class='carousel-inner'>
+                        <div class='item active'>
+                            <button type='button' class='btn active no-bottom-border-radius' data-toggle='button'>Maritime Commerce</button>
+                        </div>
+                        <div class='item'>
+                            <button type='button' class='btn no-bottom-border-radius' data-toggle='button'>Energy</button>
+                        </div>
+                        <div class='item'>
+                            <button type='button' class='btn no-bottom-border-radius' data-toggle='button'>Recreation</button>
+                        </div>
+                        <div class='item'>
+                            <button type='button' class='btn no-bottom-border-radius' data-toggle='button'>Commercial Fishing</button>
+                        </div>
+                        <div class='item'>
+                            <button type='button' class='btn no-bottom-border-radius' data-toggle='button'>Aquaculture</button>
+                        </div>
+                        <div class='item'>
+                            <button type='button' class='btn no-bottom-border-radius' data-toggle='button'>Fish &amp; Shellfish</button>
+                        </div>
+                        <div class='item'>
+                            <button type='button' class='btn no-bottom-border-radius' data-toggle='button'>Marine Mammals &amp; Sea Turtles</button>
+                        </div>
+                        <div class='item'>
+                            <button type='button' class='btn no-bottom-border-radius' data-toggle='button'>Other Marine Life</button>
+                        </div>
+                        <div class='item'>
+                            <button type='button' class='btn no-bottom-border-radius' data-toggle='button'>Water Quality</button>
+                        </div>
+                    </div>
+                    <a class="carousel-control left" href="#mapCarousel" data-slide="prev">&lsaquo;</a>
+                    <a class="carousel-control right" href="#mapCarousel" data-slide="next">&rsaquo;</a>
+                </div>
+
+
+
                 <div class='nav-collapse collapse' id='mapList'>
                     <div class='button-container'>
                         <div class='btn-group' data-toggle='buttons-radio'>
@@ -121,8 +157,9 @@
         <script src="js/arcgis-3.9compact.js"></script>
         
         <script>
-            var asa, map, chart, legend, geodata, biology, osmLayer, watersgeo, physOcean, oceanUses, aquaculture, zoomLevel,
-                selectedBasemap, firstLoad = true, aboutLayerOpen = false, watershed, scalebar, subThemeName, mapName, layerArray,
+            var asa, map, chart, legend, geodata, biology, osmLayer, watersgeo, physOcean, oceanUses,
+                aquaculture, zoomLevel, screenWidth, screenHeight, selectedBasemap, firstLoad = true,
+                aboutLayerOpen = false, watershed, scalebar, subThemeName, mapName, layerArray,
                 aquacultureUrl = 'http://50.19.218.171/arcgis1/rest/services/LiteViewers/Aquaculture/MapServer/',
                 ngdcUrl = 'http://maps.ngdc.noaa.gov/arcgis/rest/services/web_mercator/dem_hillshades_mosaic/MapServer/',
                 watersgeoUrl = 'http://watersgeo.epa.gov/arcgis/rest/services/OWRAD/ALL_OWRAD_NAD83/MapServer/',
@@ -361,6 +398,7 @@
                 'bootstrap/Button',
                 'bootstrap/Modal',
                 'bootstrap/Tooltip',
+                'bootstrap/Carousel',
                 'dojo/domReady!'
                 ], 
                 function(
@@ -388,12 +426,12 @@
                 esri.config.defaults.io.proxyUrl = "http://services.asascience.com/Proxy/esriproxy/proxy.ashx";
 
                 function resizeMap(){
-                    var height = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
-                    var width = "innerWidth" in window ? window.innerWidth : document.documentElement.offsetWidth;
+                    screenHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+                    screenWidth = "innerWidth" in window ? window.innerWidth : document.documentElement.offsetWidth;
                     var headerOffset = dojo.query('.navbar').style('height')[0];
                     dojo.query('#mapDiv').style({
-                        'height'        : (height - headerOffset) + 'px',
-                        'marginTop'    : width < 980 ? '0' : headerOffset + 'px'
+                        'height'        : (screenHeight - headerOffset) + 'px',
+                        'marginTop'    : screenWidth < 980 ? '0' : headerOffset + 'px'
                     });
                 }
 
@@ -883,13 +921,26 @@
                             return {
                                 l:  0,
                                 t:  0,
-                                w:  "innerWidth" in window ? window.innerWidth : document.documentElement.offsetWidth,
+                                w:  screenWidth,
                                 h:  dojo.query('#mapDiv_root').style('height')[0]
                             };
                         }
                     });
 
-                    dojo.query('#legendModal').modal({backdrop: false});
+                    dojo.query('#mapCarousel').carousel({interval: false});
+
+                    dojo.query('#mapCarousel button').on('click', function(e){
+                        domClass.remove(dojo.query('#mapCarousel button.btn.active')[0], 'active');
+                        domClass.add(dojo.query(e.target), 'active');
+                    });
+
+                    dojo.query('#legendModal').modal({
+                        backdrop    : false,
+                        show        : screenWidth >= 1024 ? true : false
+                    });
+
+                    if (screenWidth < 1024)
+                        domClass.remove("legendButton", "active");
 
                     dojo.query('#legendModal').on('shown', function(e){
                         domClass.add("legendButton", "active");
