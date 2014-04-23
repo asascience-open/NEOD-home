@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <meta name="description" content="">
         <meta name="author" content="">
         <!-- Safari iOS - apps only -->
@@ -106,12 +106,14 @@
             var djConfig = {
                 async: true,
                 parseOnLoad: true,
+                cacheBust: true,
                 tlmSiblingOfDojo: 0,
                 isDebug: 1,
                 packages: [
                 {
                     name: 'bootstrap',
-                    location: 'https://raw.github.com/xsokev/Dojo-Bootstrap/v1.3'
+                    //location: 'https://rawgithub.com/xsokev/Dojo-Bootstrap/v1.3'
+                    location: location.pathname.replace(/\/[^/]+$/, '') + '/js/Dojo-Bootstrap'
                 }]
             };
         </script>
@@ -119,8 +121,8 @@
         <script src="js/arcgis-3.9compact.js"></script>
         
         <script>
-            var asa, map, chart, legend, geodata, biology, osmLayer, watersgeo, physOcean, oceanUses, aquaculture,
-                selectedBasemap, firstLoad = true, aboutLayerOpen = false, watershed, scalebar, subThemeName, mapName,
+            var asa, map, chart, legend, geodata, biology, osmLayer, watersgeo, physOcean, oceanUses, aquaculture, zoomLevel,
+                selectedBasemap, firstLoad = true, aboutLayerOpen = false, watershed, scalebar, subThemeName, mapName, layerArray,
                 aquacultureUrl = 'http://50.19.218.171/arcgis1/rest/services/LiteViewers/Aquaculture/MapServer/',
                 ngdcUrl = 'http://maps.ngdc.noaa.gov/arcgis/rest/services/web_mercator/dem_hillshades_mosaic/MapServer/',
                 watersgeoUrl = 'http://watersgeo.epa.gov/arcgis/rest/services/OWRAD/ALL_OWRAD_NAD83/MapServer/',
@@ -334,6 +336,7 @@
 
             require([
                 'esri/map',
+                'esri/request',
                 'esri/layers/ArcGISDynamicMapServiceLayer',
                 'esri/layers/ArcGISImageServiceLayer',
                 'esri/layers/FeatureLayer',
@@ -346,21 +349,23 @@
                 'esri/tasks/LegendLayer',
                 'esri/tasks/PrintTask',
                 //'esri/layers/osm', 
-                'dojo/on',
                 'dojo/query',
-                'dojo/dnd/Moveable',
+                'dojo/on',
+                'dojo/dnd/move',
                 'dojo/dom-class',
-                //'dojo/fx',
-                //'dojo/_base/fx',
+                'dojo/request/notify',
+                'dijit/focus',
+                'dojo/behavior',
                 'bootstrap/Dropdown',
                 'bootstrap/Collapse',
                 'bootstrap/Button',
                 'bootstrap/Modal',
-                //'bootstrap/Tab',
+                'bootstrap/Tooltip',
                 'dojo/domReady!'
                 ], 
                 function(
                     Map,
+                    EsriRequest,
                     ArcGISDynamicMapServiceLayer,
                     ArcGISImageServiceLayer,
                     FeatureLayer,
@@ -372,22 +377,23 @@
                     PrintTemplate,
                     LegendLayer,
                     PrintTask,
+                    query,
                     on,
-                    q,
-                    Moveable,
-                    domClass
-                    //coreFx,
-                    //baseFx
+                    move,
+                    domClass,
+                    notify,
+                    focusUtil
                     ) {
+
                 esri.config.defaults.io.proxyUrl = "http://services.asascience.com/Proxy/esriproxy/proxy.ashx";
 
                 function resizeMap(){
                     var height = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
                     var width = "innerWidth" in window ? window.innerWidth : document.documentElement.offsetWidth;
-                    var headerOffset = q('.navbar').style('height')[0];
-                    q('#mapDiv').style({
+                    var headerOffset = dojo.query('.navbar').style('height')[0];
+                    dojo.query('#mapDiv').style({
                         'height'        : (height - headerOffset) + 'px',
-                        'margin-top'    : width < 980 ? '0' : headerOffset + 'px'
+                        'marginTop'    : width < 980 ? '0' : headerOffset + 'px'
                     });
                 }
 
@@ -403,56 +409,86 @@
 
                 function createRadioAndHover (){
 
-                    if (typeof layers == "undefined") return false; 
+                    layerArray = [];
 
-                    // create feature layers / radio buttons
                     for (i = 0; i < layers.length; i++)
                     {
+                        /* get layer descriptions
+                        ========================== */
+                        var getlayerInfo = EsriRequest({
+                            url: layers[i].url + layers[i].id,
+                            content: {
+                                f: "json",
+                                returnGeometry: false
+                            },
+                            handleAs: "json",
+                            callbackParamName: "callback"
+                        });
+
+                        getlayerInfo.then(
+                            function(data) {
+                                layerArray.push(data);
+                                if (layerArray.length == layers.length)
+                                    setDescriptions();
+                            }, function(error) {
+                                console.log("Error: ", error.message);
+                        });
+
+                        /* create feature layers
+                        ========================== */
                         if (layers[i].outField != null) {
                             if (layers[i].defExpression == null)
                                 createFeatureLayer(layers[i].id, layers[i].outField, layers[i].visible, layers[i].url, layers[i].group, null);
                             else
                                 createFeatureLayer(layers[i].id, layers[i].outField, layers[i].visible, layers[i].url, layers[i].group, layers[i].defExpression);
                         }
-                        // if (layers[i].checked != null){
-                        //     radio = new RadioButton({
-                        //         id          : 'radio_' + layers[i].id,
-                        //         label       : layers[i].label,
-                        //         value       : layers[i].id,
-                        //         name        : layers[i].group,
-                        //         'class'     : layers[i].group,
-                        //         checked     : layers[i].checked,
-                        //         onClick     : mapUrl.indexOf(fishing) > 0 ? function (e) {
-                        //                         updateLayer(this.value);
-                        //                         switch(this.value){
-                        //                             // case 0:
-                        //                             //  neo_set_about_box_text('All fisheries CMS point density 2006-2010');
-                        //                             //  break;
-                        //                             case 47:
-                        //                                 neo_set_about_box_text('Multispecies VMS point density 2006-2010');
-                        //                                 break;
-                        //                             case 48:
-                        //                                 neo_set_about_box_text('Monkfish VMS point density 2006-2010');
-                        //                                 break;
-                        //                             // case 3:
-                        //                             //  neo_set_about_box_text('Herring VMS point density 2006-2010');
-                        //                             //  break;
-                        //                             case 49:
-                        //                                 neo_set_about_box_text('Surf clam/Quahog VMS point density 2006-2010');
-                        //                                 break;
-                        //                             case 50:
-                        //                                 neo_set_about_box_text('Scallop VMS point density 2006-2010');
-                        //                                 break;
-                        //                         }
-                        //                       } : function(e) {
-                        //                         updateLayer(this.value);
-                        //                       }
-                        //     }, dojo.create('input', null, dojo.byId('radioWrapper')));
-                        //     dojo.create('label', { 'for' : 'radio_' + layers[i].id , innerHTML : layers[i].label, 'class' : layers[i].group }, dojo.byId('radioWrapper'));
-                        // }
+
+                        /* create radio buttons
+                        ========================== */
+                        if (layers[i].checked != null) {
+                            dojo.place("<button data-id='" + layers[i].id + "' class='btn" + (layers[i].checked ? " active" : " ") + "'>" 
+                                + layers[i].label + "</button>"
+                                , "radioWrapper");
+
+                            // radio = new RadioButton({
+                            //     id          : 'radio_' + layers[i].id,
+                            //     label       : layers[i].label,
+                            //     value       : layers[i].id,
+                            //     name        : layers[i].group,
+                            //     'class'     : layers[i].group,
+                            //     checked     : layers[i].checked,
+                            //     onClick     : mapUrl.indexOf(fishing) > 0 ? function (e) {
+                            //                     updateLayer(this.value);
+                            //                     switch(this.value){
+                            //                         // case 0:
+                            //                         //  neo_set_about_box_text('All fisheries CMS point density 2006-2010');
+                            //                         //  break;
+                            //                         case 47:
+                            //                             neo_set_about_box_text('Multispecies VMS point density 2006-2010');
+                            //                             break;
+                            //                         case 48:
+                            //                             neo_set_about_box_text('Monkfish VMS point density 2006-2010');
+                            //                             break;
+                            //                         // case 3:
+                            //                         //  neo_set_about_box_text('Herring VMS point density 2006-2010');
+                            //                         //  break;
+                            //                         case 49:
+                            //                             neo_set_about_box_text('Surf clam/Quahog VMS point density 2006-2010');
+                            //                             break;
+                            //                         case 50:
+                            //                             neo_set_about_box_text('Scallop VMS point density 2006-2010');
+                            //                             break;
+                            //                     }
+                            //                   } : function(e) {
+                            //                     updateLayer(this.value);
+                            //                   }
+                            // }, dojo.create('input', null, dojo.byId('radioWrapper')));
+                            // dojo.create('label', { 'for' : 'radio_' + layers[i].id , innerHTML : layers[i].label, 'class' : layers[i].group }, dojo.byId('radioWrapper'));
+                        }
                     }
 
-                    // feature layer mouseover functionality
+                    /* feature layer mouseover functionality
+                    ======================================== */
                     for (i = 0; i < featureLayers.length; i++)
                     {
                         if (mapUrl.indexOf(wq) > 0 && (featureLayers[i].className == 'impaired' || featureLayers[i].className == 'facilities')) {
@@ -534,6 +570,9 @@
                             });
                         }
                     }
+                    dojo.query('#radioWrapper button').on('click', function(e){
+                        radioClick(dojo.attr(this, 'data-id'));
+                    });
                 }
 
                 function createFeatureLayer(id, outField, visible, layerURL, group, defExpression){
@@ -572,7 +611,7 @@
 
 
                 function print() {
-                    q('#loading').style('display', 'block');
+                    dojo.query('#loading').style('display', 'block');
 
                     var params = new PrintParameters();
                     var template = new PrintTemplate();
@@ -600,7 +639,7 @@
 
                     printTask.execute(params, function printTaskCallback(result) {
                         window.open(result.url);
-                        q('#loading').style('display', 'none');
+                        dojo.query('#loading').style('display', 'none');
                     });
                 }
 
@@ -611,7 +650,7 @@
                         dojo.place("<li data-name='" + basemaps[i] + "'><a href='#'><img src='img/" + basemaps[i] + ".png' />&nbsp;&nbsp;&nbsp;" + basemaps[i] + "</a></li>", "basemapDropdownList");
                     };
                     
-                    on(q('#basemapDropdownList.dropdown-menu li'), 'click', function(e){
+                    on(dojo.query('#basemapDropdownList.dropdown-menu li'), 'click', function(e){
                         switch (e.currentTarget.attributes[0].value){
                             case 'oceans':
                                 map.setBasemap('oceans');
@@ -637,8 +676,8 @@
                     for (i = 0; i < locations.length; i++){
                         dojo.place("<li data-name='" + locations[i] + "'><a href='#'>" + locations[i] + "</a></li>", "zoomToDropdownList");
                     }
-                    on(q('#zoomToDropdownList.dropdown-menu li a'), 'click', function(e){
-                        switch (e.currentTarget.innerText){
+                    on(dojo.query('#zoomToDropdownList.dropdown-menu li a'), 'click', function(e){
+                        switch (e.currentTarget.innerHTML){
                             case 'Northeast':
                                 map.centerAndZoom(new Point(-70.5, 42), 7);
                                 break;
@@ -803,68 +842,71 @@
                             showInfoWindowOnClick   : false,
                             center                  : [-70.5, 42],
                             showAttribution         : false,
-                            sliderPosition          : 'top-right',
-                            sliderOrientation       : 'horizontal'
+                            sliderPosition          : 'top-right'
                         });
 
-                    // loading image, watermark, and scale
+                    /*  loading image, watermark, and scale
+                        sub-theme buttons
+                        side buttons
+                    ======================================== */
                     dojo.place("<img src='img/loading.gif' id='loading' />"
                         + "<div id='watermark'>Northeast Ocean Data</div>"
-                        + "<span id='scale'></span>", "mapDiv_root");
-                    
-                    // map controls
-                    dojo.place("<div class='btn-group' id='mapControls'>"
-                        + "<div class='btn-group' id='zoomToDropdownDiv'><button class='btn dropdown-toggle no-right-border-radius dropdown' id='zoomToDropdown' href='#' data-toggle='dropdown'>"
+                        + "<span id='scale'></span>"
+                        + "<div class='button-container'><div class='btn-group sub-theme-buttons' data-toggle='buttons-radio'>"
+                        + "<button type='button' class='btn btn-primary active no-top-left-border-radius'>Navigation</button>"
+                        + "<button type='button' class='btn btn-primary'>Potential Hazards</button>"
+                        + "<button type='button' class='btn btn-primary no-top-right-border-radius'>Commercial Traffic</button></div></div>"
+                        + "<div class='btn-group-vertical' id='side-buttons'>"
+                        + "<button href='#legendModal' type='button' id='legendButton' class='btn btn-info no-left-border-radius active' data-toggle='modal'>Legend</button>"
+                        + "<button type='button' class='btn btn-info' data-toggle='button' disabled='disabled'>About</button>"
+                        + "<button type='button' class='btn btn-info no-bottom-border' data-toggle='button' disabled='disabled'>Feedback</button>"
+                        + "<div class='btn-group' id='zoomToDropdownDiv'><button class='btn dropdown-toggle btn-info no-border-radius dropdown' id='zoomToDropdown' href='#' data-toggle='dropdown'>"
                         + "Zoom to&nbsp;<span class='caret'></span></button>"
                         + "<ul class='dropdown-menu' id='zoomToDropdownList'></ul></div>"
-                        + "<div class='btn-group' id='basemapDropdownDiv'><button class='btn dropdown-toggle no-border-radius dropdown' id='basemapDropdown' href='#' data-toggle='dropdown'>"
+                        + "<div class='btn-group' id='basemapDropdownDiv'><button class='btn dropdown-toggle btn-info no-border-radius dropdown' id='basemapDropdown' href='#' data-toggle='dropdown'>"
                         + "Basemaps&nbsp;<span class='caret'></span></button>"
                         + "<ul class='dropdown-menu' id='basemapDropdownList'></ul></div>"
-                        + "<button class='btn' disabled='disabled'>Share</button>"
-                        + "<button class='btn' id='printButton'>Print</button>"
-                        + "</div>", "mapDiv_root");
-                    
-                    // sub-theme buttons
-                    dojo.place("<div class='button-container'><div class='btn-group sub-theme-buttons' data-toggle='buttons-radio'>"
-                          + "<button type='button' class='btn btn-primary active no-top-left-border-radius'>Navigation</button>"
-                          + "<button type='button' class='btn btn-primary'>Potential Hazards</button>"
-                          + "<button type='button' class='btn btn-primary no-top-right-border-radius'>Commercial Traffic</button></div></div>"
-                        , "mapDiv_root");
-                    
-                    // side buttons
-                    dojo.place("<ul id='side-buttons'><li><button href='#legendModal' type='button' id='legendButton' class='btn btn-info no-left-border-radius active' data-toggle='modal'>Legend</button></li>"
-                        + "<li><button type='button' class='btn btn-info no-left-border-radius' data-toggle='button' disabled='disabled'>About</button></li>"
-                        + "<li><button type='button' class='btn btn-info no-left-border-radius' data-toggle='button' disabled='disabled'>Feedback</button></li></ul>"
-                        , "mapDiv_root");
-
-                    // legend
-                    dojo.place("<div id='legendModal' class='modal hide' role='dialog' data-backdrop='false'>"
+                        + "<button class='btn btn-info no-border-radius' disabled='disabled'>Share</button>"
+                        + "<button class='btn btn-info no-bottom-left-border-radius' id='printButton'>Print</button></div>"
+                        + "<div id='legendModal' class='modal' role='dialog' data-backdrop='false'>"
                         + "<div class='modal-header'>"
                         + "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>"
-                        + "<h4>Legend</h4>"
+                        + "<h5>Legend</h5><!--<div class='alert alert-info'>Zoom-in to view hidden layer(s).</div>-->"
                         + "</div>"
-                        + "<div class='modal-body' id='legendDiv'></div>"
-                        + "</div>", "mapDiv_root");
-
-                    var moveableLegend = new Moveable(dojo.byId('legendModal'));
+                        + "<div class='modal-body'><div id='radioWrapper' class='btn-group-vertical' data-toggle='buttons-radio'></div><div id='legendDiv'></div>"
+                        + "</div><div class='modal-footer'><a id='flex-link' href='#'>View this data with other layers</a></div></div>", "mapDiv_root");
                     
-                    q('#legendModal').modal({
-                        backdrop: false
+                    var moveableLegend =  new move.constrainedMoveable("legendModal", {
+                        within: true,
+                        constraints: function(){
+                            return {
+                                l:  0,
+                                t:  0,
+                                w:  "innerWidth" in window ? window.innerWidth : document.documentElement.offsetWidth,
+                                h:  dojo.query('#mapDiv_root').style('height')[0]
+                            };
+                        }
                     });
 
-                    q('#legendModal').on('shown', function(e){
+                    dojo.query('#legendModal').modal({backdrop: false});
+
+                    dojo.query('#legendModal').on('shown', function(e){
                         domClass.add("legendButton", "active");
                     });
 
-                    q('#legendModal').on('hidden', function(e){
+                    dojo.query('#legendModal').on('hidden', function(e){
                         domClass.remove("legendButton", "active");
                     });
 
-                    on(q('.sub-theme-buttons button'), 'click', function(e){
-                        changeSubTheme(e.target.innerText);
+                    dojo.query('.btn').on('click', function(e){
+                        focusUtil.curNode && focusUtil.curNode.blur();
                     });
 
-                    on(q('#printButton'), 'click', print);
+                    on(dojo.query('.sub-theme-buttons button'), 'click', function(e){
+                        changeSubTheme(e.currentTarget.innerHTML);
+                    });
+
+                    on(dojo.query('#printButton'), 'click', print);
 
 
                     map.on('update-start', function(){
@@ -885,9 +927,33 @@
                     });
 
                     map.on('zoom-end', function(){
+                        var zoomLevel = map.getLevel();
                         updateNotice();
 
-                        if (map.getLevel() == 14) {
+                        if (subThemeName == 'Navigation'){
+                            if (zoomLevel >= 12 && oldZoomLevel < 12) {
+                                legend.refresh();
+                                dojo.behavior.apply();
+                            }
+                            else if (zoomLevel < 12 && oldZoomLevel >= 12) {
+                                legend.refresh();
+                                dojo.behavior.apply();
+                            }
+                        }
+
+                        else if (subThemeName == 'Potential Hazards'){
+                            if (zoomLevel >= 10 && oldZoomLevel < 10) {
+                                legend.refresh();
+                                dojo.behavior.apply();
+                            }
+                            else if (zoomLevel < 10 && oldZoomLevel >= 10) {
+                                legend.refresh();
+                                dojo.behavior.apply();
+                            }
+                        }
+
+
+                        if (zoomLevel == 14) {
                          var point = new esri.geometry.Point(map.extent.getCenter());
                          if (point.x > -7754990.997596861) {
                              if (osmLayer == null) {
@@ -903,6 +969,7 @@
                         }
                         else if (osmLayer != null)
                          osmLayer.hide();
+                        oldZoomLevel = zoomLevel;
                     });
 
                     map.on('pan-end', function(){
@@ -934,9 +1001,6 @@
                     });
 
                     map.on('load', function () {
-
-                        
-
                         createRadioAndHover();
                         chart = new ArcGISImageServiceLayer('http://egisws02.nos.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer', 'chart');
                         map.addLayer(chart, 1);
@@ -980,149 +1044,23 @@
                         //$j('#dropdownWrapper').show();
                         //checkLegendHeight();
                         //createLayerLinks();
+                        oldZoomLevel = map.getLevel();
                     });
 
                     //cm = 0;
 
-                    // get print templates from the export web map task
-                    var printInfo = esri.request({
+                    //get print templates from the export web map task
+                    var printInfo = EsriRequest({
                         url: "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task",
                         content: { f: "json" }
                     });
                 }
 
-                // function showLayerInfo(url, layerID){
-                //     $j('#new-map-layer-box .new-map-box-head .tools').append('<div id="infoLoader" style="float:right;padding-right:6px;padding-top:2px;"><img src="/img/loading.gif" alt="loading" height="15" /></div>');
-                //     $j('#new-map-layer-box').css('height', 'auto');
-                //     if (mapUrl.indexOf(energy) > 0 && cm == 1 && (layerID == 2 || layerID == 11)) {
-                //         var title = '', content = '';
-                //         $j.each($j('div#legendWrapper_oceanUses_0_group a'), function (i, v) {
-                //             if ($j(v).css('text-decoration') == 'underline solid rgb(0, 102, 51)' || $j(v).css('text-decoration') == 'underline')
-                //                 title = $j(v).text();
-                //         });
-                //         switch (title) {
-                //             case 'Cobscook Bay OCGEN Power Project':
-                //                 content = 'This layer represents the Cobscook Bay OCGEN Power Project located off of Eastport, Maine, which was the first operational grid connected tidal energy facility in the U.S. The turbine was deployed by the Ocean Renewable Power Company (ORPC) in 2012. ORPC plans to complete additional installations in order to generate up to 5 megawatts of electricity in the project area.';
-                //                 break;
-                //             case 'Muskeget Channel Tidal Energy':
-                //                 content = 'This layer represents the Muskegat Tidal Energy Project within the Muskegat Channel between Martha’s Vineyard and Nantucket. This project is under the jurisdiction of the Town of Edgartown and all environmental assessments are being conducted by the University of Massachusetts. Edgartown anticipates that the project will generate up to 5 megawatts of electricity. The project is in a review phase.';
-                //                 break;
-                //             case 'Preliminary Permitted Hydrokinetic Projects':
-                //                 content = 'This layer represents offshore sites that have been identified as suitable for development of tidal energy facilities and have received permits from the Federal Energy Regulatory Commission (FERC), but have not undergone any formal permitting procedures. These projects are at various stages of scoping or site assessments.';
-                //                 break;
-                //             case 'Cape Wind Active Lease Area':
-                //                 content = 'This layer shows the active renewable energy leasing areas for the Cape Wind project. In October 2010 Cape Wind was issued the nation’s first commercial lease to construct and operate an offshore wind power facility south off of Cape Cod. The lease area is comprised of approximately 46 square miles in Nantucket Sound offshore Massachusetts, which accounts for both the project area and a buffer zone. Cape Wind is in a project financing phase and construction is slated to begin once this phase is completed.';
-                //                 break;
-                //             case 'Rhode Island/Massachusetts Active Lease Area':
-                //                 content = 'This layer shows the active renewable energy leasing areas on the Atlantic OCS for the Deepwater Wind project in the Rhode Island/Massachusetts Call Area. In an auction in July 2013, Deepwater Wind was awarded lease rights to develop wind energy off the coast of Rhode Island and Massachusetts between Martha’s Vineyard and Block Island. Deepwater Wind will conduct site assessments and operational plans as the next phase of development.';
-                //                 break;
-                //         }
-                //         jQuery("#new-map-layer-box #infoLoader").remove();
-                //         $j('#new-map-layer-box .new-map-box-head .title').text(title);
-                //         for (var i = 0; i < layers.length; i++) {
-                //             if (layers[i].url == url && layers[i].id == layerID)
-                //                 metadata = layers[i].metadata;
-                //         }
-                //         $j("#new-map-layer-box .new-map-box-text").html(
-                //         '<p>' + content + '</p>' +
-                //         '<a href="' + metadata + '" target="_blank">Metadata</a>');
-                //     }
-                //     else if (mapUrl.indexOf(wq) > 0 && (cm != 0)) {
-                //         var title = '', content = '';
-                //         $j.each($j('div#legendWrapper a'), function (i, v) {
-                //             if ($j(v).css('text-decoration') == 'underline solid rgb(0, 102, 51)' || $j(v).css('text-decoration') == 'underline')
-                //                 title = $j(v).text();
-                //         });
-                //         switch (title) {
-                //             case 'Impaired Waters Point':
-                //                 content = 'This layer shows impaired water locations as specified under Section 303(d) of the Clean Water Act. A state’s 303(d) list is comprised of all waters where the state has identified that required pollution controls are not sufficient to maintain applicable water quality standards. States must establish protocol to improve water quality for impaired water locations.';
-                //                 break;
-                //             case 'Impaired Waters Line':
-                //                 content = 'This layer shows impaired river or stream segment features as specified under Section 303(d) of the Clean Water Act. A state’s 303(d) list is comprised of all waters where the state has identified that required pollution controls are not sufficient to maintain applicable water quality standards. States must establish protocol to improve water quality for impaired rivers and streams.';
-                //                 break;
-                //             case 'Impaired Waters Area':
-                //                 content = 'This layer shows impaired water body features as specified under Section 303(d) of the Clean Water Act. A state’s 303(d) list is comprised of all waters where the state has identified that required pollution controls are not sufficient to maintain applicable water quality standards. States must establish protocol to improve water quality for impaired water bodies.';
-                //                 break;
-                //             case 'Facilities that Discharge to Water':
-                //                 content = 'This layer shows facilities that have been issued permits to discharge to water. It contains information on when a permit was issued and expired and how much the facility is permitted to discharge.';
-                //                 break;
-                //             case 'All Sites':
-                //                 content = 'This layer shows facilities, sites, or places subject to environmental regulations or of environmental interest.';
-                //                 break;
-                //             case 'Subwatersheds (HUC12)':
-                //                 content = 'This layer shows the Subwatershed level 12-digit hydrologic units from an EPA hosted map service. According to the U.S. Geological Survey (USGS) and Department of Agriculture (USDA), Hydrologic Unit Codes (HUC) describe watersheds as areas that are defined by hydrographic and topographic criteria which delineate an area of land upstream from a specific point on a river, stream or similar surface waters. These units are nested within one another  and range from the broad Region level (2-digit HUC) to the more defined Subwatershed level.';
-                //                 break;
-                //         }
-                //         jQuery("#new-map-layer-box #infoLoader").remove();
-                //         $j('#new-map-layer-box .new-map-box-head .title').text(title);
-                //         for (var i = 0; i < layers.length; i++) {
-                //             if (layers[i].url == url && layers[i].id == layerID)
-                //                 metadata = layers[i].metadata;
-                //         }
-                //         $j("#new-map-layer-box .new-map-box-text").html(
-                //         '<p>' + content + '</p>' +
-                //         '<a href="' + metadata + '" target="_blank">Metadata</a>');
-                //     }
-                //     else if (mapUrl.indexOf(aqua) > 0 && cm == 1 && radioSelection2 == 0) {
-                //         jQuery("#new-map-layer-box #infoLoader").remove();
-                //         $j('#new-map-layer-box .new-map-box-head .title').text('NGDC DEM Hillshades');
-                //         $j("#new-map-layer-box .new-map-box-text").html('<p>This layer is a tiled map service hosted by NOAA National Geophysical Data Center (NGDC) showing hillshade visualizations of digital elevation models (DEM). The DEM is a seamless integrated bathymetric and topographic dataset which spans offshore, coastal, and inland sections of the United States.</p><a href="http://ngdc.noaa.gov/mgg/inundation/tsunami/general.html" target="_blank">Metadata</a>');
-                //     }
-                //     else {
-                //         esri.request({
-                //             url: url + layerID,
-                //             content: {
-                //                 f: "json"
-                //             },
-                //             handleAs: "json",
-                //             callbackParamName: "callback",
-                //             load: function (response) {
-                //                 jQuery("#new-map-layer-box #infoLoader").remove();
-                //                 $j('#new-map-layer-box .new-map-box-head .title').text(response.name);
-                //                 for (var i = 0; i < layers.length; i++) {
-                //                     if (layers[i].url == url && layers[i].id == response.id)
-                //                         metadata = layers[i].metadata;
-                //                 }
-                //                 $j("#new-map-layer-box .new-map-box-text").html(
-                //                 '<p>' + response.description + '</p>' +
-                //                 '<a href="' + metadata + '" target="_blank">Metadata</a>');
-                //             },
-                //             error: function (error) {
-                //                 console.log(error);
-                //             }
-                //         });
-                //     }
-                    
-                //     var top = 16,
-                //         left = 50,
-                //         calctop = 0,
-                //         calcleft = 0; 
-
-                //     if ($j('#new-map-about-box').css('display') == 'block'){
-                //         top += $j('#new-map-about-box').height() + 20;
-                //         if ($j('#new-map-about-box').height() >= $j('#map').height()-200){
-                //             left += $j('#new-map-about-box').width() + 60;
-                //             top = 16;
-                //         }
-                //     }
-
-                //     if ($j('#feedback').length > 0)
-                //         left += $j('#feedback').width() + 40;
-
-
-                //     if (!aboutLayerOpen){
-                //         $j("#new-map-layer-box").css("left", left +"px"); 
-                //         $j("#new-map-layer-box").css("top",  top +"px"); 
-                //         calcleft += Math.ceil($j("#new-map-layer-box").width()) + 20; 
-                //         $j("#new-map-layer-box").show("fast");
-                //         aboutLayerOpen = true;
-                //     }
-                // }
-
                 function createLegend(layerInfos){
                     legend = new Legend({
                         map         : map,
-                        layerInfos  : layerInfos
+                        layerInfos  : layerInfos,
+                        autoUpdate  : false
                     }, "legendDiv");
                     legend.startup();
                 }
@@ -1150,19 +1088,19 @@
                 function updateNotice() {
                     if (subThemeName == 'Navigation'){
                         if (map.getLevel() < 12) 
-                            q('.notice').place("Zoom in to view 'Aids to Navigation'").style('display', 'block');
+                            dojo.query('.notice').place("Zoom in to view 'Aids to Navigation'").style('display', 'block');
                         else 
-                            q('.notice').style('display', 'none');
+                            dojo.query('.notice').style('display', 'none');
                     }
                     else if (subThemeName == 'Potential Hazards'){
                         if (map.getLevel() < 10) 
-                            q('.notice').place("Zoom in to view 'Submarine Cable and Pipline Areas'").style('display', 'block');
+                            dojo.query('.notice').place("Zoom in to view 'Submarine Cable and Pipline Areas'").style('display', 'block');
                         else 
-                            q('.notice').style('display', 'none');
+                            dojo.query('.notice').style('display', 'none');
                     }
                 }
 
-                function changeSubTheme(subThemeName) {
+                function changeSubTheme(subTheme) {
                     hideFeatureLayers();
                     oceanUses.setVisibleLayers([-1]);
                     visible = [];
@@ -1198,8 +1136,9 @@
                     //         break;
                     // }
                     
+                    var menuWidth = '';
                     
-                    switch (subThemeName){
+                    switch (subTheme){
                         case 'Navigation':
                             //aboutBox_setContent(1791);
                             for(var i = 0; i < layers.length; i++)
@@ -1214,8 +1153,9 @@
                             //$j('div#feedback').css('width', '291px');
                             //$j('span#legendAbout p').html('MARITIME COMMERCE: NAVIGATION');
                             updateNotice();
-                            legend.refresh();
+                            //legend.refresh();
                             //$j('a#flex-link').attr('href', 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,26,27,28,29,30,31,32,33;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#');
+                            menuWidth = '298px'
                             break;
                         case 'Potential Hazards':
                             //aboutBox_setContent(1822);
@@ -1231,16 +1171,19 @@
                             //$j('div#feedback').css('width', '271px');
                             //$j('span#legendAbout p').html('MARITIME COMMERCE: POTENTIAL HAZARDS');
                             updateNotice();
-                            legend.refresh();
+                            //legend.refresh();
                             //$j('a#flex-link').attr('href', 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,13,14,15,19,24,25;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#');
+                            menuWidth = '207px'
                             break;
                         case 'Commercial Traffic':
                             //aboutBox_setContent(1827);
-                            updateLayer(radioSelection);
+                            radioClick(radioSelection);
                             // $j('span#legendAbout p').html('MARITIME COMMERCE: COMMERCIAL TRAFFIC');
                             // $j('div#feedback').css('width', '260px');
                             // $j('div#radioWrapper').show();
                             // $j('.traffic').show();
+                            menuWidth = '245px'
+                            dojo.query('#radioWrapper').style('display', 'block');
                             break;
                     }
 
@@ -1249,13 +1192,20 @@
                     //     aboutLayerOpen = false;
                     // }
                     //checkLegendHeight();
+
+                    dojo.query('#legendModal').style('width', menuWidth);
+
+                    legend.refresh();
+                    dojo.behavior.apply();
+                    if (subThemeName == 'Commercial Traffic')
+                        dojo.query('#radioWrapper').style('display', 'none');
+                    subThemeName = subTheme;
                 }
 
-                //Update map layer when radio button is clicked
-                function updateLayer(ch) {
+                function radioClick(id) {
                     if (legend != null) {
-                        oceanUses.setVisibleLayers([ch]);
-                        radioSelection = ch;
+                        oceanUses.setVisibleLayers([id]);
+                        radioSelection = id;
                         // if ($j('#new-map-layer-box').css('display') == 'block')
                         //     showLayerInfo(oceanUsesUrl, ch);
                         legend.refresh();
@@ -1264,20 +1214,41 @@
                         //         $j('a#flex-link').attr('href', layers[i].flexLink);
                         //         break;
                         //     }
+                        dojo.behavior.apply();
                     }
                 }
 
-                createMap();
+
                 oceanUses = new esri.layers.ArcGISDynamicMapServiceLayer(oceanUsesUrl, {disableClientCaching : true, id : 'oceanUses'});
                 for(var i = 0; i < layers.length; i++)
                     if (layers[i].group == 'navigation')
                         visible.push(layers[i].id);
                 oceanUses.setVisibleLayers(visible);
+
+                createMap();
                 
                 map.addLayers([oceanUses]);
 
                 var layerInfos = [{layer:oceanUses}];
-                createLegend(layerInfos);
+
+                map.on('layers-add-result', function () {
+                    createLegend(layerInfos);
+                });
+
+                dojo.behavior.add({
+                    '.esriLegendService' : {
+                        found: function(n){updateLegend(n);}
+                    }
+                });
+
+
+                notify('done',function(responseOrError){
+                    if (responseOrError.hasOwnProperty('url'))
+                        if (responseOrError.url.match(/legend/i))
+                            dojo.behavior.apply();
+                });
+
+
                 // map.on('load', function(){
                 //     legend.refresh();
                 // });
@@ -1286,6 +1257,179 @@
                 mapName = 'Maritime Commerce';
                 subThemeName = 'Navigation';
             });
+
+            function updateLegend(legendDiv){
+                var delayedFunction = window.setTimeout(function(e){
+                    for (var i = 0; i < layers.length; i++) {
+                        var td = dojo.query('.esriLegendService div table.esriLegendLayerLabel tr td:contains("' + layers[i].label + '")')
+                        if (td.text() == layers[i].label)
+                            td.html('<a href="#" rel="tooltip" data-placement="right" title="' + layers[i].description +  '">' + layers[i].label + '</a>');
+                    }
+                    dojo.query('a[rel="tooltip"]').tooltip();
+                }, 10);
+            }
+
+            function setDescriptions() {
+                for (var i=0; i < layerArray.length; i++)
+                    layers[i]['description'] = layerArray[i].description;
+            }
+
+            // function showLayerInfo(url, layerID){
+            //     $j('#new-map-layer-box .new-map-box-head .tools').append('<div id="infoLoader" style="float:right;padding-right:6px;padding-top:2px;"><img src="/img/loading.gif" alt="loading" height="15" /></div>');
+            //     $j('#new-map-layer-box').css('height', 'auto');
+            //     if (mapUrl.indexOf(energy) > 0 && cm == 1 && (layerID == 2 || layerID == 11)) {
+            //         var title = '', content = '';
+            //         $j.each($j('div#legendWrapper_oceanUses_0_group a'), function (i, v) {
+            //             if ($j(v).css('text-decoration') == 'underline solid rgb(0, 102, 51)' || $j(v).css('text-decoration') == 'underline')
+            //                 title = $j(v).text();
+            //         });
+            //         switch (title) {
+            //             case 'Cobscook Bay OCGEN Power Project':
+            //                 content = 'This layer represents the Cobscook Bay OCGEN Power Project located off of Eastport, Maine, which was the first operational grid connected tidal energy facility in the U.S. The turbine was deployed by the Ocean Renewable Power Company (ORPC) in 2012. ORPC plans to complete additional installations in order to generate up to 5 megawatts of electricity in the project area.';
+            //                 break;
+            //             case 'Muskeget Channel Tidal Energy':
+            //                 content = 'This layer represents the Muskegat Tidal Energy Project within the Muskegat Channel between Martha’s Vineyard and Nantucket. This project is under the jurisdiction of the Town of Edgartown and all environmental assessments are being conducted by the University of Massachusetts. Edgartown anticipates that the project will generate up to 5 megawatts of electricity. The project is in a review phase.';
+            //                 break;
+            //             case 'Preliminary Permitted Hydrokinetic Projects':
+            //                 content = 'This layer represents offshore sites that have been identified as suitable for development of tidal energy facilities and have received permits from the Federal Energy Regulatory Commission (FERC), but have not undergone any formal permitting procedures. These projects are at various stages of scoping or site assessments.';
+            //                 break;
+            //             case 'Cape Wind Active Lease Area':
+            //                 content = 'This layer shows the active renewable energy leasing areas for the Cape Wind project. In October 2010 Cape Wind was issued the nation’s first commercial lease to construct and operate an offshore wind power facility south off of Cape Cod. The lease area is comprised of approximately 46 square miles in Nantucket Sound offshore Massachusetts, which accounts for both the project area and a buffer zone. Cape Wind is in a project financing phase and construction is slated to begin once this phase is completed.';
+            //                 break;
+            //             case 'Rhode Island/Massachusetts Active Lease Area':
+            //                 content = 'This layer shows the active renewable energy leasing areas on the Atlantic OCS for the Deepwater Wind project in the Rhode Island/Massachusetts Call Area. In an auction in July 2013, Deepwater Wind was awarded lease rights to develop wind energy off the coast of Rhode Island and Massachusetts between Martha’s Vineyard and Block Island. Deepwater Wind will conduct site assessments and operational plans as the next phase of development.';
+            //                 break;
+            //         }
+            //         jQuery("#new-map-layer-box #infoLoader").remove();
+            //         $j('#new-map-layer-box .new-map-box-head .title').text(title);
+            //         for (var i = 0; i < layers.length; i++) {
+            //             if (layers[i].url == url && layers[i].id == layerID)
+            //                 metadata = layers[i].metadata;
+            //         }
+            //         $j("#new-map-layer-box .new-map-box-text").html(
+            //         '<p>' + content + '</p>' +
+            //         '<a href="' + metadata + '" target="_blank">Metadata</a>');
+            //     }
+            //     else if (mapUrl.indexOf(wq) > 0 && (cm != 0)) {
+            //         var title = '', content = '';
+            //         $j.each($j('div#legendWrapper a'), function (i, v) {
+            //             if ($j(v).css('text-decoration') == 'underline solid rgb(0, 102, 51)' || $j(v).css('text-decoration') == 'underline')
+            //                 title = $j(v).text();
+            //         });
+            //         switch (title) {
+            //             case 'Impaired Waters Point':
+            //                 content = 'This layer shows impaired water locations as specified under Section 303(d) of the Clean Water Act. A state’s 303(d) list is comprised of all waters where the state has identified that required pollution controls are not sufficient to maintain applicable water quality standards. States must establish protocol to improve water quality for impaired water locations.';
+            //                 break;
+            //             case 'Impaired Waters Line':
+            //                 content = 'This layer shows impaired river or stream segment features as specified under Section 303(d) of the Clean Water Act. A state’s 303(d) list is comprised of all waters where the state has identified that required pollution controls are not sufficient to maintain applicable water quality standards. States must establish protocol to improve water quality for impaired rivers and streams.';
+            //                 break;
+            //             case 'Impaired Waters Area':
+            //                 content = 'This layer shows impaired water body features as specified under Section 303(d) of the Clean Water Act. A state’s 303(d) list is comprised of all waters where the state has identified that required pollution controls are not sufficient to maintain applicable water quality standards. States must establish protocol to improve water quality for impaired water bodies.';
+            //                 break;
+            //             case 'Facilities that Discharge to Water':
+            //                 content = 'This layer shows facilities that have been issued permits to discharge to water. It contains information on when a permit was issued and expired and how much the facility is permitted to discharge.';
+            //                 break;
+            //             case 'All Sites':
+            //                 content = 'This layer shows facilities, sites, or places subject to environmental regulations or of environmental interest.';
+            //                 break;
+            //             case 'Subwatersheds (HUC12)':
+            //                 content = 'This layer shows the Subwatershed level 12-digit hydrologic units from an EPA hosted map service. According to the U.S. Geological Survey (USGS) and Department of Agriculture (USDA), Hydrologic Unit Codes (HUC) describe watersheds as areas that are defined by hydrographic and topographic criteria which delineate an area of land upstream from a specific point on a river, stream or similar surface waters. These units are nested within one another  and range from the broad Region level (2-digit HUC) to the more defined Subwatershed level.';
+            //                 break;
+            //         }
+            //         jQuery("#new-map-layer-box #infoLoader").remove();
+            //         $j('#new-map-layer-box .new-map-box-head .title').text(title);
+            //         for (var i = 0; i < layers.length; i++) {
+            //             if (layers[i].url == url && layers[i].id == layerID)
+            //                 metadata = layers[i].metadata;
+            //         }
+            //         $j("#new-map-layer-box .new-map-box-text").html(
+            //         '<p>' + content + '</p>' +
+            //         '<a href="' + metadata + '" target="_blank">Metadata</a>');
+            //     }
+            //     else if (mapUrl.indexOf(aqua) > 0 && cm == 1 && radioSelection2 == 0) {
+            //         jQuery("#new-map-layer-box #infoLoader").remove();
+            //         $j('#new-map-layer-box .new-map-box-head .title').text('NGDC DEM Hillshades');
+            //         $j("#new-map-layer-box .new-map-box-text").html('<p>This layer is a tiled map service hosted by NOAA National Geophysical Data Center (NGDC) showing hillshade visualizations of digital elevation models (DEM). The DEM is a seamless integrated bathymetric and topographic dataset which spans offshore, coastal, and inland sections of the United States.</p><a href="http://ngdc.noaa.gov/mgg/inundation/tsunami/general.html" target="_blank">Metadata</a>');
+            //     }
+            //     else {
+            //         esri.request({
+            //             url: url + layerID,
+            //             content: {
+            //                 f: "json"
+            //             },
+            //             handleAs: "json",
+            //             callbackParamName: "callback",
+            //             load: function (response) {
+            //                 jQuery("#new-map-layer-box #infoLoader").remove();
+            //                 $j('#new-map-layer-box .new-map-box-head .title').text(response.name);
+            //                 for (var i = 0; i < layers.length; i++) {
+            //                     if (layers[i].url == url && layers[i].id == response.id)
+            //                         metadata = layers[i].metadata;
+            //                 }
+            //                 $j("#new-map-layer-box .new-map-box-text").html(
+            //                 '<p>' + response.description + '</p>' +
+            //                 '<a href="' + metadata + '" target="_blank">Metadata</a>');
+            //             },
+            //             error: function (error) {
+            //                 console.log(error);
+            //             }
+            //         });
+            //     }
+
+            //     var top = 16,
+            //         left = 50,
+            //         calctop = 0,
+            //         calcleft = 0;
+
+            //     if ($j('#new-map-about-box').css('display') == 'block'){
+            //         top += $j('#new-map-about-box').height() + 20;
+            //         if ($j('#new-map-about-box').height() >= $j('#map').height()-200){
+            //             left += $j('#new-map-about-box').width() + 60;
+            //             top = 16;
+            //         }
+            //     }
+
+            //     if ($j('#feedback').length > 0)
+            //         left += $j('#feedback').width() + 40;
+
+
+            //     if (!aboutLayerOpen){
+            //         $j("#new-map-layer-box").css("left", left +"px");
+            //         $j("#new-map-layer-box").css("top",  top +"px");
+            //         calcleft += Math.ceil($j("#new-map-layer-box").width()) + 20;
+            //         $j("#new-map-layer-box").show("fast");
+            //         aboutLayerOpen = true;
+            //     }
+
+            //     esri.request({
+            //         url: url + layerID,
+            //         content: {
+            //             f: "json"
+            //         },
+            //         handleAs: "json",
+            //         callbackParamName: "callback",
+            //         load: function (response) {
+            //             // jQuery("#new-map-layer-box #infoLoader").remove();
+            //             // $j('#new-map-layer-box .new-map-box-head .title').text(response.name);
+            //             // for (var i = 0; i < layers.length; i++) {
+            //             //     if (layers[i].url == url && layers[i].id == response.id)
+            //             //         metadata = layers[i].metadata;
+            //             // }
+            //             // $j("#new-map-layer-box .new-map-box-text").html(
+            //             // '<p>' + response.description + '</p>' +
+            //             // '<a href="' + metadata + '" target="_blank">Metadata</a>');
+
+            //             dojo.query('.esriLegendService a[data-id="' + layerID + '"]').popover({
+            //                 title: "Layer Description",
+            //                 content: response.description
+            //             });
+
+            //         },
+            //         error: function (error) {
+            //             console.log(error);
+            //         }
+            //     });
+            // }
         </script>
     </body>
 </html>
