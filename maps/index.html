@@ -639,6 +639,7 @@
 
                     printTask.execute(params, function printTaskCallback(result) {
                         window.open(result.url);
+                        dojo.query('#printButton').button('reset');
                         dojo.query('#loading').style('display', 'none');
                     });
                 }
@@ -867,7 +868,7 @@
                         + "Basemaps&nbsp;<span class='caret'></span></button>"
                         + "<ul class='dropdown-menu' id='basemapDropdownList'></ul></div>"
                         + "<button class='btn btn-info no-border-radius' disabled='disabled'>Share</button>"
-                        + "<button class='btn btn-info no-bottom-left-border-radius' id='printButton'>Print</button></div>"
+                        + "<button class='btn btn-info no-bottom-left-border-radius' data-loading-text='Loading...' id='printButton'>Print</button></div>"
                         + "<div id='legendModal' class='modal' role='dialog' data-backdrop='false'>"
                         + "<div class='modal-header'>"
                         + "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>"
@@ -906,7 +907,10 @@
                         changeSubTheme(e.currentTarget.innerHTML);
                     });
 
-                    on(dojo.query('#printButton'), 'click', print);
+                    on(dojo.query('#printButton'), 'click', function(e){
+                        dojo.query(e.target).button('loading');
+                        print();
+                    });
 
 
                     map.on('update-start', function(){
