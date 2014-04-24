@@ -883,7 +883,7 @@
                             showInfoWindowOnClick   : false,
                             center                  : [-70.5, 42],
                             showAttribution         : false,
-                            sliderPosition          : 'top-right'
+                            sliderPosition          : 'top-left'
                         });
 
                     /*  loading image, watermark, and scale
@@ -893,22 +893,22 @@
                     dojo.place("<img src='img/loading.gif' id='loading' />"
                         + "<div id='watermark'>Northeast Ocean Data</div>"
                         + "<span id='scale'></span>"
-                        + "<div class='button-container'><div class='btn-group sub-theme-buttons' data-toggle='buttons-radio'>"
-                        + "<button type='button' class='btn btn-primary active no-top-left-border-radius'>Navigation</button>"
-                        + "<button type='button' class='btn btn-primary'>Potential Hazards</button>"
-                        + "<button type='button' class='btn btn-primary no-top-right-border-radius'>Commercial Traffic</button></div></div>"
-                        + "<div class='btn-group-vertical' id='side-buttons'>"
-                        + "<button href='#legendModal' type='button' id='legendButton' class='btn btn-info no-left-border-radius active' data-toggle='modal'>Legend</button>"
-                        + "<button type='button' class='btn btn-info' data-toggle='button' disabled='disabled'>About</button>"
-                        + "<button type='button' class='btn btn-info no-bottom-border' data-toggle='button' disabled='disabled'>Feedback</button>"
-                        + "<div class='btn-group' id='zoomToDropdownDiv'><button class='btn dropdown-toggle btn-info no-border-radius dropdown' id='zoomToDropdown' href='#' data-toggle='dropdown'>"
-                        + "Zoom to&nbsp;<span class='caret'></span></button>"
+                        + "<div id='mapControls' class='btn-group-vertical'><div class='btn-group' id='zoomToDropdownDiv'><button class='btn dropdown-toggle btn-info dropdown no-bottom-left-border-radius' id='zoomToDropdown' href='#' data-toggle='dropdown'>"
+                        + "<span class='icon-zoom-in'></span>Zoom to</button>"
                         + "<ul class='dropdown-menu' id='zoomToDropdownList'></ul></div>"
-                        + "<div class='btn-group' id='basemapDropdownDiv'><button class='btn dropdown-toggle btn-info no-border-radius dropdown' id='basemapDropdown' href='#' data-toggle='dropdown'>"
-                        + "Basemaps&nbsp;<span class='caret'></span></button>"
+                        + "<div class='btn-group' id='basemapDropdownDiv'><button class='btn dropdown-toggle btn-info dropdown no-bottom-left-border-radius no-top-left-border-radius' id='basemapDropdown' href='#' data-toggle='dropdown'>"
+                        + "<span class='icon-globe'></span>Basemaps</button>"
                         + "<ul class='dropdown-menu' id='basemapDropdownList'></ul></div>"
-                        + "<button class='btn btn-info no-border-radius' disabled='disabled'>Share</button>"
-                        + "<button class='btn btn-info no-bottom-left-border-radius' data-loading-text='Loading...' id='printButton'>Print</button></div>"
+                        + "<button class='btn btn-info'><span class='icon-share'></span>Share</button>"
+                        + "<button class='btn btn-info' data-loading-text='Loading...' id='printButton'><span class='icon-print'></span>Print</button></div></div>"
+                        + "<div class='button-container'><div class='btn-group sub-theme-buttons' data-toggle='buttons-radio'>"
+                        + "<button type='button' class='btn btn-neod active no-top-left-border-radius'>Navigation</button>"
+                        + "<button type='button' class='btn btn-neod'>Potential Hazards</button>"
+                        + "<button type='button' class='btn btn-neod no-top-right-border-radius'>Commercial Traffic</button></div></div>"
+                        + "<div id='side-buttons'>"
+                        + "<button href='#legendModal' type='button' id='legendButton' class='btn btn-neod active no-bottom-border-radius' data-toggle='modal'>Legend</button>"
+                        + "<button type='button' class='btn btn-neod no-bottom-border-radius' data-toggle='button'>About</button>"
+                        + "<button type='button' class='btn btn-neod no-bottom-border-radius' data-toggle='button'>Feedback</button></div>"
                         + "<div id='legendModal' class='modal' role='dialog' data-backdrop='false'>"
                         + "<div class='modal-header'>"
                         + "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>"
@@ -1243,7 +1243,7 @@
                             // $j('div#feedback').css('width', '260px');
                             // $j('div#radioWrapper').show();
                             // $j('.traffic').show();
-                            menuWidth = '245px'
+                            menuWidth = '246px'
                             dojo.query('#radioWrapper').style('display', 'block');
                             break;
                     }
