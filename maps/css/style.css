@@ -341,7 +341,9 @@ span#scale {
     clear:both;
   }
 
-  #legendModal .modal-header h5{
+  #legendModal .modal-header h5,
+  #shareModal .modal-header h5,
+  #feedbackModal .modal-header h5{
     margin-top: 0;
     margin-bottom: 0;
   }
@@ -424,7 +426,7 @@ div#radioWrapper {
   display: none;  
 }
 
-#shareModal {
+#shareModal, #feedbackModal {
   display: none;
   /*top: 32%;*/
   left: 31%;
@@ -438,3 +440,11 @@ div#radioWrapper {
   left: 31%;
   top: 32%;
 }
+
+#feedbackModal {
+  width: 500px;
+}
+
+  #feedbackModal .modal-body {
+    max-height: 461px;
+  }
