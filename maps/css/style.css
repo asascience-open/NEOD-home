@@ -317,6 +317,7 @@ span#scale {
   margin: 0;
   position: absolute;
   display: none;
+  z-index: 1040;
 }
 
   #legendModal .modal-header .alert-info{
@@ -421,4 +422,19 @@ div#legendDiv_oceanUses_16_group.esriLegendGroupLayer > table.esriLegendLayerLab
 div#legendDiv_oceanUses_0_group > table.esriLegendLayerLabel,
 div#radioWrapper {
   display: none;  
+}
+
+#shareModal {
+  display: none;
+  /*top: 32%;*/
+  left: 31%;
+}
+
+  #shareModal a {
+    text-decoration: none;
+  }
+
+#shareModal.fade.in {
+  left: 31%;
+  top: 32%;
 }
