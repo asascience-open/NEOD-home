@@ -1451,9 +1451,9 @@
                     for (var i = 0; i < layers.length; i++) {
                         var td = dojo.query('.esriLegendService div table.esriLegendLayerLabel tr td:contains("' + layers[i].label + '")')
                         if (td.text() == layers[i].label)
-                            td.html('<a href="#" rel="tooltip" data-placement="right" title="' + layers[i].description +  '">' + layers[i].label + '</a>');
+                            td.html('<a href="#" rel="tooltip" data-toggle="tooltip" data-placement="right" title="' + layers[i].description +  '">' + layers[i].label + '</a>');
                     }
-                    dojo.query('a[rel="tooltip"]').tooltip();
+                    dojo.query('.esriLegendService').tooltip({selector: 'a[rel="tooltip"]'});
                 }, 250);
             }
 
