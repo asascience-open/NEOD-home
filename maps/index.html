@@ -964,7 +964,7 @@
                         + "<button type='button' class='btn btn-neod'>Potential Hazards</button>"
                         + "<button type='button' class='btn btn-neod no-top-right-border-radius'>Commercial Traffic</button></div></div>"
                         + "<div id='side-buttons'>"
-                        + "<button href='#legendModal' type='button' id='legendButton' class='btn btn-neod active no-bottom-border-radius' data-toggle='modal'>Legend / About</button>"
+                        + "<button href='#legendModal' type='button' id='legendButton' class='btn btn-neod active no-bottom-border-radius'>Legend / About</button>"
                         //+ "<button type='button' id='aboutButton' href='#aboutModal' data-toggle='modal' class='btn btn-neod no-bottom-border-radius' data-toggle='button'>About</button>"
                         + "<button type='button' id='feedbackButton' class='btn btn-neod no-bottom-border-radius'>Feedback</button></div>" +
                         "<div id='legendModal' class='modal' role='dialog' data-backdrop='false'>" +
@@ -1022,21 +1022,43 @@
                         domClass.add(query(e.target), 'active');
                     });
 
-                    query('#legendModal').modal({
-                        backdrop    : false,
-                        show        : screenWidth >= 1024 ? true : false,
-                        keyboard    : false
-                    });
+                    // query('#legendModal').modal({
+                    //     backdrop    : false,
+                    //     show        : screenWidth >= 1024 ? true : false,
+                    //     keyboard    : false
+                    // });
 
                     if (screenWidth < 1024)
                         domClass.remove("legendButton", "active");
+                    else
+                        query('#legendModal').style('display', 'block');
 
-                    query('#legendModal').on('shown', function(e){
-                        domClass.add("legendButton", "active");
+                    query('#legendModal .modal-header button.close').on('click', function(e){
+                        domClass.remove("legendButton", "active");
+                        fadeOutLegend.play();
                     });
 
-                    query('#legendModal').on('hidden', function(e){
-                        domClass.remove("legendButton", "active");
+                    var fadeInLegend = fx.fadeIn({node:'legendModal'});
+                    var fadeOutLegend = fx.fadeOut({node:'legendModal'});
+
+                    dojo.connect(fadeOutLegend, "onEnd", function(){
+                        query('#legendModal').style('display', 'none');
+                    });
+
+                    dojo.connect(fadeInLegend, "onEnd", function(){
+                        query('#legendModal').style('display', 'block');
+                    });
+
+                    query('#legendButton').on('click', function(e){
+                        if (query('#legendModal').style('display') == 'none') {
+                            domClass.add("legendButton", "active");
+                            query('#legendModal').style('display', 'block');
+                            fadeInLegend.play();
+                        }
+                        else {
+                            domClass.remove("legendButton", "active");
+                            fadeOutLegend.play();
+                        }
                     });
 
                     query('#shareModal').modal({
