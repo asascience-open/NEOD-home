@@ -158,39 +158,20 @@ button {
 
 #mapControls {
   position: absolute;
-  right: -102px;
-  top: 58px;
-  z-index: 2;
-  -webkit-transition: right .3s ease-in-out;
-  -moz-transition: right .3s ease-in-out;
-  -o-transition: right .3s ease-in-out;
-  transition: right .3s ease-in-out;
+  right: 10px;
 }
-
-#mapControls:hover{
-  right: 0px;
-}
-  #mapControls .dropdown-menu {
-    top: -2px;
-    left: -162px;
+  #mapControls .btn-group {
+    margin-left: 0;
   }
 
-
   #mapControls .btn {
-    width: 140px;
-    -webkit-border-top-right-radius: 0px !important;
-    -webkit-border-bottom-right-radius: 0px !important;
-    -moz-border-radius-topright: 0px !important;
-    -moz-border-radius-bottomright: 0px !important;
-    border-top-right-radius: 0px !important;
-    border-bottom-right-radius: 0px !important;
-    opacity: .8;
-    filter: alpha(opacity=80);
-    text-align: left;
+    border-top: none;
+    /*width: 140px;
+    text-align: left;*/
   }
 
   #mapControls .btn span {
-    margin-right: 15px;
+    margin-left: 5px;
   }
 
 .no-bottom-border {
@@ -263,16 +244,6 @@ button {
     border-bottom-left-radius: 0px !important;
 }
 
-#basemapDropdownDiv, #zoomToDropdownDiv{
-  margin-left: 0;
-  display: block;
-}
-
-#zoomToDropdown, #basemapDropdown {
-  border-top: none;
-  border-bottom: none;
-}
-
 div#watermark{
     position: fixed;
     bottom: 9px;
@@ -280,7 +251,6 @@ div#watermark{
     color: #000;
     text-shadow: #fff 1px 1px;
     font-size: 15px;
-    z-index: 2;
 }
 span#scale {
     position: fixed;
@@ -289,22 +259,18 @@ span#scale {
     color: #000;
     text-shadow: #fff 1px 1px;
     font-size: 15px;
-    z-index: 2;
 }
 
 .scalebar_bottom-right {
     bottom: 6px !important;
     right: 160px !important;
-    z-index: 2;
 }
 
 #loading {
     width: 20px;
     position: absolute;
     right: 10px;
-    top: 22px;
-    z-index: 2;
-    /*display: none;*/
+    top: 40px;
 }
 
 
@@ -490,7 +456,6 @@ span#scale {
   margin-top: 30px;
   width: 0;
   margin-left: -51px;
-  z-index: 2;
 }
   
   #side-buttons .btn {

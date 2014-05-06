@@ -557,9 +557,9 @@ define([
             var template = new PrintTemplate();
 
             var legendLayers = [];
-            for (var i = 1; i < map.layerIds.length; i++){
+            for (var i = 1; i < app.map.layerIds.length; i++){
                 var legendLayer = new LegendLayer();
-                legendLayer.layerId = map.layerIds[i];
+                legendLayer.layerId = app.map.layerIds[i];
                 legendLayers.push(legendLayer);
             }   
             
@@ -573,7 +573,7 @@ define([
             template.layoutOptions.legendLayers = legendLayers;
 
             params.template = template;
-            params.map = map;
+            params.map = app.map;
 
             var printTask = new PrintTask("http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task", params);
 
@@ -699,14 +699,14 @@ define([
             domConstruct.place("<img src='img/loading.gif' id='loading' />"
             + "<div id='watermark'>Northeast Ocean Data</div>"
             + "<span id='scale'></span>"
-            + "<div id='mapControls' class='btn-group-vertical'><div class='btn-group' id='zoomToDropdownDiv'><button class='btn dropdown-toggle btn-info dropdown no-bottom-left-border-radius' id='zoomToDropdown' href='#' data-toggle='dropdown'>"
-            + "<span class='icon-zoom-in'></span>Zoom to</button>"
+            + "<div id='mapControls' class='btn-group'><div class='btn-group' id='zoomToDropdownDiv'><button class='btn dropdown-toggle btn-primary dropdown no-top-left-border-radius no-top-right-border-radius no-bottom-right-border-radius' id='zoomToDropdown' href='#' data-toggle='dropdown'>"
+            + "Zoom to<span class='caret'></span></button>"
             + "<ul class='dropdown-menu' id='zoomToDropdownList'></ul></div>"
-            + "<div class='btn-group' id='basemapDropdownDiv'><button class='btn dropdown-toggle btn-info dropdown no-bottom-left-border-radius no-top-left-border-radius' id='basemapDropdown' href='#' data-toggle='dropdown'>"
-            + "<span class='icon-globe'></span>Basemaps</button>"
+            + "<div class='btn-group' id='basemapDropdownDiv'><button class='btn dropdown-toggle btn-primary dropdown no-border-radius' id='basemapDropdown' href='#' data-toggle='dropdown'>"
+            + "Basemaps<span class='caret'></span></button>"
             + "<ul class='dropdown-menu' id='basemapDropdownList'></ul></div>"
-            + "<button class='btn btn-info' id='shareButton'><span class='icon-share'></span>Share</button>"
-            + "<button class='btn btn-info' data-loading-text='Loading...' id='printButton'><span class='icon-print'></span>Print</button></div></div>"
+            + "<button class='btn btn-primary' id='shareButton'>Share</button>"
+            + "<button class='btn btn-primary no-top-right-border-radius' data-loading-text='Loading...' id='printButton'>Print</button></div></div>"
             + "<div id='side-buttons'>"
             + "<button href='#legendModal' type='button' id='legendButton' class='btn btn-neod active no-bottom-border-radius'>Legend / About</button>"
             //+ "<button type='button' id='aboutButton' href='#aboutModal' data-toggle='modal' class='btn btn-neod no-bottom-border-radius' data-toggle='button'>About</button>"
