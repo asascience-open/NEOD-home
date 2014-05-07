@@ -5335,6 +5335,7 @@ input[type="submit"].btn.btn-mini {
   background-color: #fff;
   border-radius: 4px;
   border: 1px solid #ccc;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
 }
 .tooltip-arrow {
   position: absolute;
