@@ -886,6 +886,7 @@ define([
 
             var moveableLegend =  new move.constrainedMoveable("legendModal", {
                 within: true,
+                handle: query('#legendModal .modal-header'),
                 constraints: function(){return constraintBox;}
             });
 

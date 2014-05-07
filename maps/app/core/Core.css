@@ -6,6 +6,12 @@ body {
   padding-left: 0;
   padding-right: 0;
   overflow: hidden;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 button {
@@ -107,12 +113,6 @@ button {
 #mapDiv_root {
   top: 0;
   left: 0;
-}
-
-.legendDiv {
-  opacity: 0;
-  z-index: 0;
-  display: none;
 }
 
 .sub-theme-buttons {
@@ -339,6 +339,7 @@ span#scale {
   #legendModal .modal-header #tabs {
     margin-bottom: 0;
     padding-bottom: 0;
+    cursor: move !important;
   }
 
     #legendModal .modal-header #tabs li {
@@ -358,8 +359,9 @@ span#scale {
 
     #legendModal .modal-header #tabs li a{
       color: #fff;
-      padding-top: 6px;
-      padding-bottom: 6px;
+      padding-top: 3px;
+      padding-bottom: 3px;
+      cursor: move !important;
     }
 
     #legendModal .modal-header #tabs li a:hover{
@@ -402,7 +404,7 @@ span#scale {
 
   #legendModal .modal-footer {
     text-align: left;
-    font-size: 12px;
+    font-size: 11px;
     padding-top: 10px;
     padding-bottom: 10px;
   }
@@ -428,6 +430,15 @@ span#scale {
     width: 224px;
     text-align: left;
   }
+
+#legendDiv {
+  font-size: 11px;
+}
+
+.esriLegendService {
+  padding-bottom: 12px !important;
+}
+
 
 #about {
   padding-top: 9px !important;
