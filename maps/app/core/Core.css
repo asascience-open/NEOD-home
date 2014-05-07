@@ -402,14 +402,14 @@ span#scale {
   }
 
   #legendModal .modal-body {
-    max-height: 428px;
+    max-height: 443px;
   }
 
   #legendModal .modal-footer {
     text-align: left;
     font-size: 11px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
 /*.esriLegendLayerLabel a, #colorRamp a {
   color: #006633;
