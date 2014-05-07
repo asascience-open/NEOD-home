@@ -89,7 +89,7 @@ button {
   color: #fff;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.35);
   border-bottom: none;
-  background-image: linear-gradient(to bottom, #ffffff, rgb(209, 210, 212));
+  background-image: linear-gradient(to bottom, #CFCFCF, rgb(209, 210, 212));
 }
 
 #mapList .btn:hover,
@@ -538,6 +538,9 @@ span#scale {
   border-bottom-left-radius: 0 !important;
 }
 
+#basemapDropdown, #zoomToDropdown {
+  border-right: none;
+}
 
 #basemapDropdownList.dropdown-menu > li > a {
   line-height: 34px;
