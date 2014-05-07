@@ -159,6 +159,9 @@ button {
 #mapControls {
   position: absolute;
   right: 10px;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
   #mapControls .btn-group {
     margin-left: 0;
@@ -172,6 +175,10 @@ button {
 
   #mapControls .btn span {
     margin-left: 5px;
+  }
+
+  #mapControls #printButton {
+    width: 70px;
   }
 
 .no-bottom-border {
@@ -439,6 +446,85 @@ span#scale {
 /*  legend END
 ===============================================  */
 
+
+
+.esriSimpleSlider {
+  z-index: 99!important;
+  top: 10px !important;
+  text-align: center;
+  border: 1px solid #666666 !important;
+  background-color: #FFFFFF;
+  color: #666666;
+  position: relative !important;
+  width: 41px;
+  float: right !important;
+  margin-right: 345px;
+  cursor: pointer;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  -o-border-radius: 9px;
+  border-radius: 9px;
+  -moz-box-shadow: 0 0 0.5em #BBBBBB;
+  -webkit-box-shadow: 0 0 0.5em #BBBBBB;
+  top: -24px !important;
+}
+
+.esriSimpleSlider div {
+  width: 20px !important;
+  height: 20px !important;
+  width: 100px;
+  left: -10px !important;
+  float: left;
+  font-size: 17px !important;
+  font-family: verdana, helvetica;
+  font-weight: bold !important;
+  line-height: 20px !important;
+}
+
+.esriSimpleSliderVertical .esriSimpleSliderIncrementButton {
+  -webkit-border-top-left-radius: 5px !important;
+  -moz-border-radius-top-left: 5px !important;
+  -o-border-top-left-radius: 5px !important;
+  border-top-left-radius: 5px !important;
+  -webkit-border-bottom-left-radius: 5px !important;
+  -moz-border-radius-bottom-left: 5px !important;
+  -o-border-bottom-left-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+
+  -webkit-border-top-right-radius: 0 !important;
+  -moz-border-radius-top-right: 0 !important;
+  -o-border-top-right-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  -webkit-border-bottom-right-radius: 0 !important;
+  -moz-border-radius-bottom-right: 0 !important;
+  -o-border-bottom-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+
+  border-bottom: none!important;
+  border-right: 1px solid #666!important;
+}
+
+.esriSimpleSliderVertical .esriSimpleSliderDecrementButton {
+  -webkit-border-top-right-radius: 5px !important;
+  -moz-border-radius-top-right: 5px !important;
+  -o-border-top-right-radius: 5px !important;
+  border-top-right-radius: 5px !important;
+  -webkit-border-bottom-right-radius: 5px !important;
+  -moz-border-radius-bottom-right: 5px !important;
+  -o-border-bottom-right-radius: 5px !important;
+  border-bottom-right-radius: 5px !important;
+
+  -webkit-border-top-left-radius: 0 !important;
+  -moz-border-radius-top-left: 0 !important;
+  -o-border-top-left-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+  -webkit-border-bottom-left-radius: 0 !important;
+  -moz-border-radius-bottom-left: 0 !important;
+  -o-border-bottom-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+
 #basemapDropdownList.dropdown-menu > li > a {
   line-height: 34px;
   padding-left: 10px;
@@ -453,7 +539,7 @@ span#scale {
 
 #side-buttons {
   position: absolute;
-  margin-top: 30px;
+  margin-top: -33px;
   width: 0;
   margin-left: -51px;
 }

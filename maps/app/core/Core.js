@@ -551,7 +551,7 @@ define([
 
         function print() 
         {
-            query('#loading').style('display', 'block');
+           // query('#loading').style('display', 'block');
 
             var params = new PrintParameters();
             var template = new PrintTemplate();
@@ -580,7 +580,7 @@ define([
             printTask.execute(params, function printTaskCallback(result) {
                 window.open(result.url);
                 query('#printButton').button('reset');
-                query('#loading').style('display', 'none');
+                //query('#loading').style('display', 'none');
             });
         }
 
@@ -706,7 +706,7 @@ define([
             + "Basemaps<span class='caret'></span></button>"
             + "<ul class='dropdown-menu' id='basemapDropdownList'></ul></div>"
             + "<button class='btn btn-primary' id='shareButton'>Share</button>"
-            + "<button class='btn btn-primary no-top-right-border-radius' data-loading-text='Loading...' id='printButton'>Print</button></div></div>"
+            + "<button class='btn btn-primary no-top-right-border-radius' data-loading-text='Loading' id='printButton'>Print</button></div></div>"
             + "<div id='side-buttons'>"
             + "<button href='#legendModal' type='button' id='legendButton' class='btn btn-neod active no-bottom-border-radius'>Legend / About</button>"
             //+ "<button type='button' id='aboutButton' href='#aboutModal' data-toggle='modal' class='btn btn-neod no-bottom-border-radius' data-toggle='button'>About</button>"
