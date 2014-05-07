@@ -291,6 +291,9 @@ span#scale {
   padding-top: 0 !important;
 }
 
+.esriLegendLeft {
+  padding-right: 15px;
+}
 
 #shareModal,
 #feedbackModal {
@@ -307,7 +310,7 @@ span#scale {
   left: 65px;
   /*opacity: .25;
   transition: opacity .3s ease-out;*/
-  width: 298px;
+  width: 296px;
   margin: 0;
   position: absolute;
   display: none;
