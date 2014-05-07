@@ -569,6 +569,7 @@ span#scale {
     -ms-transform: rotate(90deg);
     margin-top: 120px;
     border-bottom: none;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
   }
 
   #side-buttons #feedbackButton {
