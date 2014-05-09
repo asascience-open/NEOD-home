@@ -425,6 +425,45 @@ define([
                     }
                 });
 
+                mapDeferred.on('zoom-end', function (e){
+                    if (mapDeferred.loaded && mapDeferred === app.currentMap) {
+                        updateNotice();
+                        if (e.level >= 12 && app.oldZoomLevel < 12) {
+                            app.maps[0].legend.refresh();
+                            behavior.apply();
+                        }
+                        else if (e.level < 12 && app.oldZoomLevel >= 12) {
+                            app.maps[0].legend.refresh();
+                            behavior.apply();
+                        }
+                        if (e.level >= 10 && app.oldZoomLevel < 10) {
+                            app.maps[1].legend.refresh();
+                            behavior.apply();
+                        }
+                        else if (e.level < 10 && app.oldZoomLevel >= 10) {
+                            app.maps[1].legend.refresh();
+                            behavior.apply();
+                        }
+                        if (e.level == 14) {
+                             var point = new esri.geometry.Point(app.currentMap.getCenter());
+                             if (point.x > -7754990.997596861) {
+                                 if (osmLayer == null) {
+                                     osmLayer = new esri.layers.OpenStreetMapLayer();
+                                     app.currentMap.addLayer(osmLayer, 1);
+                                 }
+                                 else
+                                     osmLayer.show();
+                             }
+                                else
+                                    if (osmLayer != null)
+                                     osmLayer.hide();
+                            }
+                        else if (osmLayer != null)
+                            osmLayer.hide();
+                        app.currentMap.oldZoomLevel = e.level;
+                    }
+                });
+
                 
                 mapDeferred.on('update-start', function(){
                     if (mapDeferred.loaded && mapDeferred === app.currentMap)
@@ -447,48 +486,6 @@ define([
                     attachTo    : 'bottom-right'
                 });
             });
-
-            // app.map.on('zoom-end', function(e){
-            //     if (app.map.currentSubTheme == 0) {
-            //         updateNotice();
-            //         if (e.level >= 12 && app.map.oldZoomLevel < 12) {
-            //             app.map.legend.refresh();
-            //             behavior.apply();
-            //         }
-            //         else if (e.level < 12 && app.map.oldZoomLevel >= 12) {
-            //             app.map.legend.refresh();
-            //             behavior.apply();
-            //         }
-            //     }
-            //     else if (app.map.currentSubTheme == 1) {
-            //         updateNotice();
-            //         if (e.level >= 10 && app.map.oldZoomLevel < 10) {
-            //             app.map.legend.refresh();
-            //             behavior.apply();
-            //         }
-            //         else if (e.level < 10 && app.map.oldZoomLevel >= 10) {
-            //             app.map.legend.refresh();
-            //             behavior.apply();
-            //         }
-            //     }
-            //     if (e.level == 14) {
-            //          var point = new esri.geometry.Point(app.map.extent.getCenter());
-            //          if (point.x > -7754990.997596861) {
-            //              if (osmLayer == null) {
-            //                  osmLayer = new esri.layers.OpenStreetMapLayer();
-            //                  app.map.addLayer(osmLayer, 1);
-            //              }
-            //              else
-            //                  osmLayer.show();
-            //          }
-            //             else
-            //                 if (osmLayer != null)
-            //                  osmLayer.hide();
-            //         }
-            //         else if (osmLayer != null)
-            //             osmLayer.hide();
-            //         app.map.oldZoomLevel = e.level;
-            // });
 
             // app.map.on('extent-change', function(e){
             //     query('#scale')[0].innerHTML = "Scale 1:" + e.lod.scale.toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -574,7 +571,7 @@ define([
 
             var constraintBox = {
                         l:  0,
-                        t:  0,
+                        t:  69,
                         w:  screenWidth,
                         h:  query('#map-pane').style('height')[0]
                     };
@@ -657,6 +654,8 @@ define([
             });
 
             updateAboutText(0);
+
+            app.oldZoomLevel = app.currentMap.getLevel();
 
             //get print templates from the export web map task
             var printInfo = EsriRequest({
