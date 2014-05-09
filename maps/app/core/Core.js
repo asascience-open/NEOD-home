@@ -1,4 +1,4 @@
-var app;
+var app = {};
 define([
     'esri/map',
     'esri/request',
@@ -84,8 +84,8 @@ define([
 
         function init()
         {
-            app = {};
             app.maps = [];
+            app.themeIndex = 0;
 
             resizeMap();
 
@@ -114,7 +114,7 @@ define([
                     if (responseOrError.url.match(/legend/i))
                     {
                         notifyCount++;
-                        if (notifyCount === configOptions.themes[0].maps.length)
+                        if (notifyCount === configOptions.themes[app.themeIndex].maps.length)
                             behavior.apply();
                     }
             });
@@ -125,7 +125,6 @@ define([
             screenHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
             screenWidth = "innerWidth" in window ? window.innerWidth : document.documentElement.offsetWidth;
             headerOffset = query('.navbar').style('height')[0];
-            //query('#mapDiv').style({
                 query('#map-pane').style({
                 'height'        : (screenHeight - headerOffset) + 'px',
                 'marginTop'    : screenWidth < 980 ? '0' : headerOffset + 'px'
@@ -138,8 +137,6 @@ define([
 
         function print() 
         {
-           // query('#loading').style('display', 'block');
-
             var params = new PrintParameters();
             var template = new PrintTemplate();
 
@@ -322,7 +319,7 @@ define([
             
             chart = new ArcGISImageServiceLayer('http://egisws02.nos.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer', 'chart');
 
-            array.forEach(configOptions.themes[0].maps, function(map, mapIndex){
+            array.forEach(configOptions.themes[app.themeIndex].maps, function(map, mapIndex){
                 // place map div in map-pane
                 var mapId = '#map' + mapIndex;
                 domConstruct.place('<div id="map' + mapIndex + '" class="map' + ((mapIndex == 0) ? ' active' : '') + '" style="height: ' + (screenHeight - headerOffset) + 'px;"></div>', 'map-pane');
@@ -567,7 +564,7 @@ define([
 
             createBasemapGallery();
 
-            createSubThemeButtons(['Navigation', 'Potential Hazards', 'Commercial Traffic']);
+            createSubThemeButtons();
 
             var constraintBox = {
                         l:  0,
@@ -678,11 +675,11 @@ define([
             app.maps[i].legend = legend;
         }
 
-        function createSubThemeButtons(titles)
+        function createSubThemeButtons()
         {
             var subThemes = '<div class="button-container"><div class="btn-group sub-theme-buttons" data-toggle="buttons-radio">';
-            array.forEach(titles, function (title, i){
-                subThemes += '<button type="button" id="subThemeButton' + i + '" class="btn btn-neod' + (i == 0 ? ' active no-top-left-border-radius' : (i == titles.length - 1 ? ' no-top-right-border-radius' : '')) + '">' + title + '</button>';
+            array.forEach(configOptions.themes[app.themeIndex].maps, function (map, i){
+                subThemes += '<button type="button" id="subThemeButton' + i + '" class="btn btn-neod' + (i == 0 ? ' active no-top-left-border-radius' : (i == configOptions.themes[app.themeIndex].maps.legnth ? ' no-top-right-border-radius' : '')) + '">' + map.title + '</button>';
             });
             subThemes += '</div></div>';
             domConstruct.place(subThemes, 'map-pane');
@@ -770,9 +767,9 @@ define([
 
         function updateAboutText (mapIndex)
         {
-            query('#overview p')[0].innerHTML = configOptions.themes[0].maps[mapIndex].about.overview;
-            query('#data-considerations p')[0].innerHTML = configOptions.themes[0].maps[mapIndex].about.dataConsiderations;
-            query('#status p')[0].innerHTML = configOptions.themes[0].maps[mapIndex].about.status;
+            query('#overview p')[0].innerHTML = configOptions.themes[app.themeIndex].maps[mapIndex].about.overview;
+            query('#data-considerations p')[0].innerHTML = configOptions.themes[app.themeIndex].maps[mapIndex].about.dataConsiderations;
+            query('#status p')[0].innerHTML = configOptions.themes[app.themeIndex].maps[mapIndex].about.status;
         }
 
         function radioClick(id) 
@@ -786,7 +783,7 @@ define([
         function updateLegend()
         {
             var delayedFunction = window.setTimeout(function (e){
-                array.forEach(configOptions.themes[0].maps, function (map){
+                array.forEach(configOptions.themes[app.themeIndex].maps, function (map){
                     if (map.layers.hasOwnProperty("dynamicLayers"))
                         array.forEach(map.layers.dynamicLayers, function (dynamicLayer) {
                             array.forEach(dynamicLayer.layers, function (layer, i) {
