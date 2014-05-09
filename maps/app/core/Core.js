@@ -32,6 +32,12 @@ define([
     'bootstrap/Tooltip',
     'bootstrap/Carousel',
     'bootstrap/Tab',
+    'esri/dijit/TimeSlider',
+    'esri/renderers/TimeClassBreaksAger', 
+    'esri/renderers/TemporalRenderer',
+    'dojo/dom',
+    'esri/TimeExtent', 
+    'esri/layers/TimeInfo',
     'dojo/domReady!'
     ], 
     function(
@@ -58,7 +64,14 @@ define([
         coreFx,
         fx,
         array,
-        behavior
+        behavior,
+        TimeExtent, 
+        TimeInfo,
+        TimeSlider, 
+        date, 
+        dom,
+        TimeClassBreaksAger, 
+        TemporalRenderer
         ) 
     {
         var asa, chart, legend, geodata, biology, osmLayer, watersgeo, physOcean, oceanUses,
@@ -84,200 +97,7 @@ define([
 
         var visible = [];
         radioSelection = 34,
-        layers = [
-        {
-            label       : 'Maintained Channels',
-            id          : 28,
-            group       : 'navigation',
-            outField    : 'location',
-            visible     : true,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/MaintainedChannels.pdf'
-        }, {
-            label       : 'Danger Zone and Restricted Areas',
-            id          : 30,
-            group       : 'navigation',
-            outField    : 'description',
-            visible     : true,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/DangerZoneAndRestrictedAreas.pdf'
-        }, {
-            label       : 'Safety, Security, and Regulated Zones',
-            id          : 31,
-            group       : 'navigation',
-            outField    : 'designation',
-            visible     : true,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/SafetySecurityRegulatedAreas.pdf'
-        }, {
-            label       : 'WhalesNorth Mandatory Ship Reporting System',
-            id          : 32,
-            group       : 'navigation',
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/WhalesNorthMandatoryShipReportingSystem.pdf'
-        },{
-            label       : 'Marine Mammal Seasonal Management Areas',
-            id          : 33,
-            group       : 'navigation',
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/MarineMammalSeasonalAreas.pdf'
-        }, {
-            label       : 'Marine Transportation',
-            id          : 29,
-            group       : 'navigation',
-            outField    : 'description',
-            visible     : true,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/MarineTransportation.pdf'
-        }, {
-            label       : 'Pilot Boarding Areas',
-            id          : 26,
-            outField    : 'boardingArea',
-            group       : 'navigation',
-            visible     : true,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/PilotBoardingAreas.pdf'
-        }, {
-            label       : 'Anchorages',
-            id          : 27,
-            outField    : 'description',
-            group       : 'navigation',
-            visible     : true,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/Anchorages.pdf'
-        }, {
-            label       : 'Aids to Navigation',
-            id          : 23,
-            group       : 'navigation',
-            outField    : 'aidName',
-            visible     : true,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/AidsToNavigation.pdf'
-        }, {
-            label       : 'Unexploded Ordnance Locations',
-            id          : 24,
-            group       : 'hazard',
-            outField    : 'description',
-            visible     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/UnexplodedOrdnanceLocations.pdf'
-        }, {
-            label       : 'Unexploded Ordnance Areas',
-            id          : 25,
-            group       : 'hazard',
-            outField    : 'description',
-            visible     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/UnexplodedOrdnanceAreas.pdf'
-        }, {
-            label       : 'Ocean Disposal Sites',
-            id          : 19,
-            group       : 'hazard',
-            outField    : 'description',
-            visible     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/OceanDisposalSites.pdf'
-        }, {
-            label       : 'Submarine Cables',
-            id          : 13,
-            group       : 'hazard',
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/SubmarineCables'
-        }, {
-            label       : 'Submarine Cable Areas',
-            id          : 14,
-            group       : 'hazard',
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/CableAreas'
-        }, {
-            label       : 'Submarine Pipeline Areas',
-            id          : 15,
-            group       : 'hazard',
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/PipelineAreas'
-        }, {
-            label       : '2011 All AIS Vessel Density',
-            id          : 34,
-            group       : 'traffic',
-            checked     : true,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'AIS/NorthAtlanticTotalAISVesselDensity2011.pdf',
-            flexLink    : 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#'
-        }, {
-            label       : '2011 Cargo AIS Vessel Density',
-            id          : 35,
-            group       : 'traffic',
-            checked     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'AIS/NorthAtlanticCargoAISVesselDensity2011.pdf',
-            flexLink    : 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=35;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#'
-        }, {
-            label       : '2011 Passenger AIS Vessel Density',
-            id          : 36,
-            group       : 'traffic',
-            checked     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'AIS/NorthAtlanticPassengerAISVesselDensity2011.pdf',
-            flexLink    : 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=36;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#'
-        }, {
-            label       : '2011 Tug-Tow AIS Vessel Density',
-            id          : 37,
-            group       : 'traffic',
-            checked     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'AIS/NorthAtlanticTugTowAISVesselDensity2011.pdf',
-            flexLink    : 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=37;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#'
-        }, {
-            label       : '2011 Tanker AIS Vessel Density',
-            id          : 38,
-            group       : 'traffic',
-            checked     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'AIS/NorthAtlanticTankerAISVesselDensity2011.pdf',
-            flexLink    : 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=38;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#'
-
-        }, {
-            label       : '2012 All AIS Vessel Density',
-            id          : 39,
-            group       : 'traffic',
-            checked     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'AIS/NorthAtlanticTotalAISVesselDensity2012.pdf',
-            flexLink    : 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=39;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#'
-        }, {
-            label       : '2012 Cargo AIS Vessel Density',
-            id          : 40,
-            group       : 'traffic',
-            checked     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'AIS/NorthAtlanticCargoAISVesselDensity2012.pdf',
-            flexLink    : 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=40;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#'
-        }, {
-            label       : '2012 Passenger AIS Vessel Density',
-            id          : 41,
-            group       : 'traffic',
-            checked     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'AIS/NorthAtlanticPassengerAISVesselDensity2012.pdf',
-            flexLink    : 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=41;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#'
-        }, {
-            label       : '2012 Tug-Tow AIS Vessel Density',
-            id          : 42,
-            group       : 'traffic',
-            checked     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'AIS/NorthAtlanticTugTowAISVesselDensity2012.pdf',
-            flexLink    : 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=42;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#'
-        }, {
-            label       : '2012 Tanker AIS Vessel Density',
-            id          : 43,
-            group       : 'traffic',
-            checked     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf',
-            flexLink    : 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=43;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#'
-            }
-        ];
+        layers = maritimeComm.datalayers;
 
         function init()
         {
@@ -724,6 +544,8 @@ define([
                     "<div id='legend' class='tab-pane fade active in'>" +
                         "<div class='modal-body'>" +
                             "<div id='radioWrapper' class='btn-group-vertical' data-toggle='buttons-radio'></div>" +
+                            "<div id='timeSliderDiv'></div>" +
+                            "<div id='timeSliderTime'></div>" +
                             "<div id='legendDiv'></div>" +
                         "</div>" +
                         "<div class='modal-footer'><a id='flex-link' href='#'>View this data with other layers</a></div>" +
@@ -875,7 +697,7 @@ define([
 
             //cm = 0;
 
-            createSubThemeButtons(['Navigation', 'Potential Hazards', 'Commercial Traffic']);
+            createSubThemeButtons(maritimeComm.subthemes);
 
             var constraintBox = {
                         l:  0,
@@ -955,11 +777,30 @@ define([
                 changeSubTheme(parseInt(e.currentTarget.id.substring(e.currentTarget.id.length - 1), 10));
             });
 
+            ///Main Theme Switcher --Temp
+            on(query(".btn-group > .btn"), 'click', function(){
+                //query(".btn-group > .btn").removeClass("active");
+                //query(this).addClass("active");
+                //check to see if it's the main Themes
+                if(this.parentElement.id == 'maingroupButtons')
+                {
+                    if(this.innerHTML.toLowerCase() == 'energy'){
+                        createSubThemeButtons(energyMain.subthemes);
+                    }
+                    else if (this.innerHTML.toLowerCase().search('maritime')>-1){
+                        createSubThemeButtons(maritimeComm.subthemes);   
+                    }
+                    else{
+                        createSubThemeButtons();
+                    }  
+                }
+                
+            });
+
             on(query('#printButton'), 'click', function(e){
                 query(e.target).button('loading');
                 print();
             });
-
 
             //get print templates from the export web map task
             var printInfo = EsriRequest({
@@ -969,12 +810,14 @@ define([
         }
 
         function createLegend(layerInfos){
-            app.map.legend = new Legend({
-                map         : app.map,
-                layerInfos  : layerInfos,
-                autoUpdate  : false
-            }, "legendDiv");
-            app.map.legend.startup();
+            if(!app.map.legend){ 
+                app.map.legend = new Legend({
+                    map         : app.map,
+                    layerInfos  : layerInfos,
+                    autoUpdate  : true
+                }, "legendDiv");
+                app.map.legend.startup();
+            }
         }
 
         function hideFeatureLayers()
@@ -986,12 +829,16 @@ define([
 
         function createSubThemeButtons(titles)
         {
-            var subThemes = '<div class="button-container"><div class="btn-group sub-theme-buttons" data-toggle="buttons-radio">';
+            domConstruct.destroy("subbuttons");
+            var subThemes = '<div id="subbuttons" class="button-container"><div id="subGroupButtons" class="btn-group sub-theme-buttons" data-toggle="buttons-radio">';
             array.forEach(titles, function(title, i){
                 subThemes += '<button type="button" id="subThemeButton' + i + '" class="btn btn-neod' + (i == 0 ? ' active no-top-left-border-radius' : (i == titles.length - 1 ? ' no-top-right-border-radius' : '')) + '">' + title + '</button>';
             });
             subThemes += '</div></div>';
             domConstruct.place(subThemes, 'mapDiv_root');
+            on(query('.sub-theme-buttons button'), 'click', function(e){
+                changeSubTheme(parseInt(e.currentTarget.id.substring(e.currentTarget.id.length - 1), 10));
+            });
         }
 
 
@@ -1014,13 +861,83 @@ define([
         }
 
         function changeSubTheme(subThemeIndex) {
+            var mainTheme = query('.btn-group > .btn.active').text();
             hideFeatureLayers();
             app.map.layer.setVisibleLayers([-1]);
             visible = [];
             
             var menuWidth;
-            
-            switch (subThemeIndex){
+
+            //temp add timeslider for AIS Data
+            if(mainTheme.search('AIS')>-1){
+                //app.map.removeLayers([app.map.layer]);
+                //layers = energyMain.datalayers;
+                app.map.layer = new esri.layers.ArcGISDynamicMapServiceLayer(energyMain.datalayers[0].url, {disableClientCaching : true, id : 'AISUses'});
+                visible.push(energyMain.datalayers[0].id);
+                //this is to add a legend layer -- not visible
+                visible.push(energyMain.datalayers[1].id);
+                app.map.layer.setVisibleLayers(visible);
+                app.map.layer.setUseMapTime(true);
+
+                var layerInfos = [{layer:app.map.layer}];
+                
+                app.map.addLayers([app.map.layer]);
+
+                app.map.on("layers-add-result", function () {
+                    var tsDiv = dojo.create("div", null, dojo.byId('timeSliderDiv'));
+                    var timeSlider = new esri.dijit.TimeSlider({
+                        style: "width: 280px;padding-top:10px;padding-bottom:10px;",
+                        id: 'timeSlider'
+                    }, tsDiv);
+
+                    app.map.setTimeSlider(timeSlider);
+                    
+                    timeSlider.setThumbCount(1);
+                    var timeExtent = new esri.TimeExtent();
+                    timeExtent.startTime = new Date("2/1/2012 UTC");
+                    timeExtent.endTime = new Date("12/01/2012 UTC");
+                    timeSlider.singleThumbAsTimeInstant(true);
+                    timeSlider.createTimeStopsByTimeInterval(timeExtent, 1, 'esriTimeUnitsMonths');
+                    timeSlider.startup();
+
+                    app.map.legend.layerInfos = layerInfos;
+                    app.map.legend.refresh();
+                    var monthNames = [ "January", "February", "March", "April", "May", "June",
+                                    "July", "August", "September", "October", "November", "December" ];
+                    
+                    
+                    query('#timeSlider').style('height', '25px');
+                    query('#timeSliderTime').style('height', '20px');
+                    query('#timeSliderTime').style('visibility', 'visible');
+                    
+                    dojo.byId("timeSliderTime").innerHTML = "<i>Showing:  January 2012<\/i>";
+                    
+                    timeSlider.on("time-extent-change", function(evt) {
+                        var startValString = monthNames[evt.startTime.getMonth()] +"  "+evt.startTime.getUTCFullYear();
+                        dojo.byId("timeSliderTime").innerHTML = "<i>Showing:   " + startValString+"<\/i>";
+                    });
+                });
+
+                menuWidth = 280;
+                query('#overview p')[0].innerHTML = "This map shows AIS Data.";
+                query('#data-considerations p')[0].innerHTML = "AIS.";
+                query('#status p')[0].innerHTML = "This is a demo layer.";
+            }
+            else{
+                domConstruct.destroy("timeSlider");
+                query('#timeSlider').style('height', '0px');
+                query('#timeSliderTime').style('height', '0px');
+                query('#timeSliderTime').style('visibility', 'hidden');
+                app.map.removeLayer(app.map.layer);
+
+                app.map.layer = new esri.layers.ArcGISDynamicMapServiceLayer(oceanUsesUrl, {disableClientCaching : true, id : 'oceanUses'});
+                for(var i = 0; i < layers.length; i++)
+                    if (layers[i].group == 'navigation')
+                        visible.push(layers[i].id);
+
+                app.map.layer.setVisibleLayers(visible);
+
+                switch (subThemeIndex){
                 case 0:
                     for(var i = 0; i < layers.length; i++)
                         if (layers[i].group == 'navigation')
@@ -1061,14 +978,19 @@ define([
                     query('#data-considerations p')[0].innerHTML = "AIS are navigation safety devices that monitor and transmit the locations and characteristics of vessels in U.S. and international waters. All vessels 300 gross tons and above (except military) are required by the International Maritime Organization to carry an AIS transponder. For this map, vessel tracks were derived from raw AIS data provided by the U.S. Coast Guard. The vessel tracklines were then used to generate density grids to better display the patterns of vessel activity by vessel type. Accuracy and completeness of AIS data can be affected by transponder reception range, which varies with changes in atmosphere, weather, and time of day.";
                     query('#status p')[0].innerHTML = "We are obtaining feedback from the U.S. Coast Guard, ports, and shipping industry about how additional information from AIS, such as vessel draft or data from additional years, may be used to help characterize commercial vessel activity.";
                     break;
-            }
+                }
 
+               
+                if (subThemeIndex != 2)
+                    query('#radioWrapper').style('display', 'none');
+
+
+                behavior.apply();
+            }
+             
             query('#legendModal').style('width', menuWidth + 'px');
 
             app.map.legend.refresh();
-            behavior.apply();
-            if (subThemeIndex != 2)
-                query('#radioWrapper').style('display', 'none');
             app.map.currentSubTheme = subThemeIndex;
         }
 
