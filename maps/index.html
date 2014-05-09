@@ -191,7 +191,7 @@
                 <!--&nbsp;<a href="#" onclick="window.top.tabChg('feedback',false);window.top.neodShowHideBox('feedback','Whatever',false);return false;">Not right now</a>-->
             </div>
         </div>
-        <div id="mapDiv"></div>
+        <div id="map-pane"></div>
     
         <script type="text/javascript">
             var djConfig = {
@@ -212,6 +212,7 @@
 
         <script src="lib/arcgis-3.9compact.js"></script>
         <script type="text/javascript">
+            require(["liteviewer/Config"]);
             require(["liteviewer/core/Core"], function(core){
                     core.init();
                 });

@@ -104,15 +104,36 @@ button {
   background-image: none;
 }
 
-#mapDiv {
+/*#mapDiv*/ #map-pane {
     margin-top: 41px;
     min-height: 100%; 
     max-height: 100%;
 }
 
-#mapDiv_root {
+/*#mapDiv_root {
   top: 0;
   left: 0;
+}
+*/
+.map {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 0;
+}
+
+.map.active,
+#legend .modal-body div.active {
+  display: block;
+  opacity: 1;
+  z-index: 1;
+}
+
+.legendDiv {
+  opacity: 0;
+  z-index: 0;
+  display: none;
 }
 
 .sub-theme-buttons {
@@ -126,7 +147,7 @@ button {
   border-bottom-left-radius: 4px;
   -moz-border-radius-bottomleft: 4px;
   -moz-border-radius-bottomleft: 4px;
-  z-index: 1;
+  z-index: 2;
 }
 
 .sub-theme-buttons .btn {
@@ -162,6 +183,7 @@ button {
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
+  z-index: 2;
 }
   #mapControls .btn-group {
     margin-left: 0;
@@ -258,6 +280,7 @@ div#watermark{
     color: #000;
     text-shadow: #fff 1px 1px;
     font-size: 15px;
+    z-index: 2;
 }
 span#scale {
     position: fixed;
@@ -266,6 +289,7 @@ span#scale {
     color: #000;
     text-shadow: #fff 1px 1px;
     font-size: 15px;
+    z-index: 2;
 }
 
 .scalebar_bottom-right {
@@ -277,7 +301,8 @@ span#scale {
     width: 20px;
     position: absolute;
     right: 10px;
-    top: 40px;
+    top: 115px;
+    z-index: 2;
 }
 
 
@@ -388,7 +413,7 @@ span#scale {
   */
 
   #legendModal .modal-body {
-    font-size: 12px;
+    font-size: 12px !important;
     padding: 4px 0 0 0;
     clear:both;
   }
@@ -464,7 +489,7 @@ span#scale {
 
 .esriSimpleSlider {
   z-index: 99!important;
-  top: 10px !important;
+  top: 5px !important;
   text-align: center;
   border: 1px solid #666666 !important;
   background-color: #FFFFFF;
@@ -480,7 +505,6 @@ span#scale {
   border-radius: 9px;
   -moz-box-shadow: 0 0 0.5em #BBBBBB;
   -webkit-box-shadow: 0 0 0.5em #BBBBBB;
-  top: -24px !important;
 }
 
 .esriSimpleSlider div {
@@ -559,6 +583,7 @@ span#scale {
   margin-top: -33px;
   width: 0;
   margin-left: -51px;
+  z-index: 2;
 }
   
   #side-buttons .btn {
@@ -581,8 +606,8 @@ span#scale {
 
 /* Maritime Commerce
 ==================================================================== */
-#legendDiv .esriLegendService .esriLegendGroupLayer > table.esriLegendLayerLabel,
-#legendDiv .esriLegendService #legendDiv_oceanUses_0_group > table.esriLegendLayerLabel,
+#legend .esriLegendService .esriLegendGroupLayer > table.esriLegendLayerLabel,
+#legend .esriLegendService #legendDiv1_layer14_0_group > table.esriLegendLayerLabel,
 div#radioWrapper {
   display: none;  
 }

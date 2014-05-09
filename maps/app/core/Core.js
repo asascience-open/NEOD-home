@@ -82,206 +82,10 @@ define([
 
         isMobile();
 
-        var visible = [];
-        radioSelection = 34,
-        layers = [
-        {
-            label       : 'Maintained Channels',
-            id          : 28,
-            group       : 'navigation',
-            outField    : 'location',
-            visible     : true,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/MaintainedChannels.pdf'
-        }, {
-            label       : 'Danger Zone and Restricted Areas',
-            id          : 30,
-            group       : 'navigation',
-            outField    : 'description',
-            visible     : true,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/DangerZoneAndRestrictedAreas.pdf'
-        }, {
-            label       : 'Safety, Security, and Regulated Zones',
-            id          : 31,
-            group       : 'navigation',
-            outField    : 'designation',
-            visible     : true,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/SafetySecurityRegulatedAreas.pdf'
-        }, {
-            label       : 'WhalesNorth Mandatory Ship Reporting System',
-            id          : 32,
-            group       : 'navigation',
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/WhalesNorthMandatoryShipReportingSystem.pdf'
-        },{
-            label       : 'Marine Mammal Seasonal Management Areas',
-            id          : 33,
-            group       : 'navigation',
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/MarineMammalSeasonalAreas.pdf'
-        }, {
-            label       : 'Marine Transportation',
-            id          : 29,
-            group       : 'navigation',
-            outField    : 'description',
-            visible     : true,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/MarineTransportation.pdf'
-        }, {
-            label       : 'Pilot Boarding Areas',
-            id          : 26,
-            outField    : 'boardingArea',
-            group       : 'navigation',
-            visible     : true,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/PilotBoardingAreas.pdf'
-        }, {
-            label       : 'Anchorages',
-            id          : 27,
-            outField    : 'description',
-            group       : 'navigation',
-            visible     : true,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/Anchorages.pdf'
-        }, {
-            label       : 'Aids to Navigation',
-            id          : 23,
-            group       : 'navigation',
-            outField    : 'aidName',
-            visible     : true,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/AidsToNavigation.pdf'
-        }, {
-            label       : 'Unexploded Ordnance Locations',
-            id          : 24,
-            group       : 'hazard',
-            outField    : 'description',
-            visible     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/UnexplodedOrdnanceLocations.pdf'
-        }, {
-            label       : 'Unexploded Ordnance Areas',
-            id          : 25,
-            group       : 'hazard',
-            outField    : 'description',
-            visible     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/UnexplodedOrdnanceAreas.pdf'
-        }, {
-            label       : 'Ocean Disposal Sites',
-            id          : 19,
-            group       : 'hazard',
-            outField    : 'description',
-            visible     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/OceanDisposalSites.pdf'
-        }, {
-            label       : 'Submarine Cables',
-            id          : 13,
-            group       : 'hazard',
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/SubmarineCables'
-        }, {
-            label       : 'Submarine Cable Areas',
-            id          : 14,
-            group       : 'hazard',
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/CableAreas'
-        }, {
-            label       : 'Submarine Pipeline Areas',
-            id          : 15,
-            group       : 'hazard',
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'OceanUses/PipelineAreas'
-        }, {
-            label       : '2011 All AIS Vessel Density',
-            id          : 34,
-            group       : 'traffic',
-            checked     : true,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'AIS/NorthAtlanticTotalAISVesselDensity2011.pdf',
-            flexLink    : 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#'
-        }, {
-            label       : '2011 Cargo AIS Vessel Density',
-            id          : 35,
-            group       : 'traffic',
-            checked     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'AIS/NorthAtlanticCargoAISVesselDensity2011.pdf',
-            flexLink    : 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=35;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#'
-        }, {
-            label       : '2011 Passenger AIS Vessel Density',
-            id          : 36,
-            group       : 'traffic',
-            checked     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'AIS/NorthAtlanticPassengerAISVesselDensity2011.pdf',
-            flexLink    : 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=36;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#'
-        }, {
-            label       : '2011 Tug-Tow AIS Vessel Density',
-            id          : 37,
-            group       : 'traffic',
-            checked     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'AIS/NorthAtlanticTugTowAISVesselDensity2011.pdf',
-            flexLink    : 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=37;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#'
-        }, {
-            label       : '2011 Tanker AIS Vessel Density',
-            id          : 38,
-            group       : 'traffic',
-            checked     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'AIS/NorthAtlanticTankerAISVesselDensity2011.pdf',
-            flexLink    : 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=38;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#'
-
-        }, {
-            label       : '2012 All AIS Vessel Density',
-            id          : 39,
-            group       : 'traffic',
-            checked     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'AIS/NorthAtlanticTotalAISVesselDensity2012.pdf',
-            flexLink    : 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=39;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#'
-        }, {
-            label       : '2012 Cargo AIS Vessel Density',
-            id          : 40,
-            group       : 'traffic',
-            checked     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'AIS/NorthAtlanticCargoAISVesselDensity2012.pdf',
-            flexLink    : 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=40;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#'
-        }, {
-            label       : '2012 Passenger AIS Vessel Density',
-            id          : 41,
-            group       : 'traffic',
-            checked     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'AIS/NorthAtlanticPassengerAISVesselDensity2012.pdf',
-            flexLink    : 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=41;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#'
-        }, {
-            label       : '2012 Tug-Tow AIS Vessel Density',
-            id          : 42,
-            group       : 'traffic',
-            checked     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'AIS/NorthAtlanticTugTowAISVesselDensity2012.pdf',
-            flexLink    : 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=42;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#'
-        }, {
-            label       : '2012 Tanker AIS Vessel Density',
-            id          : 43,
-            group       : 'traffic',
-            checked     : false,
-            url         : oceanUsesUrl,
-            metadata    : metaUrl + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf',
-            flexLink    : 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=43;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#'
-            }
-        ];
-
         function init()
         {
             app = {};
+            app.maps = [];
 
             resizeMap();
 
@@ -291,46 +95,48 @@ define([
 
             esri.config.defaults.io.proxyUrl = "http://services.asascience.com/Proxy/esriproxy/proxy.ashx";
 
+            app.currentMap = null;
+
             createMap();
 
-            app.map.currentSubTheme = 0;
+            app.currentMapIndex = 0;
 
-            app.map.layer = new esri.layers.ArcGISDynamicMapServiceLayer(oceanUsesUrl, {disableClientCaching : true, id : 'oceanUses'});
-                for(var i = 0; i < layers.length; i++)
-                    if (layers[i].group == 'navigation')
-                        visible.push(layers[i].id);
+            // app.map.layer = new esri.layers.ArcGISDynamicMapServiceLayer(oceanUsesUrl, {disableClientCaching : true, id : 'oceanUses'});
+            //     for(var i = 0; i < layers.length; i++)
+            //         if (layers[i].group == 'navigation')
+            //             visible.push(layers[i].id);
 
-            app.map.layer.setVisibleLayers(visible);
+            // app.map.layer.setVisibleLayers(visible);
 
-            app.map.addLayers([app.map.layer]);
+            // app.map.addLayers([app.map.layer]);
 
-            var layerInfos = [{layer:app.map.layer}];
+            // var layerInfos = [{layer:app.map.layer}];
 
-            app.map.on('layers-add-result', function () {
-                createLegend(layerInfos);
-            });
+            // app.map.on('layers-add-result', function () {
+            //     createLegend(layerInfos);
+            // });
 
-            createRadioAndHover();
+            // createRadioAndHover();
 
-            behavior.add({
-                '.esriLegendService' : {
-                    found: function(){updateLegend();}
-                }
-            });
+            // behavior.add({
+            //     '.esriLegendService' : {
+            //         found: function(){updateLegend();}
+            //     }
+            // });
 
 
-            notify('done',function(responseOrError){
-                if (responseOrError.hasOwnProperty('url'))
-                    if (responseOrError.url.match(/legend/i))
-                        behavior.apply();
-            });
+            // notify('done',function(responseOrError){
+            //     if (responseOrError.hasOwnProperty('url'))
+            //         if (responseOrError.url.match(/legend/i))
+            //             behavior.apply();
+            // });
 
-            mapName = 'Maritime Commerce';
-            subThemeName = 'Navigation';
+            // mapName = 'Maritime Commerce';
+            // subThemeName = 'Navigation';
 
-            query('#overview p')[0].innerHTML = "This map shows boundaries and designations that define the basic marine transportation system for commercial and recreational vessels in the region.";
-            query('#data-considerations p')[0].innerHTML = "Most of the features on the map are officially designated and actively maintained by the U.S. Coast Guard or the U.S. Navy, and their locations are well established. Examples include Anchorages; Maintained Channels; Safety, Security, and Regulated Zones; Danger Zone and Restricted Areas; and WhalesNorth Mandatory Ship Reporting System.<br /><br />Some of the Pilot Boarding Areas on the map are not designated by federal or state government authorities. However, they are well known and considered important by the maritime commerce sector.";
-            query('#status p')[0].innerHTML = "We are working with the U.S. Coast Guard, Bureau of Ocean Energy Management, National Oceanic and Atmospheric Administration, and the maritime commerce community to verify and enhance the datasets, such as by identifying additional areas that are important for marine operations.";
+            // query('#overview p')[0].innerHTML = "This map shows boundaries and designations that define the basic marine transportation system for commercial and recreational vessels in the region.";
+            // query('#data-considerations p')[0].innerHTML = "Most of the features on the map are officially designated and actively maintained by the U.S. Coast Guard or the U.S. Navy, and their locations are well established. Examples include Anchorages; Maintained Channels; Safety, Security, and Regulated Zones; Danger Zone and Restricted Areas; and WhalesNorth Mandatory Ship Reporting System.<br /><br />Some of the Pilot Boarding Areas on the map are not designated by federal or state government authorities. However, they are well known and considered important by the maritime commerce sector.";
+            // query('#status p')[0].innerHTML = "We are working with the U.S. Coast Guard, Bureau of Ocean Energy Management, National Oceanic and Atmospheric Administration, and the maritime commerce community to verify and enhance the datasets, such as by identifying additional areas that are important for marine operations.";
         }
 
         function resizeMap()
@@ -338,7 +144,8 @@ define([
             screenHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
             screenWidth = "innerWidth" in window ? window.innerWidth : document.documentElement.offsetWidth;
             headerOffset = query('.navbar').style('height')[0];
-            query('#mapDiv').style({
+            //query('#mapDiv').style({
+                query('#map-pane').style({
                 'height'        : (screenHeight - headerOffset) + 'px',
                 'marginTop'    : screenWidth < 980 ? '0' : headerOffset + 'px'
             });
@@ -595,20 +402,27 @@ define([
             on(query('#basemapDropdownList.dropdown-menu li'), 'click', function(e){
                 switch (e.currentTarget.attributes[0].value){
                     case 'oceans':
-                        app.map.setBasemap('oceans');
+                        array.forEach(app.maps, function(map){
+                            map.setBasemap('oceans');
+                        });
                         chart.hide();
                         break;
                     case 'satellite':
-                        app.map.setBasemap('satellite');
+                        array.forEach(app.maps, function(map){
+                            map.setBasemap('satellite');
+                        });
                         chart.hide();
                         break;
                     case 'chart':
                         chart.show();
-                        var basemapLayerID = app.map.basemapLayerIds[0];
-                        for (var prop in app.map._layers)
-                            if (prop == basemapLayerID)
-                                app.map._layers[prop].hide();
-                        app.map._basemap = 'chart';
+                        var basemapLayerID;
+                        array.forEach(app.maps, function(map){
+                            basemapLayerID = map.basemapLayerIds[0];
+                            for (var prop in map._layers)
+                                if (prop == basemapLayerID)
+                                    map._layers[prop].hide();
+                                        map._basemap = 'chart';
+                        });
                         break;
                 }
             });
@@ -621,16 +435,24 @@ define([
             on(query('#zoomToDropdownList.dropdown-menu li a'), 'click', function(e){
                 switch (e.currentTarget.innerHTML){
                     case 'Northeast':
-                        app.map.centerAndZoom(new Point(-70.5, 42), 7);
+                        array.forEach(app.maps, function(map){
+                            map.centerAndZoom(new Point(-70.5, 42), 7);
+                        });
                         break;
                     case 'Cape Cod':
-                        app.map.centerAndZoom(new Point(-70.261903, 41.797936), 10);
+                        array.forEach(app.maps, function(map){
+                            map.centerAndZoom(new Point(-70.261903, 41.797936), 10);
+                        });
                         break;
                     case 'Gulf of Maine':
-                        app.map.centerAndZoom(new Point(-68.901615, 42.851806), 8);
+                        array.forEach(app.maps, function(map){
+                            map.centerAndZoom(new Point(-68.901615, 42.851806), 8);
+                        });
                         break;
                     case 'Long Island Sound':
-                        app.map.centerAndZoom(new Point(-72.824464, 41.111434), 10);
+                        array.forEach(app.maps, function(map){
+                            map.centerAndZoom(new Point(-72.824464, 41.111434), 10);
+                        });
                         break;
                 }
             });
@@ -681,21 +503,6 @@ define([
 
         function createMap()
         {
-            // create map
-            app.map = new Map('mapDiv',{
-                basemap                 : 'oceans',
-                zoom                    : 7,
-                minZoom                 : 7,
-                maxZoom                 : 14,
-                logo                    : false,
-                nav                     : false,
-                sliderStyle             : 'small',
-                showInfoWindowOnClick   : false,
-                center                  : [-70.5, 42],
-                showAttribution         : false,
-                sliderPosition          : 'top-left'
-            });
-
             domConstruct.place("<img src='img/loading.gif' id='loading' />"
             + "<div id='watermark'>Northeast Ocean Data</div>"
             + "<span id='scale'></span>"
@@ -740,63 +547,159 @@ define([
             // + "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'><span class='icon-remove'></span></button>"
             // + "<h5>About this Map</h5><!--<div class='alert alert-info'>Zoom-in to view hidden layer(s).</div>-->"
             // + "</div><div class='modal-body'></div></div>"
-            , "mapDiv_root");
-
-            app.map.on('update-start', function(){
-                query('#loading').style("display", "block");
-            });
+            , "map-pane");
             
-            app.map.on('update-end', function(){
-                //share();
-                query('#loading').style("display", "none");
+            
+            chart = new ArcGISImageServiceLayer('http://egisws02.nos.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer', 'chart');
+
+            array.forEach(configOptions.themes[0].maps, function(map, mapIndex){
+                // place map div in map-pane
+                var mapId = '#map' + mapIndex;
+                domConstruct.place('<div id="map' + mapIndex + '" class="map' + ((mapIndex == 0) ? ' active' : '') + '" style="height: ' + (screenHeight - headerOffset) + 'px;"></div>', 'map-pane');
+                // create map
+                var mapDeferred = new Map('map' + mapIndex,{
+                    basemap                 : 'oceans',
+                    zoom                    : 7,
+                    minZoom                 : 7,
+                    maxZoom                 : 14,
+                    logo                    : false,
+                    nav                     : false,
+                    sliderStyle             : 'small',
+                    showInfoWindowOnClick   : false,
+                    center                  : [-70.5, 42],
+                    showAttribution         : false,
+                    sliderPosition          : 'top-left'
+                });
+                
+                app.maps.push(mapDeferred);
+
+                mapDeferred.layers = [];
+
+                var layerInfo = [];
+
+                var visibleLayers = [];
+
+                if (map.layers.hasOwnProperty("dynamicLayers"))
+                    array.forEach(map.layers.dynamicLayers, function (dynamicLayer) {
+                        var dl = new ArcGISDynamicMapServiceLayer(dynamicLayer.URL);
+                        array.forEach(dynamicLayer.layers, function (layer) {
+                            if (layer.hasOwnProperty("checked")) {
+                                if (layer.checked)
+                                    visibleLayers.push(layer.ID)
+                            }
+                            else
+                                visibleLayers.push(layer.ID);
+                            if (layer.hasOwnProperty("outField"))
+                            {
+                                var fl = new FeatureLayer(dynamicLayer.URL + layer.ID, {
+                                    infoTemplate : new InfoTemplate('', '${' + layer.outField + '}'),
+                                    outFields: [layer.outField],
+                                    opacity: 0.0
+                                });
+                                fl.on('mouse-over', function (e){
+                                    var g = e.graphic;
+                                    app.currentMap.infoWindow.setTitle(g._graphicsLayer.name);
+                                    app.currentMap.infoWindow.setContent(g.getContent());
+                                    app.currentMap.infoWindow.show(e.screenPoint, app.currentMap.getInfoWindowAnchor(e.screenPoint));
+                                });
+                                fl.on('mouse-out', function (e){
+                                    app.currentMap.infoWindow.hide();
+                                });
+                                mapDeferred.addLayer(fl);
+                            }
+                        });
+                        dl.setVisibleLayers(visibleLayers);
+                        mapDeferred.addLayers([dl]);
+                    });
+
+                mapDeferred.addLayers(mapDeferred.layers);
+
+                mapDeferred.on('layers-add-result', function (e){
+                    array.forEach(e.layers, function (layer){
+                        layerInfo.push({layer: layer.layer});
+                    });
+                    createLegend(layerInfo, mapIndex);
+                });
+
+                mapDeferred.on('extent-change', function (e){
+                    if (mapDeferred.loaded && mapDeferred === app.currentMap) {
+                        query('#scale')[0].innerHTML = "Scale 1:" + e.lod.scale.toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        array.forEach(app.maps, function(thisMap, index){
+                            if (thisMap !== app.currentMap)
+                                thisMap.setExtent(e.extent);
+                        });
+                    }
+                });
+
+                
+                mapDeferred.on('update-start', function(){
+                    if (mapDeferred.loaded && mapDeferred === app.currentMap)
+                        query('#loading').style("display", "block");
+                });
+                
+                mapDeferred.on('update-end', function(){
+                    if (mapDeferred.loaded && mapDeferred === app.currentMap)
+                        //share();
+                        query('#loading').style("display", "none");
+                });
+
+                if (mapIndex == 0)
+                    app.currentMap = mapDeferred;
+
+                mapDeferred.addLayer(chart, 1);
+
+                var scalebar = new Scalebar({
+                    map         : mapDeferred,
+                    attachTo    : 'bottom-right'//,
+                    //scalebarUnit: 'dual'
+                });
             });
 
+            // app.map.on('zoom-end', function(e){
+            //     if (app.map.currentSubTheme == 0) {
+            //         updateNotice();
+            //         if (e.level >= 12 && app.map.oldZoomLevel < 12) {
+            //             app.map.legend.refresh();
+            //             behavior.apply();
+            //         }
+            //         else if (e.level < 12 && app.map.oldZoomLevel >= 12) {
+            //             app.map.legend.refresh();
+            //             behavior.apply();
+            //         }
+            //     }
+            //     else if (app.map.currentSubTheme == 1) {
+            //         updateNotice();
+            //         if (e.level >= 10 && app.map.oldZoomLevel < 10) {
+            //             app.map.legend.refresh();
+            //             behavior.apply();
+            //         }
+            //         else if (e.level < 10 && app.map.oldZoomLevel >= 10) {
+            //             app.map.legend.refresh();
+            //             behavior.apply();
+            //         }
+            //     }
+            //     if (e.level == 14) {
+            //          var point = new esri.geometry.Point(app.map.extent.getCenter());
+            //          if (point.x > -7754990.997596861) {
+            //              if (osmLayer == null) {
+            //                  osmLayer = new esri.layers.OpenStreetMapLayer();
+            //                  app.map.addLayer(osmLayer, 1);
+            //              }
+            //              else
+            //                  osmLayer.show();
+            //          }
+            //             else
+            //                 if (osmLayer != null)
+            //                  osmLayer.hide();
+            //         }
+            //         else if (osmLayer != null)
+            //             osmLayer.hide();
+            //         app.map.oldZoomLevel = e.level;
+            // });
 
-            app.map.on('zoom-end', function(e){
-                if (app.map.currentSubTheme == 0) {
-                    updateNotice();
-                    if (e.level >= 12 && app.map.oldZoomLevel < 12) {
-                        app.map.legend.refresh();
-                        behavior.apply();
-                    }
-                    else if (e.level < 12 && app.map.oldZoomLevel >= 12) {
-                        app.map.legend.refresh();
-                        behavior.apply();
-                    }
-                }
-                else if (app.map.currentSubTheme == 1) {
-                    updateNotice();
-                    if (e.level >= 10 && app.map.oldZoomLevel < 10) {
-                        app.map.legend.refresh();
-                        behavior.apply();
-                    }
-                    else if (e.level < 10 && app.map.oldZoomLevel >= 10) {
-                        app.map.legend.refresh();
-                        behavior.apply();
-                    }
-                }
-                if (e.level == 14) {
-                     var point = new esri.geometry.Point(app.map.extent.getCenter());
-                     if (point.x > -7754990.997596861) {
-                         if (osmLayer == null) {
-                             osmLayer = new esri.layers.OpenStreetMapLayer();
-                             app.map.addLayer(osmLayer, 1);
-                         }
-                         else
-                             osmLayer.show();
-                     }
-                        else
-                            if (osmLayer != null)
-                             osmLayer.hide();
-                    }
-                    else if (osmLayer != null)
-                        osmLayer.hide();
-                    app.map.oldZoomLevel = e.level;
-            });
-
-            app.map.on('extent-change', function(e){
-                query('#scale')[0].innerHTML = "Scale 1:" + e.lod.scale.toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            });
+            // app.map.on('extent-change', function(e){
+            //     query('#scale')[0].innerHTML = "Scale 1:" + e.lod.scale.toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            // });
 
             // app.map.on('pan-end', function(){
             //  if (app.map.getLevel() == 14) {
@@ -816,64 +719,63 @@ define([
             //      osmLayer.hide();
             // });
 
-            var scalebar = new Scalebar({
-                map         : app.map,
-                attachTo    : 'bottom-right'//,
-                //scalebarUnit: 'dual'
-            });
-
-            app.map.on('load', function () {
-                chart = new ArcGISImageServiceLayer('http://egisws02.nos.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer', 'chart');
-                app.map.addLayer(chart, 1);
-                chart.hide();
-                createBasemapGallery();
-                var href = mapUrl;
-                // if (href.indexOf("&z") > 0) {
-                //     var hrefArray = href.substring(href.indexOf("z")).split('&');
-                //     var bmap = hrefArray[1].substring(hrefArray[1].indexOf("=") + 1);
-                //     if (bmap == "chart") {
-                //         chart.show();
-                //         var basemapLayerID = map.basemapLayerIds[0];
-                //         for (var prop in map._layers)
-                //             if (prop == basemapLayerID)
-                //                 map._layers[prop].hide();
-                //         map.setBasemap('chart');
-                //     }
-                //     else
-                //         map.setBasemap(bmap);
-                //     radioSelection = parseInt(hrefArray[3].substring(hrefArray[3].indexOf("=") + 1));
-                //     if ($j('#radio_' + radioSelection).length > 0)
-                //         dijit.byId('radio_' + radioSelection).set('checked', true);
-                //     var point = new esri.geometry.Point([hrefArray[4].substring(hrefArray[4].indexOf("=") + 1), hrefArray[5].substring(hrefArray[5].indexOf("=") + 1).replace('#', '')], map.spatialReference);
-                //     map.centerAndZoom(new esri.geometry.Point(point.getLongitude(), point.getLatitude()), hrefArray[0].substring(hrefArray[0].indexOf("=") + 1));
-                //     changeMap(parseInt(hrefArray[2].substring(hrefArray[2].indexOf("=") + 1), 10));
-                //     if (window.location.href.indexOf(energy) > 0 )
-                //         if (radioSelection == 3)
-                //             dijit.byId("sliderWrapper2").set("value", parseFloat(hrefArray[6].substring(hrefArray[6].indexOf("=") + 1)));
-                //         else
-                //             dijit.byId("sliderWrapper1").set("value", parseFloat(hrefArray[6].substring(hrefArray[6].indexOf("=") + 1)));
-                // }
-                //neodShowHideBox('legend', 'whatever', true);
-                //$j('img#legend-img').attr('src', 'images/legend-tab-out-on.png');
-                //$j('.tab').show();
-                firstLoad = false;
-                // if (navigator.userAgent.match(/msie 7.0/i))
-                //     if ($j('label').length > 0)
-                //         $j.each(jQuery('label'), function (i, v) {
-                //             $j(v).after('<div style="clear:both;"></div>');
-                //         });
-                //$j('#dropdownWrapper').show();
-                //checkLegendHeight();
-                //createLayerLinks();
-                app.currentMapIndex = 0;
-                app.map.oldZoomLevel = app.map.getLevel();
-                if (mobile) {
-                    dojo.style(dojo.byId("mapDiv_zoom_slider"), "display", "none");
-                    dojo.style(dojo.byId("watermark"), "display", "none");
-                }
-            });
+            // app.map.on('load', function () {
+            //     chart = new ArcGISImageServiceLayer('http://egisws02.nos.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer', 'chart');
+            //     app.map.addLayer(chart, 1);
+            //     chart.hide();
+            //     createBasemapGallery();
+            //     var href = mapUrl;
+            //     // if (href.indexOf("&z") > 0) {
+            //     //     var hrefArray = href.substring(href.indexOf("z")).split('&');
+            //     //     var bmap = hrefArray[1].substring(hrefArray[1].indexOf("=") + 1);
+            //     //     if (bmap == "chart") {
+            //     //         chart.show();
+            //     //         var basemapLayerID = map.basemapLayerIds[0];
+            //     //         for (var prop in map._layers)
+            //     //             if (prop == basemapLayerID)
+            //     //                 map._layers[prop].hide();
+            //     //         map.setBasemap('chart');
+            //     //     }
+            //     //     else
+            //     //         map.setBasemap(bmap);
+            //     //     radioSelection = parseInt(hrefArray[3].substring(hrefArray[3].indexOf("=") + 1));
+            //     //     if ($j('#radio_' + radioSelection).length > 0)
+            //     //         dijit.byId('radio_' + radioSelection).set('checked', true);
+            //     //     var point = new esri.geometry.Point([hrefArray[4].substring(hrefArray[4].indexOf("=") + 1), hrefArray[5].substring(hrefArray[5].indexOf("=") + 1).replace('#', '')], map.spatialReference);
+            //     //     map.centerAndZoom(new esri.geometry.Point(point.getLongitude(), point.getLatitude()), hrefArray[0].substring(hrefArray[0].indexOf("=") + 1));
+            //     //     changeMap(parseInt(hrefArray[2].substring(hrefArray[2].indexOf("=") + 1), 10));
+            //     //     if (window.location.href.indexOf(energy) > 0 )
+            //     //         if (radioSelection == 3)
+            //     //             dijit.byId("sliderWrapper2").set("value", parseFloat(hrefArray[6].substring(hrefArray[6].indexOf("=") + 1)));
+            //     //         else
+            //     //             dijit.byId("sliderWrapper1").set("value", parseFloat(hrefArray[6].substring(hrefArray[6].indexOf("=") + 1)));
+            //     // }
+            //     //neodShowHideBox('legend', 'whatever', true);
+            //     //$j('img#legend-img').attr('src', 'images/legend-tab-out-on.png');
+            //     //$j('.tab').show();
+            //     firstLoad = false;
+            //     // if (navigator.userAgent.match(/msie 7.0/i))
+            //     //     if ($j('label').length > 0)
+            //     //         $j.each(jQuery('label'), function (i, v) {
+            //     //             $j(v).after('<div style="clear:both;"></div>');
+            //     //         });
+            //     //$j('#dropdownWrapper').show();
+            //     //checkLegendHeight();
+            //     //createLayerLinks();
+            //     app.currentMapIndex = 0;
+            //     app.map.oldZoomLevel = app.map.getLevel();
+            //     if (mobile) {
+            //         dojo.style(dojo.byId("mapDiv_zoom_slider"), "display", "none");
+            //         dojo.style(dojo.byId("watermark"), "display", "none");
+            //     }
+            // });
 
             //cm = 0;
+            
+
+            chart.hide();
+
+            createBasemapGallery();
 
             createSubThemeButtons(['Navigation', 'Potential Hazards', 'Commercial Traffic']);
 
@@ -881,7 +783,7 @@ define([
                         l:  0,
                         t:  0,
                         w:  screenWidth,
-                        h:  query('#mapDiv_root').style('height')[0]
+                        h:  query('#map-pane').style('height')[0]
                     };
 
             var moveableLegend =  new move.constrainedMoveable("legendModal", {
@@ -969,13 +871,27 @@ define([
             });
         }
 
-        function createLegend(layerInfos){
-            app.map.legend = new Legend({
-                map         : app.map,
+        // function createLegend(layerInfos){
+        //     app.map.legend = new Legend({
+        //         map         : app.map,
+        //         layerInfos  : layerInfos,
+        //         autoUpdate  : false
+        //     }, "legendDiv");
+        //     app.map.legend.startup();
+        // }
+
+        function createLegend(layerInfos, i)
+        {
+            var legendContentDiv = query('#legend .modal-body')[0];
+            var legendDivHTML = '<div id="legendDiv' + i + '" class="legendDiv' + (i == 0 ? ' active"' : '"') + '></div>';
+            domConstruct.place(legendDivHTML, legendContentDiv);
+            var legend = new Legend({
+                map         : app.maps[i],
                 layerInfos  : layerInfos,
                 autoUpdate  : false
-            }, "legendDiv");
-            app.map.legend.startup();
+            }, 'legendDiv' + i);
+            legend.startup();
+            app.maps[i].legend = legend;
         }
 
         function hideFeatureLayers()
@@ -992,7 +908,8 @@ define([
                 subThemes += '<button type="button" id="subThemeButton' + i + '" class="btn btn-neod' + (i == 0 ? ' active no-top-left-border-radius' : (i == titles.length - 1 ? ' no-top-right-border-radius' : '')) + '">' + title + '</button>';
             });
             subThemes += '</div></div>';
-            domConstruct.place(subThemes, 'mapDiv_root');
+            //domConstruct.place(subThemes, 'mapDiv_root');
+            domConstruct.place(subThemes, 'map-pane');
         }
 
 
@@ -1014,49 +931,127 @@ define([
             }
         }
 
-        function changeSubTheme(subThemeIndex) {
-            hideFeatureLayers();
-            app.map.layer.setVisibleLayers([-1]);
-            visible = [];
+        // function changeSubTheme(subThemeIndex) {
+        //     hideFeatureLayers();
+        //     app.map.layer.setVisibleLayers([-1]);
+        //     visible = [];
             
-            var menuWidth;
+        //     var menuWidth;
             
-            switch (subThemeIndex){
-                case 0:
-                    for(var i = 0; i < layers.length; i++)
-                        if (layers[i].group == 'navigation')
-                            visible.push(layers[i].id);
-                    app.map.layer.setVisibleLayers(visible);
-                    for (var i = 0; i < featureLayers.length; i++){
-                        if (featureLayers[i].className == 'navigation')
-                            featureLayers[i].show();
-                    }
+        //     switch (subThemeIndex){
+        //         case 0:
+        //             for(var i = 0; i < layers.length; i++)
+        //                 if (layers[i].group == 'navigation')
+        //                     visible.push(layers[i].id);
+        //             app.map.layer.setVisibleLayers(visible);
+        //             for (var i = 0; i < featureLayers.length; i++){
+        //                 if (featureLayers[i].className == 'navigation')
+        //                     featureLayers[i].show();
+        //             }
+        //             updateNotice();
+        //             //$j('a#flex-link').attr('href', 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,26,27,28,29,30,31,32,33;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#');
+        //             menuWidth = 296;
+        //             query('#overview p')[0].innerHTML = "This map shows boundaries and designations that define the basic marine transportation system for commercial and recreational vessels in the region.";
+        //             query('#data-considerations p')[0].innerHTML = "Most of the features on the map are officially designated and actively maintained by the U.S. Coast Guard or the U.S. Navy, and their locations are well established. Examples include Anchorages; Maintained Channels; Safety, Security, and Regulated Zones; Danger Zone and Restricted Areas; and WhalesNorth Mandatory Ship Reporting System.<br /><br />Some of the Pilot Boarding Areas on the map are not designated by federal or state government authorities. However, they are well known and considered important by the maritime commerce sector.";
+        //             query('#status p')[0].innerHTML = "We are working with the U.S. Coast Guard, Bureau of Ocean Energy Management, National Oceanic and Atmospheric Administration, and the maritime commerce community to verify and enhance the datasets, such as by identifying additional areas that are important for marine operations.";
+        //             break;
+        //         case 1:
+        //             for(var i = 0; i < layers.length; i++)
+        //                 if (layers[i].group == 'hazard')
+        //                     visible.push(layers[i].id);
+        //             app.map.layer.setVisibleLayers(visible);
+        //             for (var i = 0; i < featureLayers.length; i++){
+        //                 if (featureLayers[i].className == 'hazard')
+        //                     featureLayers[i].show();
+        //             }
+        //             updateNotice();
+        //             //$j('a#flex-link').attr('href', 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,13,14,15,19,24,25;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#');
+        //             menuWidth = 201;
+        //             query('#overview p')[0].innerHTML = "This map shows the locations of some potential hazards on the seabed, including unexploded ordnance, disposal sites, cables, and pipelines.";
+        //             query('#data-considerations p')[0].innerHTML = "This map can be used to help identify areas of risk to human health and property. People should take caution with the use of these data and recognize that the original sources are known to be incomplete.";
+        //             query('#status p')[0].innerHTML = "We are actively working with the telecommunications industry to improve the submarine cable layer. We are not planning updates to the other datasets at this time.";
+        //             break;
+        //         case 2:
+        //             radioClick(radioSelection);
+        //             menuWidth = 246;
+        //             query('#radioWrapper').style('display', 'block');
+        //             query('#overview p')[0].innerHTML = "This map shows the concentration of commercial vessel traffic in 2011 for cargo, tanker, tug and tow, passenger, and all vessels, based on data received from Automatic Identification Systems (AIS).";
+        //             query('#data-considerations p')[0].innerHTML = "AIS are navigation safety devices that monitor and transmit the locations and characteristics of vessels in U.S. and international waters. All vessels 300 gross tons and above (except military) are required by the International Maritime Organization to carry an AIS transponder. For this map, vessel tracks were derived from raw AIS data provided by the U.S. Coast Guard. The vessel tracklines were then used to generate density grids to better display the patterns of vessel activity by vessel type. Accuracy and completeness of AIS data can be affected by transponder reception range, which varies with changes in atmosphere, weather, and time of day.";
+        //             query('#status p')[0].innerHTML = "We are obtaining feedback from the U.S. Coast Guard, ports, and shipping industry about how additional information from AIS, such as vessel draft or data from additional years, may be used to help characterize commercial vessel activity.";
+        //             break;
+        //     }
+
+        //     query('#legendModal').style('width', menuWidth + 'px');
+
+        //     app.map.legend.refresh();
+        //     behavior.apply();
+        //     if (subThemeIndex != 2)
+        //         query('#radioWrapper').style('display', 'none');
+        //     //app.map.currentSubTheme = subThemeIndex;
+        // }
+
+        function changeSubTheme(mapIndex) 
+        {
+            var menuWidth, currentMapIndex = app.currentMapIndex;
+
+            var fadeOutLayers = fx.fadeOut({node:'map' + app.currentMapIndex}),
+                fadeOutLegend = fx.fadeOut({node: 'legendDiv' + app.currentMapIndex}),
+                fadeInLayers = fx.fadeIn({node:'map' + mapIndex});
+                fadeInLegend = fx.fadeIn({node: 'legendDiv' + mapIndex}),
+                fadeOutRadio = fx.fadeOut({node: 'radioWrapper'}),
+                fadeInRadio = fx.fadeIn({node: 'radioWrapper'});
+
+            on(fadeOutLayers, 'End', function(){
+                domClass.remove('map' + currentMapIndex, 'active');
+                domClass.remove('legendDiv' + currentMapIndex, 'active');
+            });
+
+            on(fadeInLayers, 'End', function(){
+                domClass.add('map' + mapIndex, 'active');
+                domClass.add('legendDiv' + mapIndex, 'active');
+            });
+
+            coreFx.combine([fadeOutLayers, /*fadeOutLegend, */fadeInLayers/*, fadeInLegend*/]).play();
+            // if (mapIndex != '2')
+            //     fadeOutRadio.play();
+            // else
+            //     fadeInRadio.play();
+
+            switch (mapIndex){
+                case '0':
+                    //aboutBox_setContent(1791);
+                    //$j('.navigation').show();
+                    //$j('div#feedback').css('width', '291px');
+                    //$j('span#legendAbout p').html('MARITIME COMMERCE: NAVIGATION');
                     updateNotice();
+                    //legend.refresh();
                     //$j('a#flex-link').attr('href', 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,26,27,28,29,30,31,32,33;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#');
-                    menuWidth = 296;
+                    menuWidth = 298;
                     query('#overview p')[0].innerHTML = "This map shows boundaries and designations that define the basic marine transportation system for commercial and recreational vessels in the region.";
                     query('#data-considerations p')[0].innerHTML = "Most of the features on the map are officially designated and actively maintained by the U.S. Coast Guard or the U.S. Navy, and their locations are well established. Examples include Anchorages; Maintained Channels; Safety, Security, and Regulated Zones; Danger Zone and Restricted Areas; and WhalesNorth Mandatory Ship Reporting System.<br /><br />Some of the Pilot Boarding Areas on the map are not designated by federal or state government authorities. However, they are well known and considered important by the maritime commerce sector.";
                     query('#status p')[0].innerHTML = "We are working with the U.S. Coast Guard, Bureau of Ocean Energy Management, National Oceanic and Atmospheric Administration, and the maritime commerce community to verify and enhance the datasets, such as by identifying additional areas that are important for marine operations.";
                     break;
-                case 1:
-                    for(var i = 0; i < layers.length; i++)
-                        if (layers[i].group == 'hazard')
-                            visible.push(layers[i].id);
-                    app.map.layer.setVisibleLayers(visible);
-                    for (var i = 0; i < featureLayers.length; i++){
-                        if (featureLayers[i].className == 'hazard')
-                            featureLayers[i].show();
-                    }
+                case '1':
+                    //aboutBox_setContent(1822);
+                    //$j('.hazard').show();
+                    //$j('div#feedback').css('width', '271px');
+                    //$j('span#legendAbout p').html('MARITIME COMMERCE: POTENTIAL HAZARDS');
                     updateNotice();
+                    //legend.refresh();
                     //$j('a#flex-link').attr('href', 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,13,14,15,19,24,25;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#');
-                    menuWidth = 201;
+                    menuWidth = 207;
                     query('#overview p')[0].innerHTML = "This map shows the locations of some potential hazards on the seabed, including unexploded ordnance, disposal sites, cables, and pipelines.";
                     query('#data-considerations p')[0].innerHTML = "This map can be used to help identify areas of risk to human health and property. People should take caution with the use of these data and recognize that the original sources are known to be incomplete.";
                     query('#status p')[0].innerHTML = "We are actively working with the telecommunications industry to improve the submarine cable layer. We are not planning updates to the other datasets at this time.";
                     break;
-                case 2:
+                case '2':
+                    //aboutBox_setContent(1827);
                     radioClick(radioSelection);
-                    menuWidth = 246;
+                    // $j('span#legendAbout p').html('MARITIME COMMERCE: COMMERCIAL TRAFFIC');
+                    // $j('div#feedback').css('width', '260px');
+                    // $j('div#radioWrapper').show();
+                    // $j('.traffic').show();
+                    menuWidth = 251;
                     query('#radioWrapper').style('display', 'block');
                     query('#overview p')[0].innerHTML = "This map shows the concentration of commercial vessel traffic in 2011 for cargo, tanker, tug and tow, passenger, and all vessels, based on data received from Automatic Identification Systems (AIS).";
                     query('#data-considerations p')[0].innerHTML = "AIS are navigation safety devices that monitor and transmit the locations and characteristics of vessels in U.S. and international waters. All vessels 300 gross tons and above (except military) are required by the International Maritime Organization to carry an AIS transponder. For this map, vessel tracks were derived from raw AIS data provided by the U.S. Coast Guard. The vessel tracklines were then used to generate density grids to better display the patterns of vessel activity by vessel type. Accuracy and completeness of AIS data can be affected by transponder reception range, which varies with changes in atmosphere, weather, and time of day.";
@@ -1064,13 +1059,30 @@ define([
                     break;
             }
 
-            query('#legendModal').style('width', menuWidth + 'px');
+            // if ($j('#new-map-layer-box').css('display') == 'block'){
+            //     $j('#new-map-layer-box').hide();
+            //     aboutLayerOpen = false;
+            // }
+            //checkLegendHeight();
 
-            app.map.legend.refresh();
+            // fx.animateProperty({
+            //     node:"legendModal",
+            //     properties: {
+            //         width: menuWidth
+            //     }
+            // }).play();
+
+            //array.forEach(app.maps, function(map){
+                //app.maps[parseInt(mapIndex, 10)].legend.refresh();
+            //});
+            
+            query('#legendModal').style('width', menuWidth + 'px');
             behavior.apply();
-            if (subThemeIndex != 2)
+            if (mapIndex != '2')
                 query('#radioWrapper').style('display', 'none');
-            app.map.currentSubTheme = subThemeIndex;
+
+            app.currentMapIndex = mapIndex;
+            app.currentMap = app.maps[mapIndex];
         }
 
         function radioClick(id) 
