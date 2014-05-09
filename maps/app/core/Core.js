@@ -349,6 +349,7 @@ define([
                 if (map.layers.hasOwnProperty("dynamicLayers"))
                     array.forEach(map.layers.dynamicLayers, function (dynamicLayer) {
                         var dl = new ArcGISDynamicMapServiceLayer(dynamicLayer.URL);
+                        mapDeferred.layer = dl;
                         array.forEach(dynamicLayer.layers, function (layer, layerIndex) {
                             /* get layer descriptions
                             ========================== */
@@ -654,6 +655,10 @@ define([
 
             app.oldZoomLevel = app.currentMap.getLevel();
 
+            query('#radioWrapper button').on('click', function(e){
+                radioClick(dojo.attr(this, 'data-id'));
+            });
+
             //get print templates from the export web map task
             var printInfo = EsriRequest({
                 url: "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task",
@@ -774,9 +779,9 @@ define([
 
         function radioClick(id) 
         {
-            app.map.layer.setVisibleLayers([id]);
+            app.currentMap.layer.setVisibleLayers([id]);
             radioSelection = id;
-            app.map.legend.refresh();
+            app.currentMap.legend.refresh();
             behavior.apply();
         }
 
