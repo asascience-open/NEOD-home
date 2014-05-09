@@ -136,6 +136,10 @@ button {
   display: none;
 }
 
+#legendWrapper {
+  font-size: 11px !important
+}
+
 .sub-theme-buttons {
   -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
@@ -413,7 +417,7 @@ span#scale {
   */
 
   #legendModal .modal-body {
-    font-size: 12px !important;
+    font-size: 11px !important;
     padding: 4px 0 0 0;
     clear:both;
   }
@@ -458,10 +462,6 @@ span#scale {
     width: 224px;
     text-align: left;
   }
-
-#legendDiv {
-  font-size: 11px;
-}
 
 .esriLegendService {
   padding-bottom: 12px !important;
