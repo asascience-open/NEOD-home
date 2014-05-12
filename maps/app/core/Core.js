@@ -492,6 +492,11 @@ define([
                     map         : mapDeferred,
                     attachTo    : 'bottom-right'
                 });
+
+                mapDeferred.on('load', function(){
+                    if (mapDeferred === app.currentMap)
+                        query('#scale')[0].innerHTML = "Scale 1:" + mapDeferred.__LOD.scale.toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                });
             });
 
             // app.map.on('extent-change', function(e){
