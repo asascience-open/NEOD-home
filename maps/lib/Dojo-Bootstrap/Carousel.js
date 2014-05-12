@@ -1,5 +1,5 @@
 /* ==========================================================
- * Carousel.js v1.1.0
+ * Carousel.js v3.0.0
  * ==========================================================
  * Copyright 2012 xsokev
  *
@@ -31,6 +31,7 @@ define([
     "dojo/_base/array",
     "./Support",
     "dojo/NodeList-traverse",
+    "dojo/NodeList-dom",
     "dojo/domReady!"
 ], function (declare, sniff, query, lang, win, on, domClass, domAttr, domConstruct, mouse, domGeom, domStyle, array, support) {
     "use strict";
@@ -44,6 +45,7 @@ define([
         constructor: function (element, options) {
             this.options = lang.mixin(lang.clone(this.defaultOptions), (options || {}));
             this.domNode = element;
+            this.indicators = query('.carousel-indicators', this.domNode)
             if (this.options.slide) { this.slide(this.options.slide); }
             if (this.options.pause === 'hover') {
                 on(this.domNode, mouse.enter, lang.hitch(this, 'pause'));
@@ -92,6 +94,11 @@ define([
             if (this.sliding) { return; }
             return this.slide('prev');
         },
+        getActiveIndex: function () {
+            this.active = query('.item.active', this.domNode);
+            this.items  = this.active.parent().children('.item');
+            return this.items.indexOf(this.active[0]);
+        },
         slide: function (type, next) {
             var active = query('.item.active', this.domNode),
                 isCycling = this.interval,
@@ -103,12 +110,20 @@ define([
             this.sliding = true;
             if (isCycling) { this.pause(); }
 
+            if (this.indicators.length) {
+                query('.active', this.indicators[0]).removeClass('active');
+                on.once(this.domNode, 'slid.bs.carousel', function() {
+                    var nextIndicator = _this.indicators.children()[_this.getActiveIndex()];
+                    nextIndicator && domClass.add(nextIndicator, 'active');
+                });
+            }
+
             next = next.length ? next : query('.item', this.domNode)[fallback]();
 
             if (domClass.contains(next[0], 'active')) { return; }
 
             if (support.trans && domClass.contains(this.domNode, 'slide')) {
-                on.emit(this.domNode, 'slide', { bubbles:false, cancelable:false, relatedTarget: next[0] });
+                on.emit(this.domNode, 'slide.bs.carousel', { bubbles:false, cancelable:false, relatedTarget: next[0] });
                 //if (e && e.defaultPrevented) { return; }
                 domClass.add(next[0], type);
                 next[0].offsetWidth;
@@ -121,15 +136,15 @@ define([
                     domClass.remove(active[0], ['active', direction].join(' '));
                     _this.sliding = false;
                     setTimeout(function () {
-                        on.emit(_this.domNode, 'slid', { bubbles:false, cancelable:false });
+                        on.emit(_this.domNode, 'slid.bs.carousel', { bubbles:false, cancelable:false });
                     }, 0);
                 });
             } else {
-                on.emit(this.domNode, 'slide', { bubbles:false, cancelable:false, relatedTarget: next[0] });
+                on.emit(this.domNode, 'slide.bs.carousel', { bubbles:false, cancelable:false, relatedTarget: next[0] });
                 domClass.remove(active[0], 'active');
                 domClass.add(next[0], 'active');
                 this.sliding = false;
-                on.emit(_this.domNode, 'slid', { bubbles:false, cancelable:false });
+                on.emit(_this.domNode, 'slid.bs.carousel', { bubbles:false, cancelable:false });
             }
 
             if (isCycling) { this.cycle(); }
