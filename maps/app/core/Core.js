@@ -395,7 +395,8 @@ define([
                                 var fl = new FeatureLayer(dynamicLayer.URL + layer.ID, {
                                     infoTemplate : new InfoTemplate('', '${' + layer.outField + '}'),
                                     outFields: [layer.outField],
-                                    opacity: 0.0
+                                    opacity: 0.0,
+                                    mode: FeatureLayer.MODE_SNAPSHOT
                                 });
                                 fl.on('mouse-over', function (e){
                                     var g = e.graphic;
@@ -419,8 +420,6 @@ define([
                     });
                     createLegend(layerInfo, mapIndex);
                 });
-
-                mapDeferred.addLayers(mapDeferred.layers);
 
                 mapDeferred.on('extent-change', function (e){
                     if (mapDeferred.loaded && mapDeferred === app.currentMap) {
