@@ -219,7 +219,37 @@ define([],
 				},
 				{
 					title: "Energy",
-					maps: []
+					maps: [{
+							title: "2012 Monthly AIS",
+							about: {
+								overview: "This map shows AIS Data.",
+								dataConsiderations: "ata from NOAA.",
+								status: "This is a demo layer."
+							},
+							showtimeSlider:true,
+							layers: {
+								dynamicLayers: [
+									{
+										URL : "http://gis.asascience.com/arcgis/rest/services/RegionalPortal/MonthlyTugTow2012/MapServer",
+										layers: [
+											{
+												name: "2012 Monthly Tug Tow",
+												ID: 0,
+												metadata: metadataURL + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf',
+												outField: "location"
+											},
+											//This is for Legend
+											{
+												name: "2012 Monthly Tug Tow",
+												ID: 1,
+												metadata: metadataURL + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf',
+												outField: "description"
+											}
+										]
+									}
+								]
+							}
+						}]
 				},
 				{
 					title: "Recreation",

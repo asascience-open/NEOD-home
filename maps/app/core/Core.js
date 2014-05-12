@@ -31,6 +31,12 @@ define([
     'bootstrap/Modal',
     'bootstrap/Tooltip',
     'bootstrap/Carousel',
+    'esri/dijit/TimeSlider',
+    /*'esri/renderers/TimeClassBreaksAger', 
+    'esri/renderers/TemporalRenderer',*/
+    'dojo/dom',
+    'esri/TimeExtent', 
+    'esri/layers/TimeInfo',
     'bootstrap/Tab',
     'dojo/domReady!'
     ], 
@@ -58,7 +64,14 @@ define([
         coreFx,
         fx,
         array,
-        behavior
+        behavior,
+        TimeExtent, 
+        TimeInfo,
+        TimeSlider, 
+        date, 
+        dom
+        /*TimeClassBreaksAger, 
+        TemporalRenderer*/
         ) 
     {
         var asa, chart, legend, geodata, biology, osmLayer, watersgeo, physOcean, oceanUses,
