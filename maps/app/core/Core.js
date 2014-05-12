@@ -347,7 +347,7 @@ define([
                 var visibleLayers = [];
 
                 if (map.layers.hasOwnProperty("dynamicLayers"))
-                    array.forEach(map.layers.dynamicLayers, function (dynamicLayer) {
+                    array.forEach(map.layers.dynamicLayers, function (dynamicLayer, i) {
                         var dl = new ArcGISDynamicMapServiceLayer(dynamicLayer.URL);
                         mapDeferred.layer = dl;
                         array.forEach(dynamicLayer.layers, function (layer, layerIndex) {
@@ -404,14 +404,14 @@ define([
                         mapDeferred.addLayers([dl]);
                     });
 
-                mapDeferred.addLayers(mapDeferred.layers);
-
                 mapDeferred.on('layers-add-result', function (e){
                     array.forEach(e.layers, function (layer){
                         layerInfo.push({layer: layer.layer});
                     });
                     createLegend(layerInfo, mapIndex);
                 });
+
+                mapDeferred.addLayers(mapDeferred.layers);
 
                 mapDeferred.on('extent-change', function (e){
                     if (mapDeferred.loaded && mapDeferred === app.currentMap) {
@@ -458,7 +458,7 @@ define([
                             }
                         else if (osmLayer != null)
                             osmLayer.hide();
-                        app.currentMap.oldZoomLevel = e.level;
+                        app.oldZoomLevel = e.level;
                     }
                 });
 
