@@ -125,9 +125,12 @@ define([
             screenHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
             screenWidth = "innerWidth" in window ? window.innerWidth : document.documentElement.offsetWidth;
             headerOffset = query('.navbar').style('height')[0];
-                query('#map-pane').style({
+            query('#map-pane').style({
                 'height'        : (screenHeight - headerOffset) + 'px',
                 'marginTop'    : screenWidth < 980 ? '0' : headerOffset + 'px'
+            });
+            query('.map').style({
+               'height'        : (screenHeight - headerOffset) + 'px'
             });
         }
 
