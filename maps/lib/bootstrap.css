@@ -223,8 +223,8 @@ textarea {
 
 body {
   margin: 0;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
+  font-family: 'Droid Sans', Arial, sans-serif;
+  font-size: 13px;
   line-height: 20px;
   color: #333333;
   background-color: #ffffff;
@@ -1065,7 +1065,8 @@ input,
 button,
 select,
 textarea {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+  font-family: 'Droid Sans', Arial, sans-serif;
 }
 
 label {
@@ -3662,7 +3663,7 @@ input[type="submit"].btn.btn-mini {
 .btn-group > .btn,
 .btn-group > .dropdown-menu,
 .btn-group > .popover {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .btn-group > .btn-mini {
@@ -5299,16 +5300,16 @@ input[type="submit"].btn.btn-mini {
   position: absolute;
   z-index: 10000;
   display: block;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1.4;
   visibility: visible;
   filter: alpha(opacity=0);
   opacity: 0;
 }
-.tooltip.in {
+/*.tooltip.in {
   filter: alpha(opacity=90);
   opacity: .9;
-}
+}*/
 .tooltip.top {
   padding: 5px 0;
   margin-top: -3px;
@@ -5327,12 +5328,14 @@ input[type="submit"].btn.btn-mini {
 }
 .tooltip-inner {
   max-width: 200px;
-  padding: 3px 8px;
-  color: #fff;
+  padding: 8px 8px;
+  color: #414141;
   text-align: left;
   text-decoration: none;
-  background-color: rgba(0, 0, 0, 0.65);
+  background-color: #fff;
   border-radius: 4px;
+  border: 1px solid #ccc;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
 }
 .tooltip-arrow {
   position: absolute;

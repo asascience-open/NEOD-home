@@ -1,5 +1,5 @@
 /* ==========================================================
- * Tooltip.js v0.0.1
+ * Tooltip.js v3.0.0
  * ==========================================================
  * Copyright 2012 xsokev
  *
@@ -170,6 +170,8 @@ define([
                 actualWidth = tipPos.w;
                 actualHeight = tipPos.h;
 
+                var legendPosition = domGeom.position(dojo.query('#legendModal')[0]);
+
                 switch (inside ? placement.split(' ')[1] : placement) {
                     case 'bottom':
                         tp = {top:(pos.top + pos.height) + "px", left:(pos.left + pos.width / 2 - actualWidth / 2) + "px"};
@@ -181,7 +183,7 @@ define([
                         tp = {top:(pos.top + pos.height / 2 - actualHeight / 2) + "px", left:(pos.left - actualWidth) + "px"};
                         break;
                     case 'right':
-                        tp = {top:(pos.top + pos.height / 2 - actualHeight / 2) + "px", left:(pos.left + pos.width) + "px"};
+                        tp = {top:(pos.top + pos.height / 2 - actualHeight / 2) + "px", left:(legendPosition.w + legendPosition.x) + "px"};
                         break;
                 }
                 domStyle.set(tip, tp);

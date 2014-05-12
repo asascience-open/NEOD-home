@@ -6,6 +6,12 @@ body {
   padding-left: 0;
   padding-right: 0;
   overflow: hidden;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 button {
@@ -83,7 +89,7 @@ button {
   color: #fff;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.35);
   border-bottom: none;
-  background-image: linear-gradient(to bottom, #ffffff, rgb(209, 210, 212));
+  background-image: linear-gradient(to bottom, #CFCFCF, rgb(209, 210, 212));
 }
 
 #mapList .btn:hover,
@@ -98,21 +104,40 @@ button {
   background-image: none;
 }
 
-#mapDiv {
+/*#mapDiv*/ #map-pane {
     margin-top: 41px;
     min-height: 100%; 
     max-height: 100%;
 }
 
-#mapDiv_root {
+/*#mapDiv_root {
   top: 0;
   left: 0;
+}
+*/
+.map {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 0;
+}
+
+.map.active,
+#legend .modal-body div.active {
+  display: block;
+  opacity: 1;
+  z-index: 1;
 }
 
 .legendDiv {
   opacity: 0;
   z-index: 0;
   display: none;
+}
+
+#legendWrapper {
+  font-size: 11px !important
 }
 
 .sub-theme-buttons {
@@ -126,7 +151,7 @@ button {
   border-bottom-left-radius: 4px;
   -moz-border-radius-bottomleft: 4px;
   -moz-border-radius-bottomleft: 4px;
-  z-index: 1;
+  z-index: 2;
 }
 
 .sub-theme-buttons .btn {
@@ -158,39 +183,28 @@ button {
 
 #mapControls {
   position: absolute;
-  right: -102px;
-  top: 58px;
+  right: 10px;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
   z-index: 2;
-  -webkit-transition: right .3s ease-in-out;
-  -moz-transition: right .3s ease-in-out;
-  -o-transition: right .3s ease-in-out;
-  transition: right .3s ease-in-out;
 }
-
-#mapControls:hover{
-  right: 0px;
-}
-  #mapControls .dropdown-menu {
-    top: -2px;
-    left: -162px;
+  #mapControls .btn-group {
+    margin-left: 0;
   }
 
-
   #mapControls .btn {
-    width: 140px;
-    -webkit-border-top-right-radius: 0px !important;
-    -webkit-border-bottom-right-radius: 0px !important;
-    -moz-border-radius-topright: 0px !important;
-    -moz-border-radius-bottomright: 0px !important;
-    border-top-right-radius: 0px !important;
-    border-bottom-right-radius: 0px !important;
-    opacity: .8;
-    filter: alpha(opacity=80);
-    text-align: left;
+    border-top: none;
+    /*width: 140px;
+    text-align: left;*/
   }
 
   #mapControls .btn span {
-    margin-right: 15px;
+    margin-left: 5px;
+  }
+
+  #mapControls #printButton {
+    width: 70px;
   }
 
 .no-bottom-border {
@@ -263,16 +277,6 @@ button {
     border-bottom-left-radius: 0px !important;
 }
 
-#basemapDropdownDiv, #zoomToDropdownDiv{
-  margin-left: 0;
-  display: block;
-}
-
-#zoomToDropdown, #basemapDropdown {
-  border-top: none;
-  border-bottom: none;
-}
-
 div#watermark{
     position: fixed;
     bottom: 9px;
@@ -295,16 +299,14 @@ span#scale {
 .scalebar_bottom-right {
     bottom: 6px !important;
     right: 160px !important;
-    z-index: 2;
 }
 
 #loading {
     width: 20px;
     position: absolute;
     right: 10px;
-    top: 22px;
+    top: 115px;
     z-index: 2;
-    /*display: none;*/
 }
 
 
@@ -318,6 +320,9 @@ span#scale {
   padding-top: 0 !important;
 }
 
+.esriLegendLeft {
+  padding-right: 15px;
+}
 
 #shareModal,
 #feedbackModal {
@@ -330,11 +335,11 @@ span#scale {
 
 #legendModal,
 #aboutModal {
-  top: 35px;
+  top: 105px;
   left: 65px;
   /*opacity: .25;
   transition: opacity .3s ease-out;*/
-  width: 298px;
+  width: 296px;
   margin: 0;
   position: absolute;
   display: none;
@@ -366,6 +371,7 @@ span#scale {
   #legendModal .modal-header #tabs {
     margin-bottom: 0;
     padding-bottom: 0;
+    cursor: move !important;
   }
 
     #legendModal .modal-header #tabs li {
@@ -385,8 +391,9 @@ span#scale {
 
     #legendModal .modal-header #tabs li a{
       color: #fff;
-      padding-top: 6px;
-      padding-bottom: 6px;
+      padding-top: 3px;
+      padding-bottom: 3px;
+      cursor: move !important;
     }
 
     #legendModal .modal-header #tabs li a:hover{
@@ -410,7 +417,7 @@ span#scale {
   */
 
   #legendModal .modal-body {
-    font-size: 12px;
+    font-size: 11px !important;
     padding: 4px 0 0 0;
     clear:both;
   }
@@ -424,14 +431,14 @@ span#scale {
   }
 
   #legendModal .modal-body {
-    max-height: 428px;
+    max-height: 443px;
   }
 
   #legendModal .modal-footer {
     text-align: left;
-    font-size: 12px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    font-size: 11px;
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
 /*.esriLegendLayerLabel a, #colorRamp a {
   color: #006633;
@@ -456,6 +463,11 @@ span#scale {
     text-align: left;
   }
 
+.esriLegendService {
+  padding-bottom: 12px !important;
+}
+
+
 #about {
   padding-top: 9px !important;
   padding-left: 15px !important;
@@ -473,6 +485,87 @@ span#scale {
 /*  legend END
 ===============================================  */
 
+
+
+.esriSimpleSlider {
+  z-index: 99!important;
+  top: 5px !important;
+  text-align: center;
+  border: 1px solid #666666 !important;
+  background-color: #FFFFFF;
+  color: #666666;
+  position: relative !important;
+  width: 41px;
+  float: right !important;
+  margin-right: 345px;
+  cursor: pointer;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  -o-border-radius: 9px;
+  border-radius: 9px;
+  -moz-box-shadow: 0 0 0.5em #BBBBBB;
+  -webkit-box-shadow: 0 0 0.5em #BBBBBB;
+}
+
+.esriSimpleSlider div {
+  width: 20px !important;
+  height: 20px !important;
+  width: 100px;
+  left: -10px !important;
+  float: left;
+  font-size: 17px !important;
+  font-family: verdana, helvetica;
+  font-weight: bold !important;
+  line-height: 20px !important;
+}
+
+.esriSimpleSliderVertical .esriSimpleSliderIncrementButton {
+  -webkit-border-top-left-radius: 5px !important;
+  -moz-border-radius-top-left: 5px !important;
+  -o-border-top-left-radius: 5px !important;
+  border-top-left-radius: 5px !important;
+  -webkit-border-bottom-left-radius: 5px !important;
+  -moz-border-radius-bottom-left: 5px !important;
+  -o-border-bottom-left-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+
+  -webkit-border-top-right-radius: 0 !important;
+  -moz-border-radius-top-right: 0 !important;
+  -o-border-top-right-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  -webkit-border-bottom-right-radius: 0 !important;
+  -moz-border-radius-bottom-right: 0 !important;
+  -o-border-bottom-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+
+  border-bottom: none!important;
+  border-right: 1px solid #666!important;
+}
+
+.esriSimpleSliderVertical .esriSimpleSliderDecrementButton {
+  -webkit-border-top-right-radius: 5px !important;
+  -moz-border-radius-top-right: 5px !important;
+  -o-border-top-right-radius: 5px !important;
+  border-top-right-radius: 5px !important;
+  -webkit-border-bottom-right-radius: 5px !important;
+  -moz-border-radius-bottom-right: 5px !important;
+  -o-border-bottom-right-radius: 5px !important;
+  border-bottom-right-radius: 5px !important;
+
+  -webkit-border-top-left-radius: 0 !important;
+  -moz-border-radius-top-left: 0 !important;
+  -o-border-top-left-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+  -webkit-border-bottom-left-radius: 0 !important;
+  -moz-border-radius-bottom-left: 0 !important;
+  -o-border-bottom-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+#basemapDropdown, #zoomToDropdown {
+  border-right: none;
+}
+
 #basemapDropdownList.dropdown-menu > li > a {
   line-height: 34px;
   padding-left: 10px;
@@ -487,7 +580,7 @@ span#scale {
 
 #side-buttons {
   position: absolute;
-  margin-top: 30px;
+  margin-top: -33px;
   width: 0;
   margin-left: -51px;
   z-index: 2;
@@ -501,6 +594,7 @@ span#scale {
     -ms-transform: rotate(90deg);
     margin-top: 120px;
     border-bottom: none;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
   }
 
   #side-buttons #feedbackButton {
@@ -512,8 +606,8 @@ span#scale {
 
 /* Maritime Commerce
 ==================================================================== */
-#legendDiv .esriLegendService .esriLegendGroupLayer > table.esriLegendLayerLabel,
-#legendDiv .esriLegendService #legendDiv_oceanUses_0_group > table.esriLegendLayerLabel,
+#legend .esriLegendService .esriLegendGroupLayer > table.esriLegendLayerLabel,
+#legend .esriLegendService #legendDiv1_layer14_0_group > table.esriLegendLayerLabel,
 div#radioWrapper {
   display: none;  
 }

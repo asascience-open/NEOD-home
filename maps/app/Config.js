@@ -219,37 +219,7 @@ define([],
 				},
 				{
 					title: "Energy",
-					maps: [{
-							title: "2012 Monthly AIS",
-							about: {
-								overview: "This map shows AIS Data.",
-								dataConsiderations: "ata from NOAA.",
-								status: "This is a demo layer."
-							},
-							showtimeSlider:true,
-							layers: {
-								dynamicLayers: [
-									{
-										URL : "http://gis.asascience.com/arcgis/rest/services/RegionalPortal/MonthlyTugTow2012/MapServer",
-										layers: [
-											{
-												name: "2012 Monthly Tug Tow",
-												ID: 0,
-												metadata: metadataURL + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf',
-												outField: "location"
-											},
-											//This is for Legend
-											{
-												name: "2012 Monthly Tug Tow",
-												ID: 1,
-												metadata: metadataURL + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf',
-												outField: "description"
-											}
-										]
-									}
-								]
-							}
-						}]
+					maps: []
 				},
 				{
 					title: "Recreation",
@@ -288,6 +258,8 @@ define([],
 			proxyurl: "",
 			//specify the url to a geometry service
 			geometryserviceurl: "http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer",
+			//If the webmap uses Bing Maps data, you will need to provided your Bing Maps Key
+			bingmapskey : "",
 			//Modify this to point to your sharing service URL if you are using the portal
 			sharingurl: "http://www.arcgis.com/sharing/rest/content/items"
 		}
