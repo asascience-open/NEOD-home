@@ -87,6 +87,13 @@ define([
             app.maps = [];
             app.themeIndex = 0;
 
+            // create buttons for each theme
+            array.forEach(configOptions.themes, function (theme, themeIndex){
+                domConstruct.place('<li><a id="dropdownTheme' + themeIndex + ' href="#">' + theme.title + '</a></li>', 'themeDropdown');
+                domConstruct.place('<button id="theme' + themeIndex + ' type="button" class="btn no-bottom-border-radius' + (themeIndex === 0 ? ' active"' : (themeIndex === (configOptions.themes.length - 1) ? ' no-bottom-right-border-radius"' : '"')) + ' data-toggle="button">' + theme.title + '</button>', 'themeButtonGroup');
+                domConstruct.place('<div class="item' + (themeIndex === 0 ? ' active"' : '"') + '><button class="btn no-bottom-border-radius' + (themeIndex === 0 ? ' active"' : '"') + ' type="button" id="carouselButton' + themeIndex + '" data-toggle="button">' + theme.title + '</button></div>', 'mapCarouselInner');
+            });
+
             resizeMap();
 
             if (mapUrl.match(/yellahoose/i))
@@ -324,7 +331,6 @@ define([
 
             array.forEach(configOptions.themes[app.themeIndex].maps, function(map, mapIndex){
                 // place map div in map-pane
-                var mapId = '#map' + mapIndex;
                 domConstruct.place('<div id="map' + mapIndex + '" class="map' + ((mapIndex == 0) ? ' active' : '') + '" style="height: ' + (screenHeight - headerOffset) + 'px;"></div>', 'map-pane');
                 // create map
                 var mapDeferred = new Map('map' + mapIndex,{
