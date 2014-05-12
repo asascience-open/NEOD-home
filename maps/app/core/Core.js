@@ -782,7 +782,7 @@ define([
                 //query(".btn-group > .btn").removeClass("active");
                 //query(this).addClass("active");
                 //check to see if it's the main Themes
-                if(this.parentElement.id == 'maingroupButtons')
+                if(this.parentElement.id == 'themeButtonGroup')
                 {
                     if(this.innerHTML.toLowerCase() == 'energy'){
                         createSubThemeButtons(energyMain.subthemes);
@@ -994,6 +994,13 @@ define([
             app.map.currentSubTheme = subThemeIndex;
         }
 
+        function updateAboutText (mapIndex)
+        {
+            query('#overview p')[0].innerHTML = configOptions.themes[app.themeIndex].maps[mapIndex].about.overview;
+            query('#data-considerations p')[0].innerHTML = configOptions.themes[app.themeIndex].maps[mapIndex].about.dataConsiderations;
+            query('#status p')[0].innerHTML = configOptions.themes[app.themeIndex].maps[mapIndex].about.status;
+        }
+
         function radioClick(id) 
         {
             app.map.layer.setVisibleLayers([id]);
@@ -1004,11 +1011,16 @@ define([
 
         function updateLegend()
         {
-            var delayedFunction = window.setTimeout(function(e){
-                array.forEach(layers, function(layer, i) {
-                    var td = query('.esriLegendService div table.esriLegendLayerLabel tr td:contains("' + layer.label + '")')
-                    if (td.text() == layer.label)
-                        td.html('<a href="' + layers[i].metadata + '" target="_blank" rel="tooltip" data-toggle="tooltip" data-placement="right" title="' + layers[i].description +  ' <br /><br />Click layer for metadata">' + layers[i].label + '</a>');
+            var delayedFunction = window.setTimeout(function (e){
+                array.forEach(configOptions.themes[app.themeIndex].maps, function (map){
+                    if (map.layers.hasOwnProperty("dynamicLayers"))
+                        array.forEach(map.layers.dynamicLayers, function (dynamicLayer) {
+                            array.forEach(dynamicLayer.layers, function (layer, i) {
+                                var td = query('.esriLegendService div table.esriLegendLayerLabel tr td:contains("' + layer.name + '")')
+                                if (td.text() == layer.name)
+                                    td.html('<a href="' + layer.metadata + '" target="_blank" rel="tooltip" data-toggle="tooltip" data-placement="right" title="' + layer.description +  ' <br /><br />Click layer for metadata">' + layer.name + '</a>');
+                            });
+                        });
                 });
                 query('.esriLegendService').tooltip({selector: 'a[rel="tooltip"]'});
             }, 50);

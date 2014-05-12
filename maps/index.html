@@ -53,17 +53,7 @@
                             </li>
                             <li class="dropdown">
                                 <a id="drop1" href="#" class="dropdown-toggle" data-toggle="dropdown">Maps&nbsp;<span class='caret'></span></a>
-                                <ul class='dropdown-menu' role='menu' aria-labelledby="drop1">
-                                    <li><a href="#">Maritime Commerce</a></li>
-                                    <li><a href="energy.html">Energy</a></li>
-                                    <li><a href="#">Recreation</a></li>
-                                    <li><a href="#">Commercial Fishing</a></li>
-                                    <li><a href="#">Aquaculture</a></li>
-                                    <li><a href="#">Fish &amp; Shellfish</a></li>
-                                    <li><a href="#">Marine Mammals &amp; Sea Turtles</a></li>
-                                    <li><a href="#">Other Marine Life</a></li>
-                                    <li><a href="#">Water Quality</a></li>
-                                </ul>
+                                <ul id='themeDropdown' class='dropdown-menu' role='menu' aria-labelledby="drop1"></ul>
                             </li>
                             <li class='dropdown'>
                                 <a id="drop2" href="#" class="dropdown-toggle" data-toggle="dropdown">Data&nbsp;<span class='caret'></span></a>
@@ -85,54 +75,14 @@
                     </div>
                 </div>
                 <div id='mapCarousel' class='carousel slide'>
-                    <div class='carousel-inner'>
-                        <div class='item active'>
-                            <button type='button' class='btn active no-bottom-border-radius' data-toggle='button'>Maritime Commerce</button>
-                        </div>
-                        <div class='item'>
-                            <button type='button' class='btn no-bottom-border-radius' data-toggle='button' href="energy.html">Energy</button>
-                        </div>
-                        <div class='item'>
-                            <button type='button' class='btn no-bottom-border-radius' data-toggle='button'>Recreation</button>
-                        </div>
-                        <div class='item'>
-                            <button type='button' class='btn no-bottom-border-radius' data-toggle='button'>Commercial Fishing</button>
-                        </div>
-                        <div class='item'>
-                            <button type='button' class='btn no-bottom-border-radius' data-toggle='button'>Aquaculture</button>
-                        </div>
-                        <div class='item'>
-                            <button type='button' class='btn no-bottom-border-radius' data-toggle='button'>Fish &amp; Shellfish</button>
-                        </div>
-                        <div class='item'>
-                            <button type='button' class='btn no-bottom-border-radius' data-toggle='button'>Marine Mammals &amp; Sea Turtles</button>
-                        </div>
-                        <div class='item'>
-                            <button type='button' class='btn no-bottom-border-radius' data-toggle='button'>Other Marine Life</button>
-                        </div>
-                        <div class='item'>
-                            <button type='button' class='btn no-bottom-border-radius' data-toggle='button'>Water Quality</button>
-                        </div>
-                    </div>
+                    <div class='carousel-inner' id="mapCarouselInner"></div>
                     <a class="carousel-control left" href="#mapCarousel" data-slide="prev">&lsaquo;</a>
                     <a class="carousel-control right" href="#mapCarousel" data-slide="next">&rsaquo;</a>
                 </div>
 
-
-
                 <div class='nav-collapse collapse' id='mapList'>
                     <div class='button-container'>
-                        <div id='maingroupButtons' class='btn-group' data-toggle='buttons-radio'>
-                            <button type='button' class='btn active no-bottom-left-border-radius'>Maritime Commerce</button>
-                            <button type='button' class='btn'>Energy</button>
-                            <button type='button' class='btn'>Recreation</button>
-                            <button type='button' class='btn'>Commercial Fishing</button>
-                            <button type='button' class='btn'>Aquaculture</button>
-                            <button type='button' class='btn'>Fish &amp; Shellfish</button>
-                            <button type='button' class='btn'>Marine Mammals &amp; Sea Turtles</button>
-                            <button type='button' class='btn'>Other Marine Life</button>
-                            <button type='button' class='btn no-bottom-right-border-radius'>Water Quality</button>
-                        </div>
+                        <div class='btn-group' data-toggle='buttons-radio' id='themeButtonGroup'></div>
                     </div>
                 </div>
             </div>
@@ -211,13 +161,12 @@
             };
         </script>
 
-        <script src="app/mapconfig.js"></script>
         <script src="lib/arcgis-3.9compact.js"></script>
         <script type="text/javascript">
+            require(["liteviewer/Config"]);
             require(["liteviewer/core/Core"], function(core){
                     core.init();
                 });
         </script>
-
     </body>
 </html>
