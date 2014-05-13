@@ -366,7 +366,7 @@ span#scale {
 
 #legendModal,
 #aboutModal {
-  top: 105px;
+  top: 100px;
   left: 65px;
   /*opacity: .25;
   transition: opacity .3s ease-out;*/
