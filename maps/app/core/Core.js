@@ -726,35 +726,11 @@ define([
             var menuWidth, currentMapIndex = app.currentMapIndex;
 
             var fadeOutLayers = fx.fadeOut({node:'map' + app.currentMapIndex}),
-                fadeOutLegend = fx.fadeOut({node: 'legendDiv' + app.currentMapIndex}),
-                fadeInLayers = fx.fadeIn({node:'map' + mapIndex}),
-                fadeInLegend = fx.fadeIn({node: 'legendDiv' + mapIndex}),
-                fadeOutRadio = fx.fadeOut({node: 'radioWrapper'}),
-                fadeInRadio = fx.fadeIn({node: 'radioWrapper'});
-
-            on(fadeOutLayers, 'End', function(){
-                domClass.remove('map' + currentMapIndex, 'active');
-                domClass.remove('legendDiv' + currentMapIndex, 'active');
-            });
-
-            on(fadeInLayers, 'End', function(){
-                domClass.add('map' + mapIndex, 'active');
-                domClass.add('legendDiv' + mapIndex, 'active');
-            });
-
-            on(fadeInRadio, 'End', function (){
-                query('#radioWrapper').style('display', 'block');
-            });
-
-            on(fadeOutRadio, 'End', function (){
-                query('#radioWrapper').style('display', 'none');
-            });
-
-            coreFx.combine([fadeOutLayers, fadeOutLegend, fadeInLayers, fadeInLegend]).play();
-            if (mapIndex != '2')
-                fadeOutRadio.play();
-            else
-                fadeInRadio.play();
+                //fadeOutLegend = fx.fadeOut({node: 'legendDiv' + app.currentMapIndex}),
+                fadeInLayers = fx.fadeIn({node:'map' + mapIndex});
+                //fadeInLegend = fx.fadeIn({node: 'legendDiv' + mapIndex}),
+                //fadeOutRadio = fx.fadeOut({node: 'radioWrapper'}),
+                //fadeInRadio = fx.fadeIn({node: 'radioWrapper'});
 
             switch (mapIndex){
                 case 0:
@@ -776,10 +752,40 @@ define([
                     break;
             }
 
-            updateAboutText(mapIndex);
-            
+            on(fadeOutLayers, 'End', function(){
+                domClass.remove('map' + currentMapIndex, 'active');
+            });
+
+            on(fadeInLayers, 'End', function(){
+                domClass.add('map' + mapIndex, 'active');
+            });
+
+            // on(fadeInRadio, 'End', function (){
+            //     query('#radioWrapper').style('display', 'block');
+            // });
+
+            // on(fadeOutRadio, 'End', function (){
+            //     query('#radioWrapper').style('display', 'none');
+            // });
+
+            coreFx.combine([fadeOutLayers, /*fadeOutLegend,*/ fadeInLayers/*, fadeInLegend*/]).play();
+
+
+            domClass.remove('legendDiv' + currentMapIndex, 'active');
+            domClass.add('legendDiv' + mapIndex, 'active');
             query('#legendModal').style('width', menuWidth + 'px');
             behavior.apply();
+            if (mapIndex != '2')
+                domClass.remove('radioWrapper', 'active');
+                //fadeOutRadio.play();
+            else
+                domClass.add('radioWrapper', 'active');
+                //fadeInRadio.play();
+
+            updateAboutText(mapIndex);
+
+            // query('#legendModal').style('width', menuWidth + 'px');
+            // behavior.apply();
 
             app.currentMapIndex = mapIndex;
             app.currentMap = app.maps[mapIndex];
