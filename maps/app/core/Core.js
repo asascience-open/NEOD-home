@@ -89,9 +89,9 @@ define([
 
             // create buttons for each theme
             array.forEach(configOptions.themes, function (theme, themeIndex){
-                domConstruct.place('<li><a id="dropdownTheme' + themeIndex + ' href="#">' + theme.title + '</a></li>', 'themeDropdown');
-                domConstruct.place('<button id="theme' + themeIndex + ' type="button" class="btn no-bottom-border-radius' + (themeIndex === 0 ? ' active"' : (themeIndex === (configOptions.themes.length - 1) ? ' no-bottom-right-border-radius"' : '"')) + ' data-toggle="button">' + theme.title + '</button>', 'themeButtonGroup');
-                domConstruct.place('<div class="item' + (themeIndex === 0 ? ' active"' : '"') + '><button class="btn no-bottom-border-radius' + (themeIndex === 0 ? ' active"' : '"') + ' type="button" id="carouselButton' + themeIndex + '" data-toggle="button">' + theme.title + '</button></div>', 'mapCarouselInner');
+                domConstruct.place('<li><a id="dropdownTheme' + themeIndex + ' href="#">' + theme.title.toUpperCase() + '</a></li>', 'themeDropdown');
+                domConstruct.place('<button id="theme' + themeIndex + ' type="button" class="btn btn-default no-bottom-border-radius' + (themeIndex === 0 ? ' active"' : (themeIndex === (configOptions.themes.length - 1) ? ' no-bottom-right-border-radius"' : '"')) + ' data-toggle="button">' + theme.title.toUpperCase() + '</button>', 'themeButtonGroup');
+                domConstruct.place('<div class="item' + (themeIndex === 0 ? ' active"' : '"') + '><button class="btn btn-default no-bottom-border-radius' + (themeIndex === 0 ? ' active"' : '"') + ' type="button" id="carouselButton' + themeIndex + '" data-toggle="button">' + theme.title.toUpperCase() + '</button></div>', 'mapCarouselInner');
             });
 
             resizeMap();
@@ -151,9 +151,9 @@ define([
             var template = new PrintTemplate();
 
             var legendLayers = [];
-            for (var i = 1; i < app.map.layerIds.length; i++){
+            for (var i = 1; i < app.currentMap.layerIds.length; i++){
                 var legendLayer = new LegendLayer();
-                legendLayer.layerId = app.map.layerIds[i];
+                legendLayer.layerId = app.currentMap.layerIds[i];
                 legendLayers.push(legendLayer);
             }   
             
@@ -162,12 +162,12 @@ define([
             template.preserveScale = false;
             template.layoutOptions = {};
             
-            template.layoutOptions.titleText = mapName + ' | ' + subThemeName;
+            template.layoutOptions.titleText = configOptions.themes[app.themeIndex].title + ' | ' + configOptions.themes[app.themeIndex].maps[app.currentMapIndex].title;
             template.layoutOptions.authorText = 'Northeast Ocean Data Portal';
             template.layoutOptions.legendLayers = legendLayers;
 
             params.template = template;
-            params.map = app.map;
+            params.map = app.currentMap;
 
             var printTask = new PrintTask("http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task", params);
 
@@ -293,17 +293,17 @@ define([
             domConstruct.place("<img src='img/loading.gif' id='loading' />"
             + "<div id='watermark'>Northeast Ocean Data</div>"
             + "<span id='scale'></span>"
-            + "<div id='mapControls' class='btn-group'><div class='btn-group' id='zoomToDropdownDiv'><button class='btn dropdown-toggle btn-info dropdown no-top-left-border-radius no-top-right-border-radius no-bottom-right-border-radius' id='zoomToDropdown' href='#' data-toggle='dropdown'>"
+            + "<div id='mapControls' class='btn-group'><div class='btn-group' id='zoomToDropdownDiv'><button class='btn btn-default dropdown-toggle dropdown no-top-left-border-radius no-top-right-border-radius no-bottom-right-border-radius' id='zoomToDropdown' href='#' data-toggle='dropdown'>"
             + "Zoom to<span class='caret'></span></button>"
             + "<ul class='dropdown-menu' id='zoomToDropdownList'></ul></div>"
-            + "<div class='btn-group' id='basemapDropdownDiv'><button class='btn dropdown-toggle btn-info dropdown no-border-radius' id='basemapDropdown' href='#' data-toggle='dropdown'>"
+            + "<div class='btn-group' id='basemapDropdownDiv'><button class='btn btn-default dropdown-toggle dropdown no-border-radius' id='basemapDropdown' href='#' data-toggle='dropdown'>"
             + "Basemaps<span class='caret'></span></button>"
             + "<ul class='dropdown-menu' id='basemapDropdownList'></ul></div>"
-            + "<button class='btn btn-info' id='shareButton'>Share</button>"
-            + "<button class='btn btn-info no-top-right-border-radius' data-loading-text='Loading' id='printButton'>Print</button></div></div>"
+            + "<button class='btn btn-default ' id='shareButton'>Share</button>"
+            + "<button class='btn btn-default no-top-right-border-radius' data-loading-text='Loading' id='printButton'>Print</button></div></div>"
             + "<div id='side-buttons'>"
-            + "<button href='#legendModal' type='button' id='legendButton' class='btn btn-neod active no-bottom-border-radius'>Legend / About</button>"
-            + "<button type='button' id='feedbackButton' class='btn btn-neod no-bottom-border-radius'>Feedback</button></div>" +
+            + "<button href='#legendModal' type='button' id='legendButton' class='btn btn-default active no-bottom-border-radius'>Legend / About</button>"
+            + "<button type='button' id='feedbackButton' class='btn btn-default no-bottom-border-radius'>Feedback</button></div>" +
             "<div id='legendModal' class='modal' role='dialog' data-backdrop='false'>" +
                 "<div class='modal-header'>" +
                     "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'><span class='icon-remove'></span></button>" +
@@ -358,6 +358,7 @@ define([
                 if (map.layers.hasOwnProperty("dynamicLayers"))
                     array.forEach(map.layers.dynamicLayers, function (dynamicLayer, i) {
                         var dl = new ArcGISDynamicMapServiceLayer(dynamicLayer.URL);
+                        mapDeferred.addLayers([dl]);
                         mapDeferred.layer = dl;
                         array.forEach(dynamicLayer.layers, function (layer, layerIndex) {
                             /* get layer descriptions
@@ -383,7 +384,7 @@ define([
                                 if (layerIndex === 0)
                                      dojo.place("<div id='radioWrapper' class='btn-group-vertical' " +
                                         "data-toggle='buttons-radio'></div>", "legendWrapper");
-                                dojo.place("<button data-id='" + layer.ID + "' class='btn" +
+                                dojo.place("<button data-id='" + layer.ID + "' class='btn btn-default" +
                                 (layer.checked ? " active" : " ") + "'>" + layer.name + "</button>", "radioWrapper");
                                 if (layer.checked)
                                     visibleLayers.push(layer.ID)
@@ -411,7 +412,6 @@ define([
                             }
                         });
                         dl.setVisibleLayers(visibleLayers);
-                        mapDeferred.addLayers([dl]);
                     });
 
                 mapDeferred.on('layers-add-result', function (e){
@@ -494,7 +494,9 @@ define([
 
                 mapDeferred.on('load', function(){
                     if (mapDeferred === app.currentMap)
+                    {
                         query('#scale')[0].innerHTML = "Scale 1:" + mapDeferred.__LOD.scale.toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    }
                 });
             });
 
@@ -697,7 +699,7 @@ define([
         {
             var subThemes = '<div class="button-container"><div class="btn-group sub-theme-buttons" data-toggle="buttons-radio">';
             array.forEach(configOptions.themes[app.themeIndex].maps, function (map, i){
-                subThemes += '<button type="button" id="subThemeButton' + i + '" class="btn btn-neod' + (i == 0 ? ' active no-top-left-border-radius' : (i == configOptions.themes[app.themeIndex].maps.legnth ? ' no-top-right-border-radius' : '')) + '">' + map.title + '</button>';
+                subThemes += '<button type="button" id="subThemeButton' + i + '" class="btn btn-default' + (i === 0 ? ' active' : '') + '">' + map.title + '</button>';
             });
             subThemes += '</div></div>';
             domConstruct.place(subThemes, 'map-pane');

@@ -39,6 +39,7 @@ button {
 
 .nav-collapse ul.nav {
   line-height: 15px;
+  margin-right: 50px;
 }
 
 .dropdown-toggle .caret {
@@ -58,7 +59,7 @@ button {
 .navbar .carousel {
   display: none;
   margin: 0 auto 0 auto;
-  width: 224px;
+  width: 217px;
 }
 
   .navbar .carousel .item {
@@ -66,42 +67,44 @@ button {
   }
 
   .navbar .carousel .carousel-control {
-    font-size: 40px;
-    width: 30px;
-    height: 30px;
-    line-height: 24px;
-    top: 23px;
+    font-size: 30px;
+    width: 22px;
+    height: 22px;
+    line-height: 15px;
+    top: 25px;
     border: none;
   }
 
     .navbar .carousel .carousel-control.left {
-      left: -46px;
+      left: -25px;
     }
 
     .navbar .carousel .carousel-control.right {
-      right: -46px;
+      right: -25px;
     }
 
 #mapList .btn,
 .carousel .btn {
-  font-size: 13px !important;
-  font-weight: bold;
-  color: #fff;
+  /*
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.35);
+  */
+  color: #fff;
+  font-weight: bold;
+  background-color: rgb(209, 210, 212);
   border-bottom: none;
-  background-image: linear-gradient(to bottom, #CFCFCF, rgb(209, 210, 212));
+  border-color: #fff;
+  padding: 2px 4px 2px 4px;
 }
 
 #mapList .btn:hover,
 .carousel .btn:hover {
   background-color: rgb(153, 153, 153);
-  background-position: 0 -28px;
 }
 
 #mapList .btn.active,
 .carousel .btn.active {
-  background-color: rgb(104, 115, 150);
-  background-image: none;
+  background-color: rgb(105, 115, 150);
+  /*background-image: none;*/
 }
 
 /*#mapDiv*/ #map-pane {
@@ -156,8 +159,35 @@ button {
 
 .sub-theme-buttons .btn {
   border-top: none;
-  border-bottom: 1px solid rgb(149, 156, 180);
+  background-color: rgb(149, 156, 180);
+  border-color: #fff;
+  color: #fff;
+  font-weight: bold;
+  padding: 3px 10px 3px 10px;
+  border-bottom: none;
 }
+
+  .sub-theme-buttons .btn:first-child {
+    -webkit-border-top-left-radius: 0px !important;
+    -moz-border-radius-topleft: 0px !important;
+    border-top-left-radius: 0px !important;
+    border-left: none;
+  }
+
+  .sub-theme-buttons .btn:last-child {
+    -webkit-border-top-right-radius: 0px !important;
+    -moz-border-radius-topright: 0px !important;
+    border-top-right-radius: 0px !important;
+    border-right: none;
+  }
+
+  .sub-theme-buttons .btn:hover {
+    background-color: rgb(125, 135, 165);
+}
+
+  .sub-theme-buttons .btn.active {
+    background-color: rgb(105, 115, 150);
+  }
 
 .btn-neod {
   color: #fff;
@@ -195,6 +225,7 @@ button {
 
   #mapControls .btn {
     border-top: none;
+    padding: 3px 10px 3px 10px;
     /*width: 140px;
     text-align: left;*/
   }
@@ -304,8 +335,8 @@ span#scale {
 #loading {
     width: 20px;
     position: absolute;
-    right: 10px;
-    top: 115px;
+    right: 370px;
+    top: 70px;
     z-index: 2;
 }
 
@@ -489,7 +520,7 @@ span#scale {
 
 .esriSimpleSlider {
   z-index: 99!important;
-  top: 5px !important;
+  top: 2px !important;
   text-align: center;
   border: 1px solid #666666 !important;
   background-color: #FFFFFF;
@@ -607,7 +638,7 @@ span#scale {
 /* Maritime Commerce
 ==================================================================== */
 #legend .esriLegendService .esriLegendGroupLayer > table.esriLegendLayerLabel,
-#legend .esriLegendService #legendDiv1_layer14_0_group > table.esriLegendLayerLabel,
+#legend .esriLegendService #legendDiv1_layer11_0_group > table.esriLegendLayerLabel,
 div#radioWrapper {
   display: none;  
 }
