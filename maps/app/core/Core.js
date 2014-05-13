@@ -435,21 +435,25 @@ define([
                 mapDeferred.on('zoom-end', function (e){
                     if (mapDeferred.loaded && mapDeferred === app.currentMap) {
                         updateNotice();
-                        if (e.level >= 12 && app.oldZoomLevel < 12) {
-                            app.maps[0].legend.refresh();
-                            behavior.apply();
+                        if (app.currentMapIndex === 0){
+                            if (e.level >= 12 && app.oldZoomLevel < 12) {
+                                app.currentMap.legend.refresh();
+                                behavior.apply();
+                            }
+                            else if (e.level < 12 && app.oldZoomLevel >= 12) {
+                                app.currentMap.legend.refresh();
+                                behavior.apply();
+                            }
                         }
-                        else if (e.level < 12 && app.oldZoomLevel >= 12) {
-                            app.maps[0].legend.refresh();
-                            behavior.apply();
-                        }
-                        if (e.level >= 10 && app.oldZoomLevel < 10) {
-                            app.maps[1].legend.refresh();
-                            behavior.apply();
-                        }
-                        else if (e.level < 10 && app.oldZoomLevel >= 10) {
-                            app.maps[1].legend.refresh();
-                            behavior.apply();
+                        else if (app.currentMapIndex === 1) {
+                            if (e.level >= 10 && app.oldZoomLevel < 10) {
+                                app.currentMap.legend.refresh();
+                                behavior.apply();
+                            }
+                            else if (e.level < 10 && app.oldZoomLevel >= 10) {
+                                app.currentMap.legend.refresh();
+                                behavior.apply();
+                            }
                         }
                         if (e.level == 14) {
                              var point = new esri.geometry.Point(app.currentMap.getCenter());
@@ -775,7 +779,6 @@ define([
             domClass.remove('legendDiv' + currentMapIndex, 'active');
             domClass.add('legendDiv' + mapIndex, 'active');
             query('#legendModal').style('width', menuWidth + 'px');
-            behavior.apply();
             if (mapIndex != '2')
                 domClass.remove('radioWrapper', 'active');
                 //fadeOutRadio.play();
@@ -790,6 +793,8 @@ define([
 
             app.currentMapIndex = mapIndex;
             app.currentMap = app.maps[mapIndex];
+            app.currentMap.legend.refresh();
+            behavior.apply();
         }
 
         function updateAboutText (mapIndex)
