@@ -99,7 +99,7 @@ define([
             // create buttons for each theme
             array.forEach(configOptions.themes, function (theme, themeIndex){
                 domConstruct.place('<li><a dataIdx='+ themeIndex + ' id="dropdownTheme' + themeIndex + ' href="#">' + theme.title.toUpperCase() + '</a></li>', 'themeDropdown');
-                domConstruct.place('<button dataIdx='+ themeIndex + ' id="theme' + themeIndex + ' type="button" class="btn no-bottom-border-radius' + (themeIndex === 0 ? ' active"' : (themeIndex === (configOptions.themes.length - 1) ? ' no-bottom-right-border-radius"' : '"')) + ' data-toggle="button">' + theme.title.toUpperCase() + '</button>', 'themeButtonGroup');
+                domConstruct.place('<button id="theme' + themeIndex + '" type="button" class="btn no-bottom-border-radius' + (themeIndex === 0 ? ' active"' : (themeIndex === (configOptions.themes.length - 1) ? ' no-bottom-right-border-radius"' : '"')) + ' data-toggle="button">' + theme.title.toUpperCase() + '</button>', 'themeButtonGroup');
                 domConstruct.place('<div class="item' + (themeIndex === 0 ? ' active"' : '"') + '><button class="btn btn-default no-bottom-border-radius' + (themeIndex === 0 ? ' active"' : '"') + ' type="button" id="carouselButton' + themeIndex + '" data-toggle="button">' + theme.title.toUpperCase() + '</button></div>', 'mapCarouselInner');
             });
 
@@ -301,6 +301,8 @@ define([
             query('#timeSliderTime').style('height', '0px');
             query('#timeSliderTime').style('visibility', 'hidden');
             domConstruct.destroy("radioWrapper");
+
+            createSubThemeButtons();
 
             array.forEach(configOptions.themes[app.themeIndex].maps, function(map, mapIndex){
                 // place map div in map-pane
@@ -577,8 +579,6 @@ define([
 
             createBasemapGallery();
 
-            createSubThemeButtons();
-
             var constraintBox = {
                         l:  0,
                         t:  69,
@@ -654,9 +654,8 @@ define([
                 focusUtil.curNode && focusUtil.curNode.blur();
             });
 
-            on(query('#themeButtonGroup'), 'click', function (e){
-                app.themeIndex = dojo.attr(e.srcElement, 'dataidx');
-                createSubThemeButtons();
+            on(query('#themeButtonGroup button'), 'click', function (e){
+                app.themeIndex = parseInt(e.currentTarget.id.substring(e.currentTarget.id.length - 1), 10);
                 loadmainTheme();
             });
 
