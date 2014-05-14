@@ -268,7 +268,7 @@ define([],
 				{
 					title: "Aquaculture",
 					maps: []
-				}/*,
+				},
 				{
 					title: "Fish & Shellfish",
 					maps: []
@@ -284,7 +284,7 @@ define([],
 				{
 					title: "Water Quality",
 					maps: []
-				}*/
+				}
 			],
 			//Sync maps scale and location
 			syncMaps: true,
