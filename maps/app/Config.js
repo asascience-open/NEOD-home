@@ -11,6 +11,7 @@ define([],
 					maps: [
 						{
 							title: "Navigation",
+							menuWidth: 296,
 							about: {
 								overview: "This map shows boundaries and designations that define the basic marine transportation system for commercial and recreational vessels in the region.",
 								dataConsiderations: "Most of the features on the map are officially designated and actively maintained by the U.S. Coast Guard or the U.S. Navy, and their locations are well established. Examples include Anchorages; Maintained Channels; Safety, Security, and Regulated Zones; Danger Zone and Restricted Areas; and WhalesNorth Mandatory Ship Reporting System.<br /><br />Some of the Pilot Boarding Areas on the map are not designated by federal or state government authorities. However, they are well known and considered important by the maritime commerce sector.",
@@ -80,6 +81,7 @@ define([],
 						},
 						{
 							title: "Potential Hazards",
+							menuWidth: 201,
 							about: {
 								overview: "This map shows the locations of some potential hazards on the seabed, including unexploded ordnance, disposal sites, cables, and pipelines.",
 								dataConsiderations: "This map can be used to help identify areas of risk to human health and property. People should take caution with the use of these data and recognize that the original sources are known to be incomplete.",
@@ -130,6 +132,7 @@ define([],
 						},
 						{
 							title: "Commercial Traffic",
+							menuWidth: 246,
 							about: {
 								overview: "This map shows the concentration of commercial vessel traffic in 2011 for cargo, tanker, tug and tow, passenger, and all vessels, based on data received from Automatic Identification Systems (AIS).",
 								dataConsiderations: "AIS are navigation safety devices that monitor and transmit the locations and characteristics of vessels in U.S. and international waters. All vessels 300 gross tons and above (except military) are required by the International Maritime Organization to carry an AIS transponder. For this map, vessel tracks were derived from raw AIS data provided by the U.S. Coast Guard. The vessel tracklines were then used to generate density grids to better display the patterns of vessel activity by vessel type. Accuracy and completeness of AIS data can be affected by transponder reception range, which varies with changes in atmosphere, weather, and time of day.",
@@ -218,38 +221,41 @@ define([],
 					]
 				},
 				{
-					title: "Energy",
+					title: "AIS TimeSlider",
 					maps: [{
 							title: "2012 Monthly AIS",
+							menuWidth: 246,
 							about: {
 								overview: "This map shows AIS Data.",
 								dataConsiderations: "ata from NOAA.",
 								status: "This is a demo layer."
 							},
-							showtimeSlider:true,
 							layers: {
 								dynamicLayers: [
 									{
-										URL : "http://gis.asascience.com/arcgis/rest/services/RegionalPortal/MonthlyTugTow2012/MapServer",
+										URL : "http://gis.asascience.com/arcgis/rest/services/RegionalPortal/MonthlyTugTow2012/MapServer/",
 										layers: [
 											{
 												name: "2012 Monthly Tug Tow",
 												ID: 0,
-												metadata: metadataURL + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf',
-												outField: "location"
+												showtimeSlider:true,
+												metadata: metadataURL + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf'
 											},
 											//This is for Legend
 											{
 												name: "2012 Monthly Tug Tow",
 												ID: 1,
-												metadata: metadataURL + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf',
-												outField: "description"
+												metadata: metadataURL + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf'
 											}
 										]
 									}
 								]
 							}
 						}]
+				},
+				{
+					title: "Energy",
+					maps: []
 				},
 				{
 					title: "Recreation",
@@ -262,7 +268,7 @@ define([],
 				{
 					title: "Aquaculture",
 					maps: []
-				},
+				}/*,
 				{
 					title: "Fish & Shellfish",
 					maps: []
@@ -278,7 +284,7 @@ define([],
 				{
 					title: "Water Quality",
 					maps: []
-				}
+				}*/
 			],
 			//Sync maps scale and location
 			syncMaps: true,
