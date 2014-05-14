@@ -634,11 +634,7 @@ span#scale {
     margin-top: 87px;
   }
 
-
-/* Maritime Commerce
-==================================================================== */
-#legend .esriLegendService .esriLegendGroupLayer > table.esriLegendLayerLabel,
-#legend .esriLegendService #legendDiv1_layer11_0_group > table.esriLegendLayerLabel,
+#legend .esriLegendService > div > table.esriLegendLayerLabel,
 div#radioWrapper {
   display: none;  
 }
