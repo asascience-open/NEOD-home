@@ -582,7 +582,7 @@ define([
 
             var constraintBox = {
                         l:  0,
-                        t:  69,
+                        t:  63,
                         w:  screenWidth,
                         h:  query('#map-pane').style('height')[0]
                     };
