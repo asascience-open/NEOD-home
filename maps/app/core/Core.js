@@ -517,7 +517,6 @@ define([
                 radioClick(dojo.attr(this, 'data-id'));
             });
 
-
             app.oldZoomLevel = app.currentMap.getLevel();
 
             var notifyCount = 0;
@@ -527,8 +526,10 @@ define([
                     if (responseOrError.url.match(/legend/i))
                     {
                         notifyCount++;
-                        if (notifyCount === configOptions.themes[app.themeIndex].maps.length)
+                        if (notifyCount === configOptions.themes[app.themeIndex].maps.length) {
                             behavior.apply();
+                            notifyCount = 0;
+                        }
                     }
             });
         }
