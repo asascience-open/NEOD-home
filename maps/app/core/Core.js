@@ -117,6 +117,8 @@ define([
 
             app.currentMapIndex = 0;
 
+            loadmainTheme();
+
             behavior.add({
                 '.esriLegendService' : {
                     found: function(){updateLegend();}
@@ -303,33 +305,15 @@ define([
             updateAboutText(app.currentMapIndex);
             app.maps = [];
             
-            //array.forEach
-            if(registry.byId( 'legendDiv0' )){
-                registry.byId( 'legendDiv0' ).destroyRecursive();
-            }
-            if(registry.byId( 'legendDiv1' )){
-                registry.byId( 'legendDiv1' ).destroyRecursive();
-            }
-            if(registry.byId( 'legendDiv2' )){
-                registry.byId( 'legendDiv2' ).destroyRecursive();
-            }
-            if(registry.byId( 'timeSlider' )){
-                registry.byId( 'timeSlider' ).destroyRecursive();
-                query('#timeSliderTime').style('height', '0px');
-                query('#timeSliderTime').style('visibility', 'hidden');
-            }
-            if(query('#radioWrapper')){
-                 domConstruct.destroy("radioWrapper");
-            }
-            if(query('#map0')){
-                 domConstruct.destroy("map0");
-            }
-            if(query('#map1')){
-                 domConstruct.destroy("map1");
-            }
-            if(query('#map2')){
-                 domConstruct.destroy("map2");
-            }
+            array.forEach(registry.findWidgets(query("#legend")[0]), function (legend) {
+                legend.destroy();
+            });
+            query('.legendDiv').forEach(domConstruct.destroy);
+            query('.map').forEach(domConstruct.destroy);
+            query('#timeSliderTime').style('height', '0px');
+            query('#timeSliderTime').style('visibility', 'hidden');
+            domConstruct.destroy("radioWrapper");
+
             array.forEach(configOptions.themes[app.themeIndex].maps, function(map, mapIndex){
                 // place map div in map-pane
                 domConstruct.place('<div id="map' + mapIndex + '" class="map' + ((mapIndex == 0) ? ' active' : '') + '" style="height: ' + (screenHeight - headerOffset) + 'px;"></div>', 'map-pane',query('#map-pane').length-1);
@@ -384,7 +368,7 @@ define([
                                 if (layerIndex === 0)
                                      dojo.place("<div id='radioWrapper' class='btn-group-vertical' " +
                                         "data-toggle='buttons-radio'></div>", "legendWrapper");
-                                dojo.place("<button data-id='" + layer.ID + "' class='btn" +
+                                dojo.place("<button data-id='" + layer.ID + "' class='btn btn-default" +
                                 (layer.checked ? " active" : " ") + "'>" + layer.name + "</button>", "radioWrapper");
                                 if (layer.checked)
                                     visibleLayers.push(layer.ID)
@@ -431,220 +415,6 @@ define([
                                     infoTemplate : new InfoTemplate('', '${' + layer.outField + '}'),
                                     outFields: [layer.outField],
                                     opacity: 0.0,
-                                    mode: FeatureLayer.MODE_SNAPSHOT
-                                });
-                                fl.on('mouse-over', function (e){
-                                    var g = e.graphic;
-                                    app.currentMap.infoWindow.setTitle(g._graphicsLayer.name);
-                                    app.currentMap.infoWindow.setContent(g.getContent());
-                                    app.currentMap.infoWindow.show(e.screenPoint, app.currentMap.getInfoWindowAnchor(e.screenPoint));
-                                });
-                                fl.on('mouse-out', function (e){
-                                    app.currentMap.infoWindow.hide();
-                                });
-                                mapDeferred.addLayer(fl);
-                            }
-                        });
-                        dl.setVisibleLayers(visibleLayers);
-                        mapDeferred.addLayers([dl]);
-                    });
-
-                mapDeferred.on('layers-add-result', function (e){
-                    array.forEach(e.layers, function (layer){
-                        layerInfo.push({layer: layer.layer});
-                    });
-                    createLegend(layerInfo, mapIndex);
-                });
-
-                mapDeferred.on('extent-change', function (e){
-                    if (mapDeferred.loaded && mapDeferred === app.currentMap) {
-                        query('#scale')[0].innerHTML = "Scale 1:" + e.lod.scale.toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                        array.forEach(app.maps, function(thisMap, index){
-                            if (thisMap !== app.currentMap)
-                                thisMap.setExtent(e.extent);
-                        });
-                    }
-                });
-
-                mapDeferred.on('zoom-end', function (e){
-                    if (mapDeferred.loaded && mapDeferred === app.currentMap) {
-                        updateNotice();
-                        if (e.level >= 12 && app.oldZoomLevel < 12) {
-                            app.maps[0].legend.refresh();
-                            behavior.apply();
-                        }
-                        else if (e.level < 12 && app.oldZoomLevel >= 12) {
-                            app.maps[0].legend.refresh();
-                            behavior.apply();
-                        }
-                        if (e.level >= 10 && app.oldZoomLevel < 10) {
-                            app.maps[1].legend.refresh();
-                            behavior.apply();
-                        }
-                        else if (e.level < 10 && app.oldZoomLevel >= 10) {
-                            app.maps[1].legend.refresh();
-                            behavior.apply();
-                        }
-                        if (e.level == 14) {
-                             var point = new esri.geometry.Point(app.currentMap.getCenter());
-                             if (point.x > -7754990.997596861) {
-                                 if (osmLayer == null) {
-                                     osmLayer = new esri.layers.OpenStreetMapLayer();
-                                     app.currentMap.addLayer(osmLayer, 1);
-                                 }
-                                 else
-                                     osmLayer.show();
-                             }
-                                else
-                                    if (osmLayer != null)
-                                     osmLayer.hide();
-                            }
-                        else if (osmLayer != null)
-                            osmLayer.hide();
-                        app.oldZoomLevel = e.level;
-                    }
-                });
-
-                
-                mapDeferred.on('update-start', function(){
-                    if (mapDeferred.loaded && mapDeferred === app.currentMap)
-                        query('#loading').style("display", "block");
-                });
-                
-                mapDeferred.on('update-end', function(){
-                    if (mapDeferred.loaded && mapDeferred === app.currentMap)
-                        //share();
-                        query('#loading').style("display", "none");
-                });
-
-                if (mapIndex == 0)
-                    app.currentMap = mapDeferred;
-
-                mapDeferred.addLayer(chart, 1);
-
-                var scalebar = new Scalebar({
-                    map         : mapDeferred,
-                    attachTo    : 'bottom-right'
-                });
-
-                mapDeferred.on('load', function(){
-                    if (mapDeferred === app.currentMap)
-                        query('#scale')[0].innerHTML = "Scale 1:" + mapDeferred.__LOD.scale.toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                });
-            });
-        }
-
-        function createMap()
-        {
-            domConstruct.place("<img src='img/loading.gif' id='loading' />"
-            + "<div id='watermark'>Northeast Ocean Data</div>"
-            + "<span id='scale'></span>"
-            + "<div id='mapControls' class='btn-group'><div class='btn-group' id='zoomToDropdownDiv'><button class='btn btn-default dropdown-toggle dropdown no-top-left-border-radius no-top-right-border-radius no-bottom-right-border-radius' id='zoomToDropdown' href='#' data-toggle='dropdown'>"
-            + "Zoom to<span class='caret'></span></button>"
-            + "<ul class='dropdown-menu' id='zoomToDropdownList'></ul></div>"
-            + "<div class='btn-group' id='basemapDropdownDiv'><button class='btn btn-default dropdown-toggle dropdown no-border-radius' id='basemapDropdown' href='#' data-toggle='dropdown'>"
-            + "Basemaps<span class='caret'></span></button>"
-            + "<ul class='dropdown-menu' id='basemapDropdownList'></ul></div>"
-            + "<button class='btn btn-default ' id='shareButton'>Share</button>"
-            + "<button class='btn btn-default no-top-right-border-radius' data-loading-text='Loading' id='printButton'>Print</button></div></div>"
-            + "<div id='side-buttons'>"
-            + "<button href='#legendModal' type='button' id='legendButton' class='btn btn-default active no-bottom-border-radius'>Legend / About</button>"
-            + "<button type='button' id='feedbackButton' class='btn btn-default no-bottom-border-radius'>Feedback</button></div>" +
-            "<div id='legendModal' class='modal' role='dialog' data-backdrop='false'>" +
-                "<div class='modal-header'>" +
-                    "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'><span class='icon-remove'></span></button>" +
-                    "<ul id='tabs' class='nav nav-tabs'>" +
-                        "<li class='active'><a href='#legend' data-toggle='tab'>Legend</a></li>" +
-                        "<li><a href='#about' data-toggle='tab'>About</a></li>" +
-                    "</ul>" +
-                    "<!--<h5>Legend</h5><div class='alert alert-info'>Zoom-in to view hidden layer(s).</div>-->" +
-                "</div>" +
-                "<div class='tab-content'>" +
-                    "<div id='legend' class='tab-pane fade active in'>" +
-                        "<div class='modal-body' id='legendWrapper'></div>" +
-                        "<div id='timeSliderDiv'></div>" +
-                        "<div id='timeSliderTime'></div>" +
-                        "<div class='modal-footer'><a id='flex-link' href='#'>View this data with other layers</a></div>" +
-                    "</div>" +
-                    "<div id='about' class='modal-body tab-pane fade'>" +
-                        "<strong>Overview</strong><div id='overview'><p>blah</p></div>" +
-                        "<strong>Data Considerations</strong><div id='data-considerations'><p>blah</p></div>" +
-                        "<strong>Status</strong><div id='status'><p>blah</p></div>" +
-                    "</div>" +
-                "</div>" +
-            "</div>", "map-pane");
-            
-            
-            chart = new ArcGISImageServiceLayer('http://egisws02.nos.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer', 'chart');
-
-            array.forEach(configOptions.themes[app.themeIndex].maps, function(map, mapIndex){
-                // place map div in map-pane
-                domConstruct.place('<div id="map' + mapIndex + '" class="map' + ((mapIndex == 0) ? ' active' : '') + '" style="height: ' + (screenHeight - headerOffset) + 'px;"></div>', 'map-pane');
-                // create map
-                var mapDeferred = new Map('map' + mapIndex,{
-                    basemap                 : 'oceans',
-                    zoom                    : 7,
-                    minZoom                 : 7,
-                    maxZoom                 : 14,
-                    logo                    : false,
-                    nav                     : false,
-                    sliderStyle             : 'small',
-                    showInfoWindowOnClick   : false,
-                    center                  : [-70.5, 42],
-                    showAttribution         : false,
-                    sliderPosition          : 'top-left'
-                });
-                
-                app.maps.push(mapDeferred);
-
-                mapDeferred.layers = [];
-
-                var layerInfo = [];
-
-                var visibleLayers = [];
-
-                if (map.layers.hasOwnProperty("dynamicLayers"))
-                    array.forEach(map.layers.dynamicLayers, function (dynamicLayer, i) {
-                        var dl = new ArcGISDynamicMapServiceLayer(dynamicLayer.URL);
-                        mapDeferred.addLayers([dl]);
-                        mapDeferred.layer = dl;
-                        array.forEach(dynamicLayer.layers, function (layer, layerIndex) {
-                            /* get layer descriptions
-                            ========================== */
-                            var getlayerInfo = EsriRequest({
-                                url: dynamicLayer.URL + layer.ID,
-                                content: {
-                                    f: "json",
-                                    returnGeometry: false
-                                },
-                                handleAs: "json",
-                                callbackParamName: "callback"
-                            });
-
-                            getlayerInfo.then(
-                                function(data) {
-                                    layer['description'] = data.description;
-                                }, function(error) {
-                                    console.log("Error: ", error.message);
-                            });
-
-                            if (layer.hasOwnProperty("checked")) {
-                                if (layerIndex === 0)
-                                     dojo.place("<div id='radioWrapper' class='btn-group-vertical' " +
-                                        "data-toggle='buttons-radio'></div>", "legendWrapper");
-                                dojo.place("<button data-id='" + layer.ID + "' class='btn btn-default" +
-                                (layer.checked ? " active" : " ") + "'>" + layer.name + "</button>", "radioWrapper");
-                                if (layer.checked)
-                                    visibleLayers.push(layer.ID)
-                            }
-                            else
-                                visibleLayers.push(layer.ID);
-                            if (layer.hasOwnProperty("outField"))
-                            {
-                                var fl = new FeatureLayer(dynamicLayer.URL + layer.ID, {
-                                    infoTemplate : new InfoTemplate('', '${' + layer.outField + '}'),
-                                    outFields: [layer.outField],
-                                    opacity: 0.0,
                                     mode: FeatureLayer.MODE_SNAPSHOT,
                                     displayOnPan: false
                                 });
@@ -661,6 +431,7 @@ define([
                             }
                         });
                         dl.setVisibleLayers(visibleLayers);
+                        mapDeferred.addLayers([dl]);
                     });
 
                 mapDeferred.on('layers-add-result', function (e){
@@ -747,12 +518,61 @@ define([
 
                 mapDeferred.on('load', function(){
                     if (mapDeferred === app.currentMap)
-                    {
                         query('#scale')[0].innerHTML = "Scale 1:" + mapDeferred.__LOD.scale.toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                    }
                 });
             });
+
+
+            query('#radioWrapper button').on('click', function(e){
+                radioClick(dojo.attr(this, 'data-id'));
+            });
+
+
+            app.oldZoomLevel = app.currentMap.getLevel();
+        }
+
+        function createMap()
+        {
+            domConstruct.place("<img src='img/loading.gif' id='loading' />"
+            + "<div id='watermark'>Northeast Ocean Data</div>"
+            + "<span id='scale'></span>"
+            + "<div id='mapControls' class='btn-group'><div class='btn-group' id='zoomToDropdownDiv'><button class='btn btn-default dropdown-toggle dropdown no-top-left-border-radius no-top-right-border-radius no-bottom-right-border-radius' id='zoomToDropdown' href='#' data-toggle='dropdown'>"
+            + "Zoom to<span class='caret'></span></button>"
+            + "<ul class='dropdown-menu' id='zoomToDropdownList'></ul></div>"
+            + "<div class='btn-group' id='basemapDropdownDiv'><button class='btn btn-default dropdown-toggle dropdown no-border-radius' id='basemapDropdown' href='#' data-toggle='dropdown'>"
+            + "Basemaps<span class='caret'></span></button>"
+            + "<ul class='dropdown-menu' id='basemapDropdownList'></ul></div>"
+            + "<button class='btn btn-default ' id='shareButton'>Share</button>"
+            + "<button class='btn btn-default no-top-right-border-radius' data-loading-text='Loading' id='printButton'>Print</button></div></div>"
+            + "<div id='side-buttons'>"
+            + "<button href='#legendModal' type='button' id='legendButton' class='btn btn-default active no-bottom-border-radius'>Legend / About</button>"
+            + "<button type='button' id='feedbackButton' class='btn btn-default no-bottom-border-radius'>Feedback</button></div>" +
+            "<div id='legendModal' class='modal' role='dialog' data-backdrop='false'>" +
+                "<div class='modal-header'>" +
+                    "<button type='button' class='close' data-dismiss='modal' aria-hidden='true'><span class='icon-remove'></span></button>" +
+                    "<ul id='tabs' class='nav nav-tabs'>" +
+                        "<li class='active'><a href='#legend' data-toggle='tab'>Legend</a></li>" +
+                        "<li><a href='#about' data-toggle='tab'>About</a></li>" +
+                    "</ul>" +
+                    "<!--<h5>Legend</h5><div class='alert alert-info'>Zoom-in to view hidden layer(s).</div>-->" +
+                "</div>" +
+                "<div class='tab-content'>" +
+                    "<div id='legend' class='tab-pane fade active in'>" +
+                        "<div class='modal-body' id='legendWrapper'></div>" +
+                        "<div id='timeSliderDiv'></div>" +
+                        "<div id='timeSliderTime'></div>" +
+                        "<div class='modal-footer'><a id='flex-link' href='#'>View this data with other layers</a></div>" +
+                    "</div>" +
+                    "<div id='about' class='modal-body tab-pane fade'>" +
+                        "<strong>Overview</strong><div id='overview'><p>blah</p></div>" +
+                        "<strong>Data Considerations</strong><div id='data-considerations'><p>blah</p></div>" +
+                        "<strong>Status</strong><div id='status'><p>blah</p></div>" +
+                    "</div>" +
+                "</div>" +
+            "</div>", "map-pane");
             
+            
+            chart = new ArcGISImageServiceLayer('http://egisws02.nos.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer', 'chart');            
             chart.hide();
 
             createBasemapGallery();
@@ -850,12 +670,6 @@ define([
             });
 
             updateAboutText(0);
-
-            app.oldZoomLevel = app.currentMap.getLevel();
-
-            query('#radioWrapper button').on('click', function(e){
-                radioClick(dojo.attr(this, 'data-id'));
-            });
 
             //get print templates from the export web map task
             var printInfo = EsriRequest({
