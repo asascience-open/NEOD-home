@@ -199,7 +199,7 @@ define([],
 					title: "AIS TimeSlider",
 					maps: [{
 							title: "2012 Monthly AIS",
-							menuWidth: 246,
+							menuWidth: 220,
 							about: {
 								overview: "This map shows AIS Data.",
 								dataConsiderations: "ata from NOAA.",

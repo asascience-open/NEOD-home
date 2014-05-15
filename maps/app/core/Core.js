@@ -327,7 +327,7 @@ define([
                             {
                                 var tsDiv = dojo.create("div", null, dojo.byId('timeSliderDiv'));
                                 var timeSlider = new esri.dijit.TimeSlider({
-                                    style: "width: 280px;padding-top:10px;padding-bottom:10px;",
+                                    style: "padding-top:10px;padding-bottom:10px;",
                                     id: 'timeSlider'
                                 }, tsDiv);
 
@@ -349,11 +349,11 @@ define([
                                 query('#timeSliderTime').style('height', '20px');
                                 query('#timeSliderTime').style('visibility', 'visible');
                                 
-                                dojo.byId("timeSliderTime").innerHTML = "<i>Showing:  January 2012<\/i>";
+                                dojo.byId("timeSliderTime").innerHTML = "Showing:  January";
                                 
                                 timeSlider.on("time-extent-change", function(evt) {
-                                    var startValString = monthNames[evt.startTime.getMonth()] +"  "+evt.startTime.getUTCFullYear();
-                                    dojo.byId("timeSliderTime").innerHTML = "<i>Showing:   " + startValString+"<\/i>";
+                                    var startValString = monthNames[evt.startTime.getMonth()];
+                                    dojo.byId("timeSliderTime").innerHTML = "Showing:   " + startValString;
                                 });
                             }
 
@@ -403,11 +403,16 @@ define([
                     if (mapDeferred.loaded && mapDeferred === app.currentMap) {
                         //updateNotice();
                         if (app.currentMapIndex === 0){
-                            if (e.level >= 12 && app.oldZoomLevel < 12) {
+                            if (e.level >= 12 && app.oldZoomLevel < 12 || app.oldZoomLevel === 14) {
                                 app.currentMap.legend.refresh();
                                 behavior.apply();
                             }
                             else if (e.level < 12 && app.oldZoomLevel >= 12) {
+                                app.currentMap.legend.refresh();
+                                behavior.apply();
+                            }
+                            if (e.level === 14)
+                            {
                                 app.currentMap.legend.refresh();
                                 behavior.apply();
                             }
@@ -490,6 +495,8 @@ define([
                         }
                     }
             });
+
+            query('#legendModal').style('width', configOptions.themes[app.themeIndex].maps[app.currentMapIndex].menuWidth + 'px');
         }
 
         function createMap()
@@ -614,6 +621,7 @@ define([
             });
 
             on(query('#themeButtonGroup button'), 'click', function (e){
+                query('#loading').style("display", "block");
                 app.themeIndex = parseInt(e.currentTarget.id.substring(e.currentTarget.id.length - 1), 10);
                 getLayerIds();
             });
@@ -684,7 +692,7 @@ define([
 
         function changeSubTheme(mapIndex) 
         {
-            var menuWidth, currentMapIndex = app.currentMapIndex;
+            var currentMapIndex = app.currentMapIndex;
 
             var fadeOutLayers = fx.fadeOut({node:'map' + app.currentMapIndex}),
                 //fadeOutLegend = fx.fadeOut({node: 'legendDiv' + app.currentMapIndex}),
@@ -693,25 +701,22 @@ define([
                 //fadeOutRadio = fx.fadeOut({node: 'radioWrapper'}),
                 //fadeInRadio = fx.fadeIn({node: 'radioWrapper'});
 
-            switch (mapIndex){
-                case 0:
-                    //aboutBox_setContent(1791);
-                    //updateNotice();
-                    //$j('a#flex-link').attr('href', 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,26,27,28,29,30,31,32,33;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#');
-                    menuWidth = 296;
-                    break;
-                case 1:
-                    //aboutBox_setContent(1822);
-                    //updateNotice();
-                    //$j('a#flex-link').attr('href', 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,13,14,15,19,24,25;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#');
-                    menuWidth = 201;
-                    break;
-                case 2:
-                    //aboutBox_setContent(1827);
-                    //radioClick(radioSelection);
-                    menuWidth = 246;
-                    break;
-            }
+            // switch (mapIndex){
+            //     case 0:
+            //         aboutBox_setContent(1791);
+            //         updateNotice();
+            //         $j('a#flex-link').attr('href', 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,26,27,28,29,30,31,32,33;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#');
+            //         break;
+            //     case 1:
+            //         aboutBox_setContent(1822);
+            //         updateNotice();
+            //         $j('a#flex-link').attr('href', 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,13,14,15,19,24,25;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#');
+            //         break;
+            //     case 2:
+            //         aboutBox_setContent(1827);
+            //         radioClick(radioSelection);
+            //         break;
+            // }
 
             on(fadeOutLayers, 'End', function(){
                 domClass.remove('map' + currentMapIndex, 'active');

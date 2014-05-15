@@ -140,7 +140,7 @@ button {
 }
 
 #legendWrapper {
-  font-size: 11px !important
+  padding-left: 15px !important;
 }
 
 .sub-theme-buttons {
@@ -353,6 +353,7 @@ span#scale {
 
 .esriLegendLeft {
   padding-right: 15px;
+  padding-left: 0!important;
 }
 
 #shareModal,
@@ -486,7 +487,8 @@ span#scale {
 }*/
 
 #radioWrapper {
-  padding: 10px 0 10px 10px;
+  padding: 10px 0 10px 0;
+  margin-left: -4px;
 }
 
   #radioWrapper button {
@@ -637,4 +639,25 @@ span#scale {
 #legend .esriLegendService > div > table.esriLegendLayerLabel,
 div#radioWrapper {
   display: none;  
+}
+
+/*  time slider 
+================= */
+
+.esriTimeSlider > table > tbody > tr > td:nth-child(1),
+.esriTimeSlider > table > tbody > tr > td:nth-child(3),
+.esriTimeSlider > table > tbody > tr > td:nth-child(4) {
+  display: none;
+}
+
+.esriTimeSlider {
+  padding-top: 0!important;
+  padding-bottom: 0!important;
+}
+
+#timeSliderTime {
+  font-size: 11px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  font-style: italic;
 }
