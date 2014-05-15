@@ -70,25 +70,6 @@ define([
         registry
         ) 
     {
-        var asa, chart, legend, geodata, biology, osmLayer, watersgeo, physOcean, oceanUses,
-            layer0, layer1, layer2, 
-            aquaculture, screenWidth, screenHeight, headerOffset, selectedBasemap, firstLoad = true,
-            aboutLayerOpen = false, watershed, scalebar, subThemeName, mapName, mobile = false,
-            aquacultureUrl = 'http://50.19.218.171/arcgis1/rest/services/LiteViewers/Aquaculture/MapServer/',
-            ngdcUrl = 'http://maps.ngdc.noaa.gov/arcgis/rest/services/web_mercator/dem_hillshades_mosaic/MapServer/',
-            watersgeoUrl = 'http://watersgeo.epa.gov/arcgis/rest/services/OWRAD/ALL_OWRAD_NAD83/MapServer/',
-            geodataUrl = 'http://geodata.epa.gov/arcgis/rest/services/OEI/FRS_INTERESTS/MapServer/',
-            asaUrl = 'http://gis.asascience.com/ArcGIS/rest/services/RegionalPortal/WaterQuality/MapServer/',
-            asaFifty = 'http://50.19.218.171/arcgis1/rest/services/',
-            watershedUrl = 'http://watersgeo.epa.gov/ArcGIS/rest/services/OW/WBD_WMERC/MapServer/',
-            biologyUrl = asaFifty + 'Biology/MapServer/', oceanUsesUrl = asaFifty + 'OceanUses/MapServer/',
-            physOceanUrl = asaFifty + 'PhysicalOceanography/MapServer/', radioSelection = 0, radioSelection1 = 0,
-            radioSelection2 = 0, radioSelection3 = 0, radioSelection4 = 0, sliderValue = 0, cm = 0,
-            metaUrl = 'http://www.northeastoceandata.org/files/metadata/', featureLayers = [],
-            layers = [], mapUrl = window.location.href, energy = 'energy', fishing = 'commercial-fishing',
-            recreation = 'recreation', shellfish = 'fish-and-shellfish', mammals = 'marine-life-mammals',
-            wq = 'water-quality', aqua = 'aquaculture';
-
         isMobile();
 
         function init()
@@ -104,10 +85,6 @@ define([
             });
 
             resizeMap();
-
-            if (mapUrl.match(/yellahoose/i))
-                energy = '1120', fishing = '1779', recreation = '1650', shellfish = '1652',
-                mammals = '1380', wq = '2139', aqua = '1122';
 
             esri.config.defaults.io.proxyUrl = "http://services.asascience.com/Proxy/esriproxy/proxy.ashx";
 
@@ -443,7 +420,7 @@ define([
 
                 mapDeferred.on('zoom-end', function (e){
                     if (mapDeferred.loaded && mapDeferred === app.currentMap) {
-                        updateNotice();
+                        //updateNotice();
                         if (app.currentMapIndex === 0){
                             if (e.level >= 12 && app.oldZoomLevel < 12) {
                                 app.currentMap.legend.refresh();
@@ -464,22 +441,22 @@ define([
                                 behavior.apply();
                             }
                         }
-                        if (e.level == 14) {
-                             var point = new esri.geometry.Point(app.currentMap.getCenter());
-                             if (point.x > -7754990.997596861) {
-                                 if (osmLayer == null) {
-                                     osmLayer = new esri.layers.OpenStreetMapLayer();
-                                     app.currentMap.addLayer(osmLayer, 1);
-                                 }
-                                 else
-                                     osmLayer.show();
-                             }
-                                else
-                                    if (osmLayer != null)
-                                     osmLayer.hide();
-                            }
-                        else if (osmLayer != null)
-                            osmLayer.hide();
+                        // if (e.level == 14) {
+                        //      var point = new esri.geometry.Point(app.currentMap.getCenter());
+                        //      if (point.x > -7754990.997596861) {
+                        //          if (osmLayer == null) {
+                        //              osmLayer = new esri.layers.OpenStreetMapLayer();
+                        //              app.currentMap.addLayer(osmLayer, 1);
+                        //          }
+                        //          else
+                        //              osmLayer.show();
+                        //      }
+                        //         else
+                        //             if (osmLayer != null)
+                        //              osmLayer.hide();
+                        //     }
+                        // else if (osmLayer != null)
+                        //     osmLayer.hide();
                         app.oldZoomLevel = e.level;
                     }
                 });
@@ -738,20 +715,20 @@ define([
             switch (mapIndex){
                 case 0:
                     //aboutBox_setContent(1791);
-                    updateNotice();
+                    //updateNotice();
                     //$j('a#flex-link').attr('href', 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,26,27,28,29,30,31,32,33;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#');
-                    //menuWidth = 296;
+                    menuWidth = 296;
                     break;
                 case 1:
                     //aboutBox_setContent(1822);
-                    updateNotice();
+                    //updateNotice();
                     //$j('a#flex-link').attr('href', 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,13,14,15,19,24,25;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#');
-                    //menuWidth = 201;
+                    menuWidth = 201;
                     break;
                 case 2:
                     //aboutBox_setContent(1827);
                     //radioClick(radioSelection);
-                    //menuWidth = 246;
+                    menuWidth = 246;
                     break;
             }
 
