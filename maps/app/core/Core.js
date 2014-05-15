@@ -275,8 +275,7 @@ define([
             });
             query('.legendDiv').forEach(domConstruct.destroy);
             query('.map').forEach(domConstruct.destroy);
-            query('#timeSliderTime').style('height', '0px');
-            query('#timeSliderTime').style('visibility', 'hidden');
+            query('#timeSliderDiv').style('display', 'none');
             domConstruct.destroy("radioWrapper");
 
             createSubThemeButtons();
@@ -339,22 +338,13 @@ define([
                                 timeExtent.endTime = new Date("12/01/2012 UTC");
                                 timeSlider.singleThumbAsTimeInstant(true);
                                 timeSlider.createTimeStopsByTimeInterval(timeExtent, 1, 'esriTimeUnitsMonths');
-                                timeSlider.startup();
 
-                                var monthNames = [ "January", "February", "March", "April", "May", "June",
-                                                "July", "August", "September", "October", "November", "December" ];
-                                
-                                
-                                query('#timeSlider').style('height', '25px');
-                                query('#timeSliderTime').style('height', '20px');
-                                query('#timeSliderTime').style('visibility', 'visible');
-                                
-                                dojo.byId("timeSliderTime").innerHTML = "Showing:  January";
-                                
-                                timeSlider.on("time-extent-change", function(evt) {
-                                    var startValString = monthNames[evt.startTime.getMonth()];
-                                    dojo.byId("timeSliderTime").innerHTML = "Showing:   " + startValString;
-                                });
+                                var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                                "Jul", "Aug", "Sep", "Oct", "Nov"];
+
+                                timeSlider.setLabels(monthNames);
+                                timeSlider.startup();
+                                query('#timeSliderDiv').style('display', 'block');
                             }
 
                             if (layer.hasOwnProperty("outField"))
@@ -528,7 +518,6 @@ define([
                     "<div id='legend' class='tab-pane fade active in'>" +
                         "<div class='modal-body' id='legendWrapper'></div>" +
                         "<div id='timeSliderDiv'></div>" +
-                        "<div id='timeSliderTime'></div>" +
                         "<div class='modal-footer'><a id='flex-link' href='#'>View this data with other layers</a></div>" +
                     "</div>" +
                     "<div id='about' class='modal-body tab-pane fade'>" +

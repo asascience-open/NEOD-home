@@ -644,20 +644,29 @@ div#radioWrapper {
 /*  time slider 
 ================= */
 
-.esriTimeSlider > table > tbody > tr > td:nth-child(1),
-.esriTimeSlider > table > tbody > tr > td:nth-child(3),
-.esriTimeSlider > table > tbody > tr > td:nth-child(4) {
+#timeSliderDiv {
+  height: 48px;
   display: none;
 }
 
 .esriTimeSlider {
-  padding-top: 0!important;
-  padding-bottom: 0!important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  width: 98% !important;
 }
 
-#timeSliderTime {
-  font-size: 11px;
-  padding-left: 10px;
-  padding-bottom: 10px;
-  font-style: italic;
-}
+  .esriTimeSlider > table > tbody > tr > td:nth-child(1),
+  .esriTimeSlider > table > tbody > tr > td:nth-child(3),
+  .esriTimeSlider > table > tbody > tr > td:nth-child(4) {
+    display: none;
+  }
+
+  .esriTimeSlider .dijitRuleLabelH {
+    -webkit-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    color: #333;
+    letter-spacing: 1px;
+    margin-top: 3px;
+  }
