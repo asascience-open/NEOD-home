@@ -24,53 +24,44 @@ define([],
 										layers: [
 											{
 												name: "Maintained Channels",
-												ID: 28,
 												metadata: metadataURL + "OceanUses/MaintainedChannels.pdf",
 												outField: "location"
 											},
 											{
 												name: "Danger Zone and Restricted Areas",
-												ID: 30,
 												metadata: metadataURL + "OceanUses/DangerZoneAndRestrictedAreas.pdf",
 												outField: "description"
 											},
 											{
 												name: "Safety, Security, and Regulated Zones",
-												ID: 31,
 												metadata: metadataURL + "OceanUses/SafetySecurityRegulatedAreas.pdf",
 												outField: "designation"
 											},
 											{
 												name: "WhalesNorth Mandatory Ship Reporting System",
-												ID: 32,
 												metadata: metadataURL + "OceanUses/WhalesNorthMandatoryShipReportingSystem.pdf"
 											},
 											{
 												name: "Marine Mammal Seasonal Management Areas",
-												ID: 33,
 												metadata: metadataURL + "OceanUses/MarineMammalSeasonalAreas.pdf"
 											},
 											{
 												name: "Marine Transportation",
-												ID: 29,
 												metadata: metadataURL + "OceanUses/MarineTransportation.pdf",
 												outField: "description"
 											},
 											{
 												name: "Pilot Boarding Areas",
-												ID: 26,
 												metadata: metadataURL + "OceanUses/PilotBoardingAreas.pdf",
 												outField: "boardingArea"
 											},
 											{
 												name: "Anchorages",
-												ID: 27,
 												metadata: metadataURL + "OceanUses/Anchorages.pdf",
 												outField: "description"
 											},
 											{
 												name: "Aids to Navigation",
-												ID: 23,
 												metadata: metadataURL + "OceanUses/AidsToNavigation.pdf",
 												outField: "aidName"
 											}
@@ -94,35 +85,29 @@ define([],
 										layers: [
 											{
 												name: "Unexploded Ordnance Locations",
-												ID: 24,
 												metadata: metadataURL + "OceanUses/UnexplodedOrdnanceLocations.pdf",
 												outField: "description"
 											},
 											{
 												name: "Unexploded Ordnance Areas",
-												ID: 25,
 												metadata: metadataURL + "OceanUses/UnexplodedOrdnanceAreas.pdf",
 												outField: "description"
 											},
 											{
 												name: "Ocean Disposal Sites",
-												ID: 19,
 												metadata: metadataURL + "OceanUses/OceanDisposalSites.pdf",
 												outField: "description"
 											},
 											{
 												name: "Submarine Cables",
-												ID: 13,
 												metadata: metadataURL + "OceanUses/SubmarineCables"
 											},
 											{
 												name: "Submarine Cable Areas",
-												ID: 14,
 												metadata: metadataURL + "OceanUses/CableAreas"
 											},
 											{
 												name: "Submarine Pipeline Areas",
-												ID: 15,
 												metadata: metadataURL + "OceanUses/PipelineAreas"
 											}
 										]
@@ -145,70 +130,60 @@ define([],
 										layers : [
 											{
 												name: "2011 All AIS Vessel Density",
-												ID: 34,
 												metadata: metadataURL + "AIS/NorthAtlanticTotalAISVesselDensity2011.pdf",
 												checked: true,
 												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#"
 											},
 											{
 												name: "2011 Cargo AIS Vessel Density",
-												ID: 35,
 												metadata: metadataURL + "AIS/NorthAtlanticCargoAISVesselDensity2011.pdf",
 												checked: false,
 												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#"
 											},
 											{
 												name: "2011 Passenger AIS Vessel Density",
-												ID: 36,
 												metadata: metadataURL + "AIS/NorthAtlanticPassengerAISVesselDensity2011.pdf",
 												checked: false,
 												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#"
 											},
 											{
 												name: "2011 Tug-Tow AIS Vessel Density",
-												ID: 37,
 												metadata: metadataURL + "AIS/NorthAtlanticTugTowAISVesselDensity2011.pdf",
 												checked: false,
 												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#"
 											},
 											{
 												name: "2011 Tanker AIS Vessel Density",
-												ID: 38,
 												metadata: metadataURL + "AIS/NorthAtlanticTankerAISVesselDensity2011.pdf",
 												checked: false,
 												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#"
 											},
 											{
 												name: "2012 All AIS Vessel Density",
-												ID: 39,
 												metadata: metadataURL + "AIS/NorthAtlanticTotalAISVesselDensity2012.pdf",
 												checked: false,
 												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#"
 											},
 											{
 												name: "2012 Cargo AIS Vessel Density",
-												ID: 40,
 												metadata: metadataURL + "AIS/NorthAtlanticCargoAISVesselDensity2012.pdf",
 												checked: false,
 												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#"
 											},
 											{
 												name: "2012 Passenger AIS Vessel Density",
-												ID: 41,
 												metadata: metadataURL + "AIS/NorthAtlanticPassengerAISVesselDensity2012.pdf",
 												checked: false,
 												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#"
 											},
 											{
 												name: "2012 Tug-Tow AIS Vessel Density",
-												ID: 42,
 												metadata: metadataURL + "AIS/NorthAtlanticTugTowAISVesselDensity2012.pdf",
 												checked: false,
 												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#"
 											},
 											{
 												name: "2012 Tanker AIS Vessel Density",
-												ID: 43,
 												metadata: metadataURL + "AIS/NorthAtlanticTankerAISVesselDensity2012.pdf",
 												checked: false,
 												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#"
@@ -236,15 +211,13 @@ define([],
 										URL : "http://gis.asascience.com/arcgis/rest/services/RegionalPortal/MonthlyTugTow2012/MapServer/",
 										layers: [
 											{
-												name: "2012 Monthly Tug Tow",
-												ID: 0,
+												name: "Monthly Tug Tow Density 2012",
 												showtimeSlider:true,
 												metadata: metadataURL + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf'
 											},
 											//This is for Legend
 											{
-												name: "2012 Monthly Tug Tow",
-												ID: 1,
+												name: "Legend",
 												metadata: metadataURL + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf'
 											}
 										]
