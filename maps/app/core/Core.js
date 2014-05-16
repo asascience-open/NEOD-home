@@ -785,11 +785,13 @@ define([
             {
                 if (configOptions.themes[app.themeIndex].maps.length !== 0)
                 {
-                    var layersLoaded = false;
+                    var dynamicLayerCount = 0,
+                        requestCount = 0;
                     array.forEach(configOptions.themes[app.themeIndex].maps, function (map, mapIndex) {
                         if (map.layers.hasOwnProperty('dynamicLayers'))
                         {
                             array.forEach(map.layers.dynamicLayers, function (dynamicLayer, dynamicLayerIndex) {
+                                dynamicLayerCount++;
                                 var request = EsriRequest({
                                     url: dynamicLayer.URL + 'layers',
                                     content: {
@@ -801,6 +803,7 @@ define([
 
                                 request.then(
                                     function(data) {
+                                        requestCount++;
                                         array.forEach(data.layers, function (layerObj, i){
                                             array.forEach(dynamicLayer.layers, function (layer) {
                                                 if (layer.name === layerObj.name)
@@ -809,22 +812,12 @@ define([
                                                     layer.description = layerObj.description;
                                                 }
                                             });
-                                            if (mapIndex === configOptions.themes[app.themeIndex].maps.length - 1)
-                                                if (dynamicLayerIndex === map.layers.dynamicLayers.length - 1)
-                                                    if (i === data.layers.length - 1){
-                                                        dynamicLayer.loaded = true;
-                                                        array.forEach(configOptions.themes[app.themeIndex].maps, function (map, mapIndex){
-                                                            array.forEach(map.layers.dynamicLayers, function (d){
-                                                                layersLoaded = d.loaded;
-                                                            });
-                                                        });
-                                                        if (layersLoaded && mapIndex == (configOptions.themes[app.themeIndex].maps.length - 1))
-                                                        {
-                                                            configOptions.themes[app.themeIndex].loaded = true;
-                                                            loadmainTheme();
-                                                        }
-                                                    }
                                         });
+                                        if (requestCount === dynamicLayerCount)
+                                        {
+                                            configOptions.themes[app.themeIndex].loaded = true;
+                                            loadmainTheme();
+                                        }
                                     }, function(error) {
                                         console.log("Error: ", error.message);
                                 });
