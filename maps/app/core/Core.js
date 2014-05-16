@@ -818,8 +818,11 @@ define([
                                                                 layersLoaded = d.loaded;
                                                             });
                                                         });
-                                                        if (layersLoaded)
+                                                        if (layersLoaded && mapIndex == (configOptions.themes[app.themeIndex].maps.length - 1))
+                                                        {
+                                                            configOptions.themes[app.themeIndex].loaded = true;
                                                             loadmainTheme();
+                                                        }
                                                     }
                                         });
                                     }, function(error) {
