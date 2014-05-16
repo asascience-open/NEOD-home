@@ -785,6 +785,7 @@ define([
             {
                 if (configOptions.themes[app.themeIndex].maps.length !== 0)
                 {
+                    var layersLoaded = false;
                     array.forEach(configOptions.themes[app.themeIndex].maps, function (map, mapIndex) {
                         if (map.layers.hasOwnProperty('dynamicLayers'))
                         {
@@ -811,8 +812,14 @@ define([
                                             if (mapIndex === configOptions.themes[app.themeIndex].maps.length - 1)
                                                 if (dynamicLayerIndex === map.layers.dynamicLayers.length - 1)
                                                     if (i === data.layers.length - 1){
-                                                        loadmainTheme();
-                                                        configOptions.themes[app.themeIndex].loaded = true;
+                                                        dynamicLayer.loaded = true;
+                                                        array.forEach(configOptions.themes[app.themeIndex].maps, function (map, mapIndex){
+                                                            array.forEach(map.layers.dynamicLayers, function (d){
+                                                                layersLoaded = d.loaded;
+                                                            });
+                                                        });
+                                                        if (layersLoaded)
+                                                            loadmainTheme();
                                                     }
                                         });
                                     }, function(error) {
