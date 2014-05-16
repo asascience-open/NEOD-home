@@ -101,6 +101,20 @@ define([
                     found: function(){updateLegend();}
                 }
             });
+
+            var notifyCount = 0;
+
+            notify('done',function(responseOrError){
+                if (responseOrError.hasOwnProperty('url'))
+                    if (responseOrError.url.match(/legend?/i))
+                    {
+                        notifyCount++;
+                        if (notifyCount === configOptions.themes[app.themeIndex].maps.length) {
+                            notifyCount = 0;
+                            behavior.apply();
+                        }
+                    }
+            });
         }
 
         function resizeMap()
@@ -471,20 +485,6 @@ define([
             });
 
             app.oldZoomLevel = app.currentMap.getLevel();
-
-            var notifyCount = 0;
-
-            notify('done',function(responseOrError){
-                if (responseOrError.hasOwnProperty('url'))
-                    if (responseOrError.url.match(/legend/i))
-                    {
-                        notifyCount++;
-                        if (notifyCount === configOptions.themes[app.themeIndex].maps.length) {
-                            behavior.apply();
-                            notifyCount = 0;
-                        }
-                    }
-            });
 
             query('#legendModal').style('width', configOptions.themes[app.themeIndex].maps[app.currentMapIndex].menuWidth + 'px');
         }
