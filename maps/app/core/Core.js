@@ -383,6 +383,13 @@ define([
                             }
                         });
                         dl.setVisibleLayers(visibleLayers);
+                        map.flexLink = 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;admin=9999;hapc=9999;efh=9999;ngdc=9999;ocean=9999';
+                        array.forEach(visibleLayers, function (layerID) {
+                            map.flexLink += (',' + layerID);
+                        });
+                        map.flexLink += ';HereIsMyMap#';
+                        if (mapIndex === 0)
+                            query('#flex-link')[0].href = map.flexLink;
                         mapDeferred.addLayers([dl]);
                     });
 
@@ -518,7 +525,7 @@ define([
                     "<div id='legend' class='tab-pane fade active in'>" +
                         "<div class='modal-body' id='legendWrapper'></div>" +
                         "<div id='timeSliderDiv'></div>" +
-                        "<div class='modal-footer'><a id='flex-link' href='#'>View this data with other layers</a></div>" +
+                        "<div class='modal-footer'><a id='flex-link' target='_blank'>View this data with other layers</a></div>" +
                     "</div>" +
                     "<div id='about' class='modal-body tab-pane fade'>" +
                         "<strong>Overview</strong><div id='overview'><p>blah</p></div>" +
@@ -737,13 +744,13 @@ define([
                 //fadeInRadio.play();
 
             updateAboutText(mapIndex);
-            
-            //query('#legendModal').style('width', configOptions.themes[app.themeIndex].maps[mapIndex].menuWidth + 'px');
 
             app.currentMapIndex = mapIndex;
             app.currentMap = app.maps[mapIndex];
             app.currentMap.legend.refresh();
             behavior.apply();
+
+            query('#flex-link')[0].href = configOptions.themes[app.themeIndex].maps[mapIndex].flexLink;
         }
 
         function updateAboutText (mapIndex)
