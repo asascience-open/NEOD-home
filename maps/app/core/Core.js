@@ -367,7 +367,6 @@ define([
                                     infoTemplate : new InfoTemplate('', '${' + layer.outField + '}'),
                                     outFields: [layer.outField],
                                     opacity: 0.0,
-                                    mode: FeatureLayer.MODE_SNAPSHOT,
                                     displayOnPan: false
                                 });
                                 fl.on('mouse-over', function (e){
