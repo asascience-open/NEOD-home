@@ -556,8 +556,11 @@ define([
             query('#mapCarousel').carousel({interval: false});
 
             query('#mapCarousel button').on('click', function (e){
+                query('#loading').style("display", "block");
                 domClass.remove(query('#mapCarousel button.btn.active')[0], 'active');
                 domClass.add(query(e.target), 'active');
+                app.themeIndex = parseInt(e.currentTarget.id.substring(e.currentTarget.id.length - 1), 10);
+                getLayerIds();
             });
 
             if (screenWidth < 1024)
