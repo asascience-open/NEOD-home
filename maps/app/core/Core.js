@@ -181,24 +181,24 @@ define([
                     case 'oceans':
                         array.forEach(app.maps, function(map){
                             map.setBasemap('oceans');
+                            map.chart.hide();
                         });
-                        chart.hide();
                         break;
                     case 'satellite':
                         array.forEach(app.maps, function(map){
                             map.setBasemap('satellite');
+                            map.chart.hide();
                         });
-                        chart.hide();
                         break;
                     case 'chart':
-                        chart.show();
                         var basemapLayerID;
                         array.forEach(app.maps, function(map){
                             basemapLayerID = map.basemapLayerIds[0];
                             for (var prop in map._layers)
                                 if (prop == basemapLayerID)
                                     map._layers[prop].hide();
-                                        map._basemap = 'chart';
+                            map._basemap = 'chart';
+                            map.chart.show();
                         });
                         break;
                 }
@@ -472,7 +472,10 @@ define([
                 if (mapIndex == 0)
                     app.currentMap = mapDeferred;
 
-                mapDeferred.addLayer(chart, 1);
+                mapDeferred.chart = new ArcGISImageServiceLayer('http://egisws02.nos.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer', 'chart');
+
+                mapDeferred.addLayer(mapDeferred.chart, 1);
+                mapDeferred.chart.hide();
 
                 var scalebar = new Scalebar({
                     map         : mapDeferred,
@@ -533,10 +536,6 @@ define([
                     "</div>" +
                 "</div>" +
             "</div>", "map-pane");
-            
-            
-            chart = new ArcGISImageServiceLayer('http://egisws02.nos.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer', 'chart');            
-            chart.hide();
 
             createBasemapGallery();
 
