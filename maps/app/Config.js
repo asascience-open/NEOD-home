@@ -1,7 +1,7 @@
 define([],
 	function ()
 	{
-		var serviceURL = "http://54.90.27.178/arcgis1/rest/services/",
+		var serviceURL = "http://50.19.218.171/arcgis1/rest/services/",
 			oceanUses = serviceURL + "OceanUses/MapServer/",
 			metadataURL = "http://www.northeastoceandata.org/files/metadata/";
 		configOptions = {
