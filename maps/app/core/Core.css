@@ -647,6 +647,7 @@ div#radioWrapper {
 #timeSliderDiv {
   height: 48px;
   display: none;
+  margin-left: 4px;
 }
 
 .esriTimeSlider {
@@ -654,13 +655,13 @@ div#radioWrapper {
   padding-bottom: 0 !important;
   width: 98% !important;
 }
-
+/*
   .esriTimeSlider > table > tbody > tr > td:nth-child(1),
   .esriTimeSlider > table > tbody > tr > td:nth-child(3),
   .esriTimeSlider > table > tbody > tr > td:nth-child(4) {
     display: none;
   }
-
+*/
   .esriTimeSlider .dijitRuleLabelH {
     -webkit-transform: rotate(270deg);
     -moz-transform: rotate(270deg);
