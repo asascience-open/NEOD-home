@@ -982,7 +982,7 @@ define([],
 								service	:	fishAndShellfish
 							},
 							{
-								name	: 	'Groundfish and Scallop EFH Overlay',
+								name	: 	'Groundfish and Shellfish EFH Overlay',
 								metadata:	'https://s3.amazonaws.com/marco-public-2d/Metadata_files/html/efh_overlay.html',
 								service	:	fishAndShellfish
 							},
