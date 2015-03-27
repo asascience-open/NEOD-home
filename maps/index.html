@@ -14,7 +14,7 @@
         <link rel="apple-touch-icon" href="images/brand.png">
         <link rel="shortcut icon" href="images/favicon.ico">
 
-        <title>Maritime Commerce</title>
+        <title>Northeast Ocean Data Portal | Data Viewer</title>
 
         <!-- Bootstrap core CSS -->
         <link href="lib/bootstrap.css" rel="stylesheet">
@@ -23,10 +23,10 @@
         <!-- Custom styles for this template -->
         <link href="app/core/Core.css" rel="stylesheet">
 
-        <link rel="stylesheet" href="http://js.arcgis.com/3.10/js/dojo/dijit/themes/claro/claro.css">
-        <link rel="stylesheet" href="http://js.arcgis.com/3.10/js/esri/css/esri.css">
+        <link rel="stylesheet" href="http://js.arcgis.com/3.13/dijit/themes/claro/claro.css">
+        <link rel="stylesheet" href="http://js.arcgis.com/3.13/esri/css/esri.css">
         
-        <link rel="stylesheet" type="text/css" href="lib/bootstrapmap.css">
+        <link rel="stylesheet" href="lib/bootstrapmap.css">
 
         <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -35,80 +35,82 @@
     </head>
 
     <body class='claro'>
-        <!-- Navbar
-        ========================================================= -->
-        <div class="navbar navbar-default navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
+        <!-- navbar -->
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
                     </button>
-                    <a class="brand" href="./index.html"><img src="img/logo-nod_339x28.png" /></a>
-                    <div class="nav-collapse collapse">
-                        <ul class="nav">
-                            <li>
-                                <a href="#">HOME</a>
-                            </li>
-                            <li class="dropdown">
-                                <a id="drop1" href="#" class="dropdown-toggle" data-toggle="dropdown">MAPS&nbsp;<span class='caret'></span></a>
-                                <ul id='themeDropdown' class='dropdown-menu' role='menu' aria-labelledby="drop1"></ul>
-                            </li>
-                            <li class='dropdown'>
-                                <a id="drop2" href="#" class="dropdown-toggle" data-toggle="dropdown">DATA&nbsp;<span class='caret'></span></a>
-                                <ul class='dropdown-menu' role='menu' aria-labelledby="drop2">
-                                    <li><a href="#">DATA DOWNLOAD</a></li>
-                                    <li><a href="#">EXTERNAL DATA SOURCES</a></li>
-                                    <li><a href="#">POLICIES AND STANDARDS</a></li>
-                                </ul>
-                            </li>
-                            <li class='dropdown'>
-                                <a id="drop3" href="#" class="dropdown-toggle" data-toggle="dropdown">ABOUT&nbsp;<span class='caret'></span></a>
-                                <ul class='dropdown-menu' role='menu' aria-labelledby="drop3">
-                                    <li><a href="#">CONTACT</a></li>
-                                    <li><a href="#">NEWS</a></li>
-                                    <li><a href="#">TECHNICAL OVERVIEW</a></li>
-                                </ul>
-                            </li>
-                        </ul>
+                    <a class="navbar-brand" title="Northeast Ocean Data" alt="Northeast Ocean Data" href="../">Northeast Ocean Data</a>
+                </div>
+                <div class="navbar-collapse collapse" id="mapList">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="../">home</a></li>
+                        <li class="dropdown">
+                            <span id="drop1" class="dropdown-toggle" data-toggle="dropdown">maps <span>&raquo;</span></span>
+                            <!-- <ul id='themeDropdown' class='dropdown-menu' role='menu' aria-labelledby="drop1"></ul> -->
+                        </li>
+                        <li class="dropdown">
+                            <span id="drop2" class="dropdown-toggle" data-toggle="dropdown">data &raquo;</span>
+                            <!-- <ul class='dropdown-menu' role='menu' aria-labelledby="drop2">
+                                <li><a href="#">data download</a></li>
+                                <li><a href="#">external data sources</a></li>
+                                <li><a href="#">policies and standards</a></li>
+                            </ul> -->
+                        </li>
+                        <li class="dropdown">
+                            <span id="drop3" class="dropdown-toggle" data-toggle="dropdown">about &raquo;</span>
+                            <!-- <ul class='dropdown-menu' role='menu' aria-labelledby="drop3">
+                                <li><a href="#">contact</a></li>
+                                <li><a href="#">news</a></li>
+                                <li><a href="#">technical overview</a></li>
+                            </ul> -->
+                        </li>
+                    </ul>
+                <!--
+                    <div id='mapCarousel' class='carousel slide'>
+                        <div class='carousel-inner' id="mapCarouselInner"></div>
+                        <a class="carousel-control left" href="#mapCarousel" data-slide="prev">&lsaquo;</a>
+                        <a class="carousel-control right" href="#mapCarousel" data-slide="next">&rsaquo;</a>
                     </div>
-                </div>
-                <div id='mapCarousel' class='carousel slide'>
-                    <div class='carousel-inner' id="mapCarouselInner"></div>
-                    <a class="carousel-control left" href="#mapCarousel" data-slide="prev">&lsaquo;</a>
-                    <a class="carousel-control right" href="#mapCarousel" data-slide="next">&rsaquo;</a>
-                </div>
-                <div class='nav-collapse collapse' id='mapList'>
+                -->
                     <div class='button-container'>
                         <div class='btn-group' data-toggle='buttons-radio' id='themeButtonGroup'></div>
                     </div>
-                </div>
+                </div><!--/.nav-collapse -->
             </div>
         </div>
         <div class='modal fade' id='shareModal'>
-            <div class='modal-header'>
-                <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
-                <h5>Share this Map</h5>
-            </div>
-            <div class='modal-body'>
-                <p>You can share this map on Facebook, LinkedIn, Google+ and Twitter!</p>
-                <p id='url' style='text-align:center;'></p>
-                <p style='text-align:center; padding-bottom: 2px;line-height: 32px;'>
-                    <a href='#' onclick='doShare(\'facebook\');return false;'>
-                        <img src='http://www.northeastoceandata.org/images/facebook_32.png' border='0' align='center' style='margin-right: 8px;' />
-                    </a>
-                    <a href='#' onclick='doShare(\'linkedin\');return false;'>
-                        <img src='http://www.northeastoceandata.org/images/linkedin_32.png' border='0' align='center' style='margin-right: 8px;' />
-                    </a>
-                    <!--<a href='#' onclick='doShare(\'pinterest\');return false;'><img src='http://www.northeastoceandata.org/images/pinterest_32.png' border='0' align='center' style='margin-right: 8px;' /></a -->
-                    <a href='#' onclick='doShare(\'google+\');return false;'>
-                        <img src='http://www.northeastoceandata.org/images/googleplus_32.png' border='0' align='center' style='margin-right: 8px;' />
-                    </a>
-                    <a href='#' onclick='doShare(\'twitter\');return false;'>
-                        <img src='http://www.northeastoceandata.org/images/twitter_32.png' border='0' align='center' style='margin-right: 8px;' />
-                    </a>
-                </p>
+            <div class='modal-dialog'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
+                        <h5>Share this Map</h5>
+                    </div>
+                    <div class='modal-body'>
+                        <p>You can share this map on Facebook, LinkedIn, Google+ and Twitter!</p>
+                        <p id='url' style='text-align:center;'></p>
+                        <p style='text-align:center; padding-bottom: 2px;line-height: 32px;'>
+                            <a href='#' onclick='doShare(\'facebook\');return false;'>
+                                <img src='http://www.northeastoceandata.org/images/facebook_32.png' border='0' align='center' style='margin-right: 8px;' />
+                            </a>
+                            <a href='#' onclick='doShare(\'linkedin\');return false;'>
+                                <img src='http://www.northeastoceandata.org/images/linkedin_32.png' border='0' align='center' style='margin-right: 8px;' />
+                            </a>
+                            <!--<a href='#' onclick='doShare(\'pinterest\');return false;'><img src='http://www.northeastoceandata.org/images/pinterest_32.png' border='0' align='center' style='margin-right: 8px;' /></a -->
+                            <a href='#' onclick='doShare(\'google+\');return false;'>
+                                <img src='http://www.northeastoceandata.org/images/googleplus_32.png' border='0' align='center' style='margin-right: 8px;' />
+                            </a>
+                            <a href='#' onclick='doShare(\'twitter\');return false;'>
+                                <img src='http://www.northeastoceandata.org/images/twitter_32.png' border='0' align='center' style='margin-right: 8px;' />
+                            </a>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
         <div class='modal fade' id='feedbackModal'>
@@ -141,7 +143,56 @@
                 <!--&nbsp;<a href="#" onclick="window.top.tabChg('feedback',false);window.top.neodShowHideBox('feedback','Whatever',false);return false;">Not right now</a>-->
             </div>
         </div>
-        <div id="map-pane"></div>
+        <div class='modal fade' id='source-data-modal'>
+            <div class='modal-dialog'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <img src='img/loading.gif' id='source-download-loading' />
+                        <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
+                        <h5>Source Data Download</h5>
+                    </div>
+                    <div class='modal-body'>
+                        <p>
+                            <span id='loading-message'>Generating ZIP file...</span>
+                            <a href='' target='_blank' id='source-data-downlaod' title='Click to Download File'>Source Data ZIP file</a>
+                        </p>
+                    </div>
+                    <div class='modal-footer'>
+                        <button class='btn btn-default' data-dismiss='modal'>Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id='side-panel' class='main'>
+            <div id='show-hide-btn-container'>
+                <div class='panel-heading-arrow' id='show-hide-btn' title='Hide Panel'></div>
+            </div>
+            <!-- <button type='button' id='show-hide-btn' class='btn no-bottom-left-border-radius no-top-left-border-radius no-top-right-border-radius' data-toggle='button'>Hide</button> -->
+            <div id='watermark'>Northeast Ocean Data</div>
+            <div id='remove-button-div'><a href="" id="remove-layers">Turn all Layers Off</a></div>
+            <div id='layer-info'>
+                <div id='back-to-layers'>
+                    <span role="presentation" class="dijitInline dijitIcon dijitEditorIcon dijitEditorIconUndo"></span>
+                    Back to Layers
+                </div>
+            <div id='layer-info-content'></div></div>
+            <div id='tree'></div>
+            <div id='legend'></div>
+            <div id='legend-control'>
+                Legend
+                <div class='panel-heading-arrow-vert' id='show-hide-legend-btn' title='Hide Legend'></div>
+            </div>
+        </div>
+        <div id="map-pane" class='main'>
+            <div id="mapControls">
+                <img src='img/loading.gif' id='loading' />
+                <span id='scale'></span>
+                <div id="zoomToDropdownContainer" class="button-container"></div>
+                <div id="basemapDropdownContainer" class="button-container"></div>
+                <button id="shareButton" class="button-container" type="button"></button>
+                <button id="printButton" class="button-container" type="button"></button>
+            </div>
+        </div>
     
         <script type="text/javascript">
             var djConfig = {
@@ -150,17 +201,16 @@
                 packages: [
                 {
                     name: 'liteviewer',
-                    location: location.pathname.replace(/\/[^/]+$/, '') + '/app'
+                    location: location.pathname.replace(/\/[^/]+$/, '') + 'app'
                 },
                 {
                     name: 'bootstrap',
-                    //location: 'https://rawgithub.com/xsokev/Dojo-Bootstrap/v1.3'
-                    location: location.pathname.replace(/\/[^/]+$/, '') + '/lib/Dojo-Bootstrap'
+                    location: location.pathname.replace(/\/[^/]+$/, '') + 'lib/Dojo-Bootstrap'
                 }]
             };
         </script>
 
-        <script src="lib/arcgis-3.10.js"></script>
+        <script src="http://js.arcgis.com/3.13/"></script>
         <script type="text/javascript">
             require(["liteviewer/Config"]);
             require(["liteviewer/core/Core"], function(core){

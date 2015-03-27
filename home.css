@@ -1,0 +1,47 @@
+
+body.home {
+  padding-top	: 87px;
+  font-family	: 'Droid Sans', Arial, sans-serif;
+  color			: #333;
+}
+.nav.navbar-nav {
+	margin-top: -24px;
+}
+p {
+	float			: left;
+	font-size		: 13px;
+	font-size		: inherit;
+	color			: inherit;
+	clear			: both;
+	margin-bottom	: 5px;
+	margin-top		: 2px;
+}
+
+.container > .row {
+	width: 984px;
+	margin: 0 auto;
+}
+
+.container > .row > div {
+	width: 308px;
+	margin: 0 5px;
+	float: left;
+}
+
+.container .row.thumbnail-title {
+	color: #785f00;
+}
+
+.container .row.misc-items .thumbnail {
+	margin-bottom: 0;
+}
+
+.container .row.misc-items .thumbnail a {
+	color: #007871;
+	font-size: 13px;
+	font-family	: 'Droid Sans', Arial, sans-serif !important;
+}
+
+.thumbnail {
+  border: none !important;
+}

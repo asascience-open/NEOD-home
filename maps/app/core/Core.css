@@ -12,14 +12,131 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  line-height: 20px;
+  height: 100%;
+}
+
+:focus {
+  outline: none;
 }
 
 button {
   font-size: 12px !important;
 }
 
+button.close {
+  font-size: 22px !important;
+}
+
+.main {
+  float: left;
+}
+
+#side-panel {
+  width: 300px;
+  background-color: #697396;
+  border-right: 1px solid #ddd;
+  z-index: 10;
+  position: absolute;
+  font-size: 11px;
+  visibility: hidden;
+}
+  #side-panel #remove-button-div {
+    margin: 5px 0 5px 10px;
+  }
+    #side-panel #remove-button-div a {
+      color: #fff;
+    }
+
+  #side-panel #tree {
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-top: 2px solid #eee;
+    background-color: #FFF;
+  }
+.panel-heading {
+  padding: 5px 15px !important;
+  background-color: #697396 !important;
+}
+
+.panel-heading:hover {
+  background-color: #999 !important;
+}
+
+.panel-heading-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 10px solid #D1D2D4;
+  margin-right: 10px;
+  margin-top: 4px;
+  right: 0;
+  cursor: pointer;
+}
+
+.panel-heading-arrow:hover {
+  border-right-color: white;
+}
+
+#show-hide-btn-container {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  background-color: #697396;
+  margin-left: 269px;
+}
+
+.panel-body {
+  font-size: 11px;
+  padding: 0;
+}
+
+h3.panel-title {
+  font-size: 14px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.navbar-brand {
+  margin-top  : 4px;
+  margin-left : -5px;
+}
+
+.navbar-default .navbar-nav > li > span,
+.navbar-default .navbar-nav > li > a {
+  font-size     : 12px;
+  font-family   : 'Droid Sans', Arial, sans-serif;
+  color         : #393939;
+  text-transform: uppercase;
+  padding       : 10px 9px;
+}
+
+.dropdown-menu {
+  text-align: left;
+}
+
+.dropdown-menu > li > a {
+  font-size     : 12px;
+  font-family   : 'Droid Sans', Arial, sans-serif;
+  color         : #393939;
+  text-transform: uppercase;
+}
+
+li.dropdown {
+  padding-top: 9px;
+}
+
+.navbar-default .navbar-nav > li > span:hover,
+.navbar-default .navbar-nav > li > a:hover,
+.dropdown-menu > li > a:hover {
+  color: #785F00 !important;
+}
+
 .navbar-fixed-top {
   margin: 0;
+  height: 63px;
 }
 
 .navbar-inner {
@@ -40,20 +157,6 @@ button {
 .nav-collapse ul.nav {
   line-height: 15px;
   margin-right: 50px;
-}
-
-.dropdown-toggle .caret {
-  margin-top: 8px;
-}
-
-.button-container {
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-}
-
-.button-container .btn-group {
-  margin-top: 0;
 }
 
 .navbar .carousel {
@@ -83,64 +186,98 @@ button {
       right: -25px;
     }
 
+#mapList {
+  text-align: center;
+}
+
 #mapList .btn,
 .carousel .btn {
-  /*
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.35);
-  */
   color: #fff;
-  font-weight: bold;
   background-color: rgb(209, 210, 212);
   border-bottom: none;
   border-color: #fff;
   padding: 2px 4px 2px 4px;
+  font-weight: bold;
 }
 
-#mapList .btn:hover,
+/*#mapList .btn:hover,
 .carousel .btn:hover {
   background-color: rgb(153, 153, 153);
-}
+}*/
 
 #mapList .btn.active,
 .carousel .btn.active {
   background-color: rgb(105, 115, 150);
-  /*background-image: none;*/
 }
 
-/*#mapDiv*/ #map-pane {
+#mapList .navbar-right {
+  margin-right: 123px;
+}
+
+#map-pane {
     margin-top: 41px;
     min-height: 100%; 
     max-height: 100%;
+    width: 100%;
+    float: left;
+    position: absolute;
 }
 
-/*#mapDiv_root {
-  top: 0;
-  left: 0;
+.enabled {
+  font-style: italic !important;
+  font-weight: bold !important;
 }
-*/
+
 .map {
   position: absolute;
   width: 100%;
   height: 100%;
-  opacity: 0;
   z-index: 0;
 }
 
-.map.active,
-#legend .modal-body div.active {
+.map.active {
   display: block;
   opacity: 1;
   z-index: 1;
 }
 
-.legendDiv {
-  opacity: 0;
-  z-index: 0;
-  display: none;
+#legend {
+  overflow-y      : auto;
+  border-top      : 2px solid #eee;
+  padding         : 10px 0 0 15px;
+  background-color: #FFF;
+  margin-top      : 10px;
+  z-index         : -1;
 }
 
-#legendWrapper {
-  padding-left: 15px !important;
+.legend {
+  overflow-y  : auto;
+  padding     : 10px 0 10px 26px;
+} 
+
+.flex-link {
+  font-weight: bold;
+  color: #697396;
+}
+
+.about {
+  border-bottom: 1px dashed #ddd;
+  margin-right: 17px;
+}
+
+.legend h5 {
+  font-weight: bold;
+}
+
+.about p {
+  line-height: 14px;
+  color: #808080;
+}
+
+.about div {
+  border-top: 1px solid #ddd;
+  padding-top: 3px;
+  margin-right: 17px;
 }
 
 .sub-theme-buttons {
@@ -214,9 +351,6 @@ button {
 #mapControls {
   position: absolute;
   right: 10px;
-  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
   z-index: 2;
 }
   #mapControls .btn-group {
@@ -232,10 +366,6 @@ button {
 
   #mapControls .btn span {
     margin-left: 5px;
-  }
-
-  #mapControls #printButton {
-    width: 70px;
   }
 
 .no-bottom-border {
@@ -309,13 +439,14 @@ button {
 }
 
 div#watermark{
-    position: fixed;
+    position: absolute;
     bottom: 9px;
-    left: 10px;
     color: #000;
     text-shadow: #fff 1px 1px;
     font-size: 15px;
     z-index: 2;
+    margin-left: 315px;
+    width: 150px;
 }
 span#scale {
     position: fixed;
@@ -336,24 +467,40 @@ span#scale {
     width: 20px;
     position: absolute;
     right: 370px;
-    top: 70px;
+    top: 5px;
     z-index: 2;
+    visibility: hidden;
 }
 
 
 /*  legend BEGIN
 ===============================================  */
 
+table.esriLegendLayer tr {
+  height: 21px;
+}
 
-.esriLegendServiceLabel {display: none;}
+table.esriLegendLayer tr td {
+  padding: 1px;
+}
+
+/*.esriLegendServiceLabel {display: none;}*/
 
 .esriLegendGroupLayer {
   padding-top: 0 !important;
 }
 
+  .esriLegendGroupLayer > table:first-child {
+    display: none;
+  }
+
 .esriLegendLeft {
-  padding-right: 15px;
+  padding-right: 0!important;
   padding-left: 0!important;
+}
+
+.modal {
+  overflow-y: hidden;
 }
 
 #shareModal,
@@ -365,155 +512,41 @@ span#scale {
   text-decoration: none;
 }
 
-#legendModal,
-#aboutModal {
-  top: 100px;
-  left: 65px;
-  /*opacity: .25;
-  transition: opacity .3s ease-out;*/
-  width: 296px;
-  margin: 0;
-  position: absolute;
-  display: none;
-  z-index: 1040;
-}
-
-  #legendModal .modal-header,
-  #aboutModal .modal-header{
-    background-color: rgb(104, 115, 150);
-    color: white;
-    padding: 6px 15px;
-    -webkit-border-top-left-radius: 6px;
-    -moz-border-radius-topleft: 6px;
-    border-top-left-radius: 6px;
-    -webkit-border-top-right-radius: 6px;
-    -moz-border-radius-topright: 6px;
-    border-top-right-radius: 6px;
-  }
-
-  #legendModal .modal-header {
-    padding: 0;
-  }
-
-  #legendModal .modal-header .close {
-    margin-top: 3px;
-    margin-right: 4px;
-  }
-
-  #legendModal .modal-header #tabs {
-    margin-bottom: 0;
-    padding-bottom: 0;
-    cursor: move !important;
-  }
-
-    #legendModal .modal-header #tabs li {
-      text-align: center;
-      font-weight: bold;
-      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
-    }
-
-    #legendModal .modal-header #tabs li {
-      width: 45%;
-    }
-
-    #legendModal .modal-header #tabs li.active a {
-      /*color: #555;*/
-      color: rgb(104, 115, 150);
-    }
-
-    #legendModal .modal-header #tabs li a{
-      color: #fff;
-      padding-top: 3px;
-      padding-bottom: 3px;
-      cursor: move !important;
-    }
-
-    #legendModal .modal-header #tabs li a:hover{
-      color: #555;
-      color: rgb(104, 115, 150);
-    }
-
-  #legendModal .modal-header .alert-info{
-    font-size: 12px;
-    margin-bottom: 0;
-    width: 174px;
-    text-align: center;
-    padding-right: 14px;
-  }
-
-     /*
-  #legendModal:hover {
-    background-color: rgba(255, 255, 255, 1);
-    opacity: 1;
-  }
-  */
-
-  #legendModal .modal-body {
-    font-size: 11px !important;
-    padding: 4px 0 0 0;
-    clear:both;
-  }
-
-  #legendModal .modal-header h5,
   #shareModal .modal-header h5,
-  #feedbackModal .modal-header h5,
-  #aboutModal .modal-header h5 {
+  #feedbackModal .modal-header h5 {
     margin-top: 0;
     margin-bottom: 0;
   }
 
-  #legendModal .modal-body {
-    max-height: 443px;
-  }
-
-  #legendModal .modal-footer {
-    text-align: left;
-    font-size: 11px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-  }
-/*.esriLegendLayerLabel a, #colorRamp a {
-  color: #006633;
-  text-decoration:  none;
-  padding-right:    17px;
-  background:     url(../img/extlink.gif) right center no-repeat;
-  transition: padding-right .1s linear;
+table.esriLegendLayerLabel {
+  padding-top: 5px;
+  font-weight: bold;
+}
+#legend_http\:\/\/50\.19\.218\.171\/arcgis1\/rest\/services\/SiteDev\/OtherMarineLife\/MapServer\/_0_group > table:first-child,
+#legend_http\:\/\/50\.19\.218\.171\/arcgis1\/rest\/services\/SiteDev\/MarineMammalsAndSeaTurtles\/MapServer\/_0_group > table:first-child,
+#legend_http\:\/\/50\.19\.218\.171\/arcgis1\/rest\/services\/SiteDev\/Energy\/MapServer\/_0_group > table:first-child,
+#legend_http\:\/\/50\.19\.218\.171\/arcgis1\/rest\/services\/SiteDev\/MaritimeCommerce\/MapServer\/_0_group > table:first-child,
+#legend_http\:\/\/50\.18\.215\.52\/arcgis\/rest\/services\/NAMERA\/EUSD_NAM_DEMERSAL\/MapServer\/_0_group > table:first-child,
+#legend_http\:\/\/maps\.ngdc\.noaa\.gov\/arcgis\/rest\/services\/web_mercator\/dem_hillshades_mosaic\/MapServer\/ {
+  display: none !important;
 }
 
-.esriLegendLayerLabel a:hover, #colorRamp a:hover {
-  text-decoration:  underline;
-  padding-right:    22px;
-  background:     url(../img/extlink.gif) right center no-repeat;
-}*/
-
-#radioWrapper {
-  padding: 10px 0 10px 0;
-  margin-left: -4px;
+.radio-wrapper {
+  padding-top: 15px;
 }
 
-  #radioWrapper button {
-    width: 224px;
-    text-align: left;
-  }
+.radio-wrapper button {
+  width: 224px;
+  text-align: left;
+}
 
 .esriLegendService {
-  padding-bottom: 12px !important;
+  padding-bottom: 0 !important;
 }
 
-
-#about {
-  padding-top: 9px !important;
-  padding-left: 15px !important;
-  padding-right: 15px !important;
-}
-
-#about div {
-  border-top: 1px solid #ccc;
-  padding-top: 3px;
-  font-size: 11px;
-  line-height: 14px;
-  color: rgb(128, 128, 128);
-}
+  .esriLegendService > table:first-child {
+    display: none;
+  }
 
 /*  legend END
 ===============================================  */
@@ -530,7 +563,8 @@ span#scale {
   position: relative !important;
   width: 41px;
   float: right !important;
-  margin-right: 345px;
+  margin-right: 337px;
+  margin-top: 3px;
   cursor: pointer;
   -webkit-border-radius: 9px;
   -moz-border-radius: 9px;
@@ -538,6 +572,9 @@ span#scale {
   border-radius: 9px;
   -moz-box-shadow: 0 0 0.5em #BBBBBB;
   -webkit-box-shadow: 0 0 0.5em #BBBBBB;
+  webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
 }
 
 .esriSimpleSlider div {
@@ -636,38 +673,350 @@ span#scale {
     margin-top: 87px;
   }
 
-#legend .esriLegendService > div > table.esriLegendLayerLabel,
-div#radioWrapper {
-  display: none;  
-}
-
 /*  time slider 
 ================= */
 
 #timeSliderDiv {
   height: 48px;
-  display: none;
-  margin-left: 4px;
 }
 
 .esriTimeSlider {
   padding-top: 0 !important;
-  padding-bottom: 0 !important;
+  padding-bottom: 25px;
   width: 98% !important;
 }
-/*
-  .esriTimeSlider > table > tbody > tr > td:nth-child(1),
-  .esriTimeSlider > table > tbody > tr > td:nth-child(3),
-  .esriTimeSlider > table > tbody > tr > td:nth-child(4) {
-    display: none;
+
+.esriTimeSlider .dijitRuleLabelH {
+  -webkit-transform: rotate(270deg);
+  -moz-transform: rotate(270deg);
+  -o-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  color: #333;
+  letter-spacing: 1px;
+  margin-top: 3px;
+}
+
+#ais-link {
+  display: none;
+}
+
+#ais-link img {
+  margin-right: 10px;
+}
+
+/*#show-hide-btn {
+  background-color: #f5f5f5;
+  position: absolute;
+  margin-left: 300px;
+  margin-top: 0px;
+  z-index: 2;
+  border: 1px solid #888;
+  border-left: none;
+  border-top: none;
+  padding: 4px;
+}
+
+#show-hide-btn:hover {
+  background-color: #ddd;
+}*/
+
+.esriScalebar {
+  position: fixed !important;
+  bottom: 2px !important;
+  right: 163px !important;
+}
+
+img[src="img/ais-legend.png"] {
+  margin-bottom: 15px;
+}
+
+.no-children span.dijitTreeExpando,
+.dijitInline.dijitIcon.dijitTreeIcon.dijitFolderClosed,
+.dijitInline.dijitIcon.dijitTreeIcon.dijitFolderOpened,
+#legend_msg,
+#layer-info {
+  display: none;
+}
+
+.dijitCheckBox {
+  margin-bottom : 4px !important;
+  vertical-align: top !important;
+  margin-top    : 1px !important;
+}
+
+.zoom-notice {
+  color: #767676;
+  float: right;
+  padding-right: 5px;
+  font-size: 10px;
+}
+
+.dijitTreeRow,
+.dijitTreeContent {
+  white-space: normal !important;
+}
+
+.dijitInline.dijitIcon.dijitTreeIcon.dijitIconFile {
+  float       : right !important;
+  cursor      : pointer !important;
+  margin-right: 5px;
+  margin-top  : 2px;
+}
+
+.no-children span.dijitTreeLabel {
+  display     : inline-block;
+  max-width   : 194px;
+  line-height : 16px;
+}
+
+#layer-info {
+  padding: 10px 15px 15px 15px;
+  background-color: #fff;
+  overflow-y: auto;
+}
+
+#back-to-layers span {
+  margin-right: 3px;
+  margin-top  : -1px;
+}
+
+#back-to-layers {
+  margin-bottom : 15px;
+  cursor        : pointer;
+}
+
+#themeButtonGroup {
+  visibility: hidden;
+}
+
+#themeButtonGroup button {
+  text-indent: -99999px;
+}
+
+.container-fluid {
+  min-width: 1241px;
+}
+
+.dijitButtonText {
+  font-size: 12px !important;
+}
+
+.button-container {
+  display: inline-block;
+}
+
+.dijitMenuItemLabel {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+
+.dijitMenuItemLabel {
+  font-size: 12px !important;
+}
+
+.thumbMap {
+  width: 50px;
+  height: 33px;
+}
+
+.thumbnail0 {
+  background-image: url("../../img/ocean.png");
+}
+
+.thumbnail1 {
+  background-image: url("../../img/satellite.png");
+}
+
+.thumbnail2 {
+  background-image: url("../../img/chart.png");
+}
+
+.dijitMenuItemLabel {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+
+td.dijitMenuItemIconCell span{
+  border: 1px solid #fff;
+  margin: 5px;
+  -moz-box-shadow: 0px 0px 7px #000;
+  -webkit-box-shadow: 0px 0px 7px black;
+  box-shadow: 0px 0px 7px black;
+}
+
+#side-panel a {
+  color: #006633;
+}
+
+#layer-info-content h5 {
+  font-weight   : bold;
+  margin-bottom : 5px;
+}
+
+  #layer-info-content p {
+    line-height: 16px;
   }
-*/
-  .esriTimeSlider .dijitRuleLabelH {
-    -webkit-transform: rotate(270deg);
-    -moz-transform: rotate(270deg);
-    -o-transform: rotate(270deg);
-    -ms-transform: rotate(270deg);
-    color: #333;
-    letter-spacing: 1px;
-    margin-top: 3px;
-  }
+
+#description-text {
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+#legend-control {
+  background-color: #fff;
+  padding-left    : 15px;
+  border-top      : 2px solid #ddd;
+  font-size       : 14px;
+  font-weight     : bold;
+  padding         : 5px 20px;
+  position        : absolute;
+  bottom          : 0;
+  width           : 300px;
+}
+
+.panel-heading-arrow-vert {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #D1D2D4;
+  cursor: pointer;
+  margin-top: -14px;
+  margin-left: 66px;
+}
+
+.panel-heading-arrow-vert:hover {
+  border-top-color: #697396;
+}
+
+#source-data-modal .modal-dialog {
+  margin-top: 100px;
+}
+
+#source-data-modal .modal-dialog,
+#source-data-modal .modal-content {
+  width     : 275px;
+  text-align: center;
+}
+
+#source-data-modal .modal-body {
+  padding-bottom: 0;
+}
+
+#source-data-modal .modal-body a {
+  display: none;
+}
+
+#source-data-modal #source-download-loading {
+  visibility: hidden;
+  position  : absolute;
+  left      : 15px;
+}
+
+#theme0 {
+  border-top-left-radius: 0;
+  background-image: url('../../img/theme-buttons/top/maritimecommerce-off.png');
+  width: 141px;
+}
+
+#theme0:hover {
+  background-image: url('../../img/theme-buttons/top/maritimecommerce-mouseover.png');
+}
+
+#theme1 {
+  background-image: url('../../img/theme-buttons/top/energy-off.png');
+  width: 57px;
+}
+
+#theme1:hover {
+  background-image: url('../../img/theme-buttons/top/energy-mouseover.png');
+}
+
+#theme2 {
+  background-image: url('../../img/theme-buttons/top/recreation-off.png');
+  width: 87px;
+}
+
+#theme2:hover {
+  background-image: url('../../img/theme-buttons/top/recreation-mouseover.png');
+}
+
+#theme3 {
+  background-image: url('../../img/theme-buttons/top/commercialfishing-off.png');
+  width: 141px;
+}
+
+#theme3:hover {
+  background-image: url('../../img/theme-buttons/top/commercialfishing-mouseover.png');
+}
+
+#theme4 {
+  background-image: url('../../img/theme-buttons/top/aquaculture-off.png');
+  width: 95px;
+}
+
+#theme4:hover {
+  background-image: url('../../img/theme-buttons/top/aquaculture-mouseover.png');
+}
+
+#theme5 {
+  background-image: url('../../img/theme-buttons/top/culture-off.png');
+  width: 59px;
+}
+
+#theme5:hover {
+  background-image: url('../../img/theme-buttons/top/culture-mouseover.png');
+}
+
+#theme6 {
+  background-image: url('../../img/theme-buttons/top/fish-shellfish-off.png');
+  width: 111px;
+}
+
+#theme6:hover {
+  background-image: url('../../img/theme-buttons/top/fish-shellfish-mouseover.png');
+}
+
+#theme7 {
+  background-image: url('../../img/theme-buttons/top/mammals-off.png');
+  width: 211px;
+}
+
+#theme7:hover {
+  background-image: url('../../img/theme-buttons/top/mammals-mouseover.png');
+}
+
+#theme8 {
+  background-image: url('../../img/theme-buttons/top/othermarinelife-off.png');
+  width: 128px;
+}
+
+#theme8:hover {
+  background-image: url('../../img/theme-buttons/top/othermarinelife-mouseover.png');
+}
+
+#theme9 {
+  border-top-right-radius: 0;
+  background-image: url('../../img/theme-buttons/top/waterquality-off.png');
+  width: 105px;
+}
+
+#theme9:hover {
+  background-image: url('../../img/theme-buttons/top/waterquality-mouseover.png');
+}
+
+.color-gradient {
+  background: rgba(221,221,221,1);
+  background: -moz-linear-gradient(left, rgba(221,221,221,1) 0%, rgba(246,246,246,1) 70%, rgba(255,255,255,1) 100%);
+  background: -webkit-gradient(left top, right top, color-stop(0%, rgba(221,221,221,1)), color-stop(70%, rgba(246,246,246,1)), color-stop(100%, rgba(255,255,255,1)));
+  background: -webkit-linear-gradient(left, rgba(221,221,221,1) 0%, rgba(246,246,246,1) 70%, rgba(255,255,255,1) 100%);
+  background: -o-linear-gradient(left, rgba(221,221,221,1) 0%, rgba(246,246,246,1) 70%, rgba(255,255,255,1) 100%);
+  background: -ms-linear-gradient(left, rgba(221,221,221,1) 0%, rgba(246,246,246,1) 70%, rgba(255,255,255,1) 100%);
+  background: linear-gradient(to right, rgba(221,221,221,1) 0%, rgba(246,246,246,1) 70%, rgba(255,255,255,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dddddd', endColorstr='#ffffff', GradientType=1 );
+
+  width         : 100%;
+  height        : 5px;
+  margin-bottom : 10px;
+}

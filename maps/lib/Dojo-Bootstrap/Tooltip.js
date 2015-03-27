@@ -170,7 +170,7 @@ define([
                 actualWidth = tipPos.w;
                 actualHeight = tipPos.h;
 
-                var legendPosition = domGeom.position(dojo.query('#legendModal')[0]);
+                var legendPosition = domGeom.position(dojo.query('#side-panel')[0]);
 
                 switch (inside ? placement.split(' ')[1] : placement) {
                     case 'bottom':
@@ -187,6 +187,8 @@ define([
                         break;
                 }
                 domStyle.set(tip, tp);
+                if (tip.style.top.indexOf('-') >= 0)
+                    tip.style.top = '0px';
                 domClass.add(tip, [placement, 'in'].join(" "));
             }
         },

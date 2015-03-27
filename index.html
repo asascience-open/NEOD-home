@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <!-- Safari iOS - apps only -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <!-- Chrome for Android - NEW! -->
+        <meta name="mobile-web-app-capable" content="yes">
+        <link rel="apple-touch-icon" href="images/brand.png">
+        <link rel="shortcut icon" href="images/favicon.ico">
+
+        <title>Northeast Ocean Data Portal</title>
+        <!-- Bootstrap core CSS -->
+        <link href="maps/lib/bootstrap.css" rel="stylesheet">
+        <link href="maps/lib/bootstrap-responsive.css" rel="stylesheet">
+        <link href="home.css" rel="stylesheet">
+
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+
+    <body class='home'>
+        <!-- navbar -->
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" title="Northeast Ocean Data" alt="Northeast Ocean Data" href="#">Northeast Ocean Data</a>
+                </div>
+                <p>Maps and data for ocean planning in the northeastern United States</p>
+                <div class="navbar-collapse collapse" id="mapList">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#">HOME</a></li>
+                        <li class="dropdown">
+                            <a id="drop1" href="#" class="dropdown-toggle" data-toggle="dropdown">MAPS <b class='caret'></b></a>
+                            <ul id="themeDropdown" class="dropdown-menu" role="menu" aria-labelledby="drop1">
+                                <li><a dataidx="0" id="dropdownTheme0" href="maps">MARITIME COMMERCE</a></li>
+                                <li><a dataidx="1" id="dropdownTheme1" href="#">AIS TIMESLIDER</a></li>
+                                <li><a dataidx="2" id="dropdownTheme2" href="#">ENERGY</a></li>
+                                <li><a dataidx="3" id="dropdownTheme3" href="#">RECREATION</a></li>
+                                <li><a dataidx="4" id="dropdownTheme4" href="#">COMMERCIAL FISHING</a></li>
+                                <li><a dataidx="5" id="dropdownTheme5" href="#">AQUACULTURE</a></li>
+                                <li><a dataidx="6" id="dropdownTheme6" href="#">FISH &amp; SHELLFISH</a></li>
+                                <li><a dataidx="7" id="dropdownTheme7" href="#">MARINE MAMMALS &amp; SEA TURTLES</a></li>
+                                <li><a dataidx="8" id="dropdownTheme8" href="#">OTHER MARINE LIFE</a></li>
+                                <li><a dataidx="9" id="dropdownTheme9" href="#">WATER QUALITY</a></li></ul>
+                        </li>
+                        <li class="dropdown">
+                            <a id="drop2" href="#" class="dropdown-toggle" data-toggle="dropdown">DATA <b class='caret'></b></a>
+                            <ul class='dropdown-menu' role='menu' aria-labelledby="drop2">
+                                <li><a href="#">DATA DOWNLOAD</a></li>
+                                <li><a href="#">EXTERNAL DATA SOURCES</a></li>
+                                <li><a href="#">POLICIES AND STANDARDS</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a id="drop3" href="#" class="dropdown-toggle" data-toggle="dropdown">ABOUT <b class='caret'></b></a>
+                            <ul class='dropdown-menu' role='menu' aria-labelledby="drop3">
+                                <li><a href="#">CONTACT</a></li>
+                                <li><a href="#">NEWS</a></li>
+                                <li><a href="#">TECHNICAL OVERVIEW</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div>
+                    <a href="maps" class="thumbnail">
+                        <img src="images/maritimecommerce-out.png" alt="..." class="hover">
+                    </a>
+                </div>
+                <div>
+                    <a href="#" class="thumbnail">
+                        <img src="images/energy-out.png" alt="..." class="hover">
+                    </a>
+                </div>
+                <div>
+                    <a href="#" class="thumbnail">
+                        <img src="images/recreation-out.png" alt="..." class="hover">
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <a href="#" class="thumbnail">
+                        <img src="images/commercialfishing-out.png" alt="..." class="hover">
+                    </a>
+                </div>
+                <div>
+                    <a href="#" class="thumbnail">
+                        <img src="images/aquaculture-out.png" alt="..." class="hover">
+                    </a>
+                </div>
+                <div>
+                    <a href="#" class="thumbnail">
+                        <img src="images/fish-out.png" alt="..." class="hover">
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <a href="#" class="thumbnail">
+                        <img src="images/marinemammals-out.png" alt="..." class="hover">
+                    </a>
+                </div>
+                <div>
+                    <a href="#" class="thumbnail">
+                        <img src="images/othermarinelife-out.png" alt="..." class="hover">
+                    </a>
+                </div>
+                <div>
+                    <a href="#" class="thumbnail">
+                        <img src="images/waterquality-out.png" alt="..." class="hover">
+                    </a>
+                </div>
+            </div>
+            <div class="row thumbnail-title">
+                <div>DATA EXPLORER</div>
+                <div>FEATURED MAP</div>
+                <div>NEWS</div>
+            </div>
+            <div class="row misc-items">
+                <div>
+                    <a href="#" class="thumbnail">
+                        <img src="images/data-explorer_animation.gif" alt="...">
+                    </a>
+                    <div>Use the Data Explorer to view any dataset or to select a combination of datasets to view on a single map.</div>
+                </div>
+                <div>
+                    <a href="#" class="thumbnail">
+                        <img src="images/motm-201407-out.png" alt="..." class="hover">
+                    </a>
+                    <div>Lakes, estuaries, rivers, and coastlines designated as impaired under Section 303(d) of the Clean Water Act.</div>
+                </div>
+                <div class="thumbnail">
+                    <a href="#">
+                        New Interactive Maps of Water Quality in the Northeast <i>June 23, 2014</i>
+                    </a>
+                    <br /><br />
+                    <a href="#">
+                        Video: Guided Tour of Northeast Ocean Data Website and Maps <i>June 12, 2014</i>
+                    </a>
+                    <br /><br />
+                    <a href="#">
+                        New and Updated Data on Shipping Activity and Shellfish Habitat Mar 12, 2014
+                    </a>
+                    <br /><br />
+                    <a href="#">
+                        Northeast Ocean Data Releases Maps of Commercial Fishing Activity Jan 27, 2014
+                        <br /><br />
+                    <a href="#">
+                        Updated Maps of Ocean Energy Resources, Projects, and Infrastructure Jan 27, 2014
+                    </a>
+                </div>
+            </div>
+        </div>
+        <script>
+            var dojoConfig = {
+                async: 1,
+                cacheBust: 1,
+                tlmSiblingOfDojo: false,
+                isDebug: true,
+                packages: [{ name: "bootstrap", location: location.pathname.replace(/\/[^/]+$/, '') + "maps/lib/Dojo-Bootstrap" }]
+            };
+        </script>
+        <script src="//ajax.googleapis.com/ajax/libs/dojo/1.9.3/dojo/dojo.js"></script>
+        <script type="text/javascript" charset="utf-8">
+            require([
+                'dojo/query',
+                'dojo/dom-class',
+                'dojo/_base/array',
+                'dojo/mouse',
+                'dojo/on',
+                'dojo/dom-attr',
+                'bootstrap/Dropdown',
+                'bootstrap/Button',
+                'dojo/domReady!'
+                ], function(q, domClass, array, mouse, on, domAttr){
+                    q('.dropdown-toggle').dropdown();
+                    on(q('img.hover'), mouse.enter, function(){
+                        var imageFile = domAttr.get(this, 'src').substring(0, domAttr.get(this, 'src').lastIndexOf('-') + 1);
+                        domAttr.set(this, 'src', imageFile + 'over.png');
+                    });
+
+                    on(q('img.hover'), mouse.leave, function(){
+                        var imageFile = domAttr.get(this, 'src').substring(0, domAttr.get(this, 'src').lastIndexOf('-') + 1);
+                        domAttr.set(this, 'src', imageFile + 'out.png');
+                    });
+                });
+        </script>
+    </body>
+</html>
