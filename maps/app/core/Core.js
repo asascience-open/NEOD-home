@@ -9,6 +9,7 @@ app.layerInfos = [],
 app.timeoutID,
 app.unOrderedGroups = [],
 app.groupCount = 9,
+app.lv = false,
 app.fullServiceUrls = [
     'http://50.19.218.171/arcgis1/rest/services/Administrative/MapServer/',
     'http://50.19.218.171/arcgis1/rest/services/SiteDev/Energy/MapServer/',
@@ -19,9 +20,11 @@ app.fullServiceUrls = [
 define([
     'esri/map',
     'esri/request',
+    'esri/layers/FeatureLayer',
     'esri/layers/ArcGISDynamicMapServiceLayer',
     'esri/layers/ArcGISImageServiceLayer',
     'esri/layers/ArcGISTiledMapServiceLayer',
+    'esri/InfoTemplate',
     'esri/dijit/Scalebar',
     'esri/dijit/Legend',
     'esri/geometry/Point',
@@ -34,9 +37,11 @@ define([
     'dojo/dom-construct',
     'dojo/dnd/move',
     'dojo/dom-class',
+    'dojo/request/notify',
     'dojo/fx',
     'dojo/_base/fx',
     'dojo/_base/array',
+    'dojo/behavior',
     'dojo/dom',
     'dojo/dom-attr',
     'dojo/dom-style',
@@ -60,9 +65,11 @@ define([
     function(
         Map,
         EsriRequest,
+        FeatureLayer,
         ArcGISDynamicMapServiceLayer,
         ArcGISImageServiceLayer,
         ArcGISTiledMapServiceLayer,
+        InfoTemplate,
         Scalebar,
         Legend,
         Point,
@@ -75,9 +82,11 @@ define([
         domConstruct,
         move,
         domClass,
+        notify,
         coreFx,
         fx,
         array,
+        behavior,
         dom,
         domAttr,
         domStyle,
@@ -99,7 +108,18 @@ define([
             // create buttons for each theme
             array.forEach(configOptions.themes, function (theme, themeIndex){
                 //domConstruct.place('<li><a dataIdx='+ themeIndex + ' id="dropdownTheme' + themeIndex + '" href="#">' + theme.title.toUpperCase() + '</a></li>', 'themeDropdown');
-                domConstruct.place('<button id="theme' + themeIndex + '" type="button" class="btn no-bottom-border-radius' + (themeIndex === (configOptions.themes.length - 1) ? ' no-bottom-right-border-radius"' : '"') + ' data-toggle="button">' + theme.title.toUpperCase() + '</button>', 'themeButtonGroup');
+                domConstruct.place('<button id="theme' + themeIndex + '" data-theme-id="' + themeIndex + '" type="button" class="btn no-bottom-border-radius' + (themeIndex === (configOptions.themes.length - 1) ? ' no-bottom-right-border-radius"' : '"') + ' data-toggle="button">' + theme.title.toUpperCase() + '</button>', 'themeButtonGroup');
+            });
+
+            app.navbar = dom.byId('navbar'),
+            app.sidePanel = dom.byId('side-panel'),
+            app.dataViewer = dom.byId('data-viewer');
+
+            on(dojo.query('#themeButtonGroup button'), 'click', function (e) {
+                domClass.add(this, 'active-theme');
+                getLayerIds(true);
+                app.currentThemeIndex = parseInt(this.attributes["data-theme-id"].value, 10);
+                //loadMainTheme(parseInt(this.attributes["data-theme-id"].value, 10));
             });
 
             getLayerIds();
@@ -108,7 +128,7 @@ define([
 
             esri.config.defaults.io.proxyUrl = "http://services.asascience.com/Proxy/esriproxy/proxy.ashx";
 
-            app.currentSubThemeIndex = 0;
+            app.subthemeIndex = 0;
         }
 
         function resizeMap()
@@ -116,21 +136,26 @@ define([
             app.screenHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
             app.screenWidth = "innerWidth" in window ? window.innerWidth : document.documentElement.offsetWidth;
             app.headerOffset = query('.navbar-fixed-top').style('height')[0];
+            if (app.lv) {
+                app.headerOffset = app.headerOffset + 20;
+                // console.log(moveableLegend);
+            }
             app.sidePanelWidth = 281;
+            app.mapHeight = app.screenHeight - app.headerOffset;
 
             query('.main').style({
                 'height'        : (app.screenHeight - app.headerOffset) + 'px',
                 'marginTop'    : app.screenWidth < 980 ? '0' : app.headerOffset + 'px'
             });
-            query('.map').style({
-               'height'        : (app.screenHeight - app.headerOffset) + 'px'
+            query('.active.map').style({
+               'height'        : app.mapHeight + 'px'
             });
         }
 
         function resizeSidePanel() {
-            var treeHeight = (app.screenHeight - app.headerOffset - 46 /*top button*/)/2;
+            var treeHeight = (app.mapHeight - 46 /*top button*/)/2;
             dojo.query('#tree').style('height', treeHeight + 'px');
-            dojo.query('#legend').style('height', (treeHeight - 26) + 'px');
+            dojo.query('#legend-dv').style('height', (treeHeight - 26) + 'px');
             dojo.query('#layer-info').style('height', treeHeight + 'px');
         }
 
@@ -156,7 +181,7 @@ define([
             template.preserveScale = false;
             template.layoutOptions = {};
             
-            template.layoutOptions.titleText = configOptions.themes[app.themeIndex].title + ' | ' + configOptions.themes[app.themeIndex].maps[app.currentSubThemeIndex].title;
+            template.layoutOptions.titleText = configOptions.themes[app.themeIndex].title + ' | ' + configOptions.themes[app.themeIndex].maps[app.subthemeIndex].title;
             template.layoutOptions.authorText = 'Northeast Ocean Data Portal';
             template.layoutOptions.legendLayers = legendLayers;
 
@@ -183,20 +208,52 @@ define([
                     onClick     : function(e){
                         switch (this.label){
                             case 'Oceans':
-                                app.map.setBasemap('oceans');
-                                app.map.chart.hide();
+                                app.currentMap.setBasemap('oceans');
+                                if (app.currentMap.chart.visible)
+                                    app.currentMap.chart.hide();
+                                if (app.lv) {
+                                    array.forEach(app.maps, function(map){
+                                        if (map !== app.currentMap) {
+                                            map.setBasemap('oceans');
+                                            if (map.chart.visible)
+                                                map.chart.hide();
+                                        }
+                                    });
+                                }
                                 break;
                             case 'Satellite':
-                                app.map.setBasemap('satellite');
-                                app.map.chart.hide();
+                                app.currentMap.setBasemap('satellite');
+                                if (app.currentMap.chart.visible)
+                                    app.currentMap.chart.hide();
+                                if (app.lv) {
+                                    array.forEach(app.maps, function(map){
+                                        if (map !== app.currentMap) {
+                                            map.setBasemap('satellite');
+                                            if (map.chart.visible)
+                                                map.chart.hide();
+                                        }
+                                    });
+                                }
                                 break;
                             case 'Chart':
-                                app.map.chart.show();
-                                var basemapLayerID = app.map.basemapLayerIds[0];
-                                for (var prop in app.map._layers)
+                                app.currentMap.chart.show();
+                                var basemapLayerID = app.currentMap.basemapLayerIds[0];
+                                for (var prop in app.currentMap._layers)
                                     if (prop == basemapLayerID)
-                                        app.map._layers[prop].hide();
-                                app.map._basemap = 'chart';
+                                        app.currentMap._layers[prop].hide();
+                                app.currentMap._basemap = 'chart';
+                                if (app.lv) {
+                                    array.forEach(app.maps, function(map){
+                                        if (map !== app.currentMap) {
+                                            map.chart.show();
+                                            var basemapLayerID = map.basemapLayerIds[0];
+                                            for (var prop in map._layers)
+                                                if (prop == basemapLayerID)
+                                                    map._layers[prop].hide();
+                                            map._basemap = 'chart';
+                                        }
+                                    });
+                                }
                                 break;
                         }
                     }
@@ -246,7 +303,14 @@ define([
                     lon     : locations[i].lon,
                     level   : locations[i].level,
                     onClick : function(e){
-                        app.map.centerAndZoom(new Point(this.lat, this.lon), this.level);
+                        app.currentMap.centerAndZoom(new Point(this.lat, this.lon), this.level);
+                        if (app.lv) {
+                            array.forEach(app.maps, function(map){
+                                if (map !== app.currentMap) {
+                                   map.centerAndZoom(new Point(this.lat, this.lon), this.level);
+                                }
+                            });
+                        }
                     }
                 });
                 zoomToMenu.addChild(item);
@@ -297,7 +361,7 @@ define([
         //     else if (wlf.search("maps/marine-life-mammals") != -1) pil += "1380"; 
         //     else if (wlf.search("maps/other-marine-life") != -1) pil += "1654"; 
             
-        //     longUrl += baseUrl.replace('#', '') + pil +'&z=' + app.map.getZoom() + '&b=' + app.map._basemap + '&m=' + cm + '&r=' + radioSelection + '&x=' + point.x + '&y=' + point.y;
+        //     longUrl += baseUrl.replace('#', '') + pil +'&z=' + app.currentMap.getZoom() + '&b=' + app.currentMap._basemap + '&m=' + cm + '&r=' + radioSelection + '&x=' + point.x + '&y=' + point.y;
 
         //     if (mapUrl.indexOf(energy) > 0)
         //         longUrl += '&sl=' + sliderValue;
@@ -325,7 +389,7 @@ define([
 
             query(".collapse").collapse();
 
-            app.map = new Map('map-pane',{
+            app.currentMap = new Map('data-viewer',{
                     basemap                 : 'oceans',
                     zoom                    : 7,
                     minZoom                 : 7,
@@ -340,27 +404,27 @@ define([
                     autoResize              : true
                 });
 
-            app.map.on('update-start', function(e) {
+            app.currentMap.on('update-start', function(e) {
                 dom.byId('loading').style.display ='block';
             });
 
-            app.map.on('update-end', function(e) {
+            app.currentMap.on('update-end', function(e) {
                 dom.byId('loading').style.display ='none';
                 if (app.legend)
                     app.legend.refresh();
             });
 
-            app.map.chart = new ArcGISImageServiceLayer('http://egisws02.nos.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer', 'chart');
+            app.currentMap.chart = new ArcGISImageServiceLayer('http://egisws02.nos.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer', 'chart');
 
-            app.map.addLayer(app.map.chart, 1);
-            app.map.chart.hide();
+            app.currentMap.addLayer(app.currentMap.chart, 1);
+            app.currentMap.chart.hide();
 
             var scalebar = new Scalebar({
-                map         : app.map,
+                map         : app.currentMap,
                 attachTo    : 'bottom-right'
             });
 
-            app.map.on('load', function(){
+            app.currentMap.on('load', function(){
                 updateScale();
                 query('#mapList .button-container').style({'visibility' : 'visible'});
                 createBasemapGallery();
@@ -372,16 +436,16 @@ define([
 
             dojo.byId()
 
-            app.map.on('layers-add-result', function () {
+            app.currentMap.on('layers-add-result', function () {
                 app.legend = new Legend({
-                    map         : app.map,
+                    map         : app.currentMap,
                     layerInfos  : app.layerInfos,
                     autoUpdate  : false
-                }, 'legend');
+                }, 'legend-dv');
                 app.legend.startup();
             });
 
-            app.map.on('zoom-end', function (e) {
+            app.currentMap.on('zoom-end', function (e) {
                 checkMinScale();
                 updateScale();
             })
@@ -407,12 +471,11 @@ define([
             // });
 
             on(dom.byId('show-hide-btn'), 'click', function (e){
-                var sidePanel = dom.byId('side-panel');
                 var width = '100%';
                 if (app.sidePanelVisible) {
-                    coreFx.slideTo({ node:  sidePanel, left: (domStyle.get(sidePanel, 'width') * -1), top: 0 }).play();
+                    coreFx.slideTo({ node:  app.sidePanel, left: (domStyle.get(app.sidePanel, 'width') * -1), top: 0 }).play();
                     coreFx.slideTo({ node:  this.parentNode, left: 31, top: 0 }).play();
-                    app.map.resize(true);
+                    app.currentMap.resize(true);
                     app.sidePanelVisible = false;
                     domStyle.set(this, {
                         borderLeft  : '10px solid #D1D2D4',
@@ -421,7 +484,7 @@ define([
                     domAttr.set(this, 'title', 'Show Panel');
                 }
                 else {
-                    coreFx.slideTo({ node:  sidePanel, left: 0, top: 0 }).play();
+                    coreFx.slideTo({ node:  app.sidePanel, left: 0, top: 0 }).play();
                     app.sidePanelVisible = true;
                     domStyle.set(this, {
                         borderRight : '10px solid #D1D2D4',
@@ -714,7 +777,7 @@ define([
                                         contentHtml += '<a href="' + metadataLink + '" target="_blank">Metadata</a> | ';
                                     var extent = new esri.geometry.Extent(result.extent);
                                     var centerPoint = extent.getCenter();
-                                    contentHtml += sourceDataHtml + ' | <a href="' + serviceUrl + '" target="_blank">Web Service</a> | <a href="#" onClick="app.map.centerAndZoom(new esri.geometry.Point(' + centerPoint.getLongitude() + ', ' + centerPoint.getLatitude() + '), 7);">Zoom to Layer</a>';
+                                    contentHtml += sourceDataHtml + ' | <a href="' + serviceUrl + '" target="_blank">Web Service</a> | <a href="#" onClick="app.currentMap.centerAndZoom(new esri.geometry.Point(' + centerPoint.getLongitude() + ', ' + centerPoint.getLatitude() + '), 7);">Zoom to Layer</a>';
                                     dom.byId('loading').style.display = 'none';
                                     domConstruct.place(contentHtml + '</p></div>', dojo.byId('layer-info-content'), 'replace');
                                 }, function(error) {
@@ -729,15 +792,15 @@ define([
 
             on(dom.byId('remove-layers'), 'click', function (e){
                 e.preventDefault();
-                array.forEach(app.map.layerIds, function (layerId) {
-                    if (app.map._layers[layerId].url != 'http://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer' &&
-                        app.map._layers[layerId].url != 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer' &&
-                        app.map._layers[layerId].url != 'http://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Reference/MapServer' &&
-                        app.map._layers[layerId].url != 'http://egisws02.nos.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer') {
-                        if (!app.map._layers[layerId].setVisibleLayers)
-                            app.map._layers[layerId].hide();
+                array.forEach(app.currentMap.layerIds, function (layerId) {
+                    if (app.currentMap._layers[layerId].url != 'http://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer' &&
+                        app.currentMap._layers[layerId].url != 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer' &&
+                        app.currentMap._layers[layerId].url != 'http://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Reference/MapServer' &&
+                        app.currentMap._layers[layerId].url != 'http://egisws02.nos.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer') {
+                        if (!app.currentMap._layers[layerId].setVisibleLayers)
+                            app.currentMap._layers[layerId].hide();
                         else
-                            app.map._layers[layerId].setVisibleLayers([-1]);
+                            app.currentMap._layers[layerId].setVisibleLayers([-1]);
                     }
                 });
                 array.forEach(registry.toArray(), function (widget, i) {
@@ -754,7 +817,7 @@ define([
         }
 
         function checkMinScale() {
-            var scale = app.map.getScale();
+            var scale = app.currentMap.getScale();
             array.forEach(registry.toArray(), function (widget, i) {
                 if (widget.hasOwnProperty('item')) {
                     if (widget.item.hasOwnProperty('minScale')) {
@@ -779,7 +842,7 @@ define([
         }
 
         function updateScale() {
-            dom.byId('scale').innerHTML = "Scale 1:" + app.map.__LOD.scale.toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            dom.byId('scale').innerHTML = "Scale 1:" + app.currentMap.__LOD.scale.toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
         sourceDataClick = function (layerName) {
@@ -833,50 +896,101 @@ define([
             }, 5000);
         }
 
-        getLayerIds = function ()
+        getLayerIds = function (liteViewer)
         {
-            app.layersLoaded = 0,
-            app.layersUnloaded = 0;
-            array.forEach(configOptions.comp_viewer.groups, function (group, groupIndex) {
-                app.layersUnloaded += group.layers.length;
-                array.forEach(group.serviceURLs, function (serviceURL, i) {
-                    request = EsriRequest({
-                        url: serviceURL + 'layers',
-                        content: {
-                            f: "json"
-                        },
-                        handleAs: "json",
-                        callbackParamName: "callback"
-                    });
+            if (liteViewer) {
+                if (!configOptions.themes[app.themeIndex].hasOwnProperty('loaded'))
+                {
+                    if (configOptions.themes[app.themeIndex].maps.length !== 0)
+                    {
+                        var dynamicLayerCount = 0,
+                            requestCount = 0;
+                        array.forEach(configOptions.themes[app.themeIndex].maps, function (map, mapIndex) {
+                            if (map.layers.hasOwnProperty('dynamicLayers'))
+                            {
+                                array.forEach(map.layers.dynamicLayers, function (dynamicLayer, dynamicLayerIndex) {
+                                    dynamicLayerCount++;
+                                    var request = EsriRequest({
+                                        url: dynamicLayer.URL + 'layers',
+                                        content: {
+                                            f: "json"
+                                        },
+                                        handleAs: "json",
+                                        callbackParamName: "callback"
+                                    });
 
-                    request.then(
-                        function(data) {
-                            array.forEach(data.layers, function (layerObj, i) {
-                                array.forEach(group.layers, function (layer, j) {
-                                    if (layer.service === serviceURL && layer.name === layerObj.name && (layer.parent === undefined || layer.parent === layerObj.parentLayer.name))
-                                    {
-                                        layer.id            = layerObj.id,
-                                        layer.description   = layerObj.description,
-                                        layer.minScale      = layerObj.minScale,
-                                        layer.url           = serviceURL,
-                                        layer.index         = group.index;
-                                        app.layersLoaded++;
-                                        if (app.layersLoaded === app.layersUnloaded)
-                                            createMap();
-                                    }
+                                    request.then(
+                                        function(data) {
+                                            requestCount++;
+                                            array.forEach(data.layers, function (layerObj, i){
+                                                array.forEach(dynamicLayer.layers, function (layer) {
+                                                    if (layer.name === layerObj.name)
+                                                    {
+                                                        layer.ID = layerObj.id;
+                                                        layer.description = layerObj.description;
+                                                    }
+                                                });
+                                            });
+                                            if (requestCount === dynamicLayerCount)
+                                            {
+                                                configOptions.themes[app.themeIndex].loaded = true;
+                                                loadMainTheme(app.currentThemeIndex);
+                                            }
+                                        }, function(error) {
+                                            console.log("Error: ", error.message);
+                                    });
                                 });
-                            });
-                        }, function(error) {
-                            console.log("Error: ", error.message);
+                            }
+                        });
+                    }
+                }
+                else
+                    loadMainTheme(app.currentThemeIndex);
+            }
+            else {
+                app.layersLoaded = 0,
+                app.layersUnloaded = 0;
+                array.forEach(configOptions.comp_viewer.groups, function (group, groupIndex) {
+                    app.layersUnloaded += group.layers.length;
+                    array.forEach(group.serviceURLs, function (serviceURL, i) {
+                        request = EsriRequest({
+                            url: serviceURL + 'layers',
+                            content: {
+                                f: "json"
+                            },
+                            handleAs: "json",
+                            callbackParamName: "callback"
+                        });
+
+                        request.then(
+                            function(data) {
+                                array.forEach(data.layers, function (layerObj, i) {
+                                    array.forEach(group.layers, function (layer, j) {
+                                        if (layer.service === serviceURL && layer.name === layerObj.name && (layer.parent === undefined || layer.parent === layerObj.parentLayer.name))
+                                        {
+                                            layer.id            = layerObj.id,
+                                            layer.description   = layerObj.description,
+                                            layer.minScale      = layerObj.minScale,
+                                            layer.url           = serviceURL,
+                                            layer.index         = group.index;
+                                            app.layersLoaded++;
+                                            if (app.layersLoaded === app.layersUnloaded)
+                                                createMap();
+                                        }
+                                    });
+                                });
+                            }, function(error) {
+                                console.log("Error: ", error.message);
+                        });
                     });
                 });
-            });
+            }
         }
 
         checkboxChange = function (b, service, id, theme, tile) {
             var visibleLayers = [];
             if (b) {
-                if (!app.map._layers[service]) {
+                if (!app.currentMap._layers[service]) {
                     if (theme) {
                         if (tile)
                             var layer = new ArcGISTiledMapServiceLayer(service, {id : service});
@@ -887,17 +1001,17 @@ define([
                         var layer = new ArcGISDynamicMapServiceLayer(app.serverUrl + service + '/MapServer', {id : service});
                     app.layerInfos.push({layer: layer});
                     visibleLayers = [id];
-                    app.map.addLayers([layer]);
+                    app.currentMap.addLayers([layer]);
                 }
                 else {
-                    array.forEach(app.map._layers[service].visibleLayers, function (layerId) {
+                    array.forEach(app.currentMap._layers[service].visibleLayers, function (layerId) {
                         visibleLayers.push(layerId);
                     });
                     visibleLayers.push(id);
                 }
             }
             else {
-                array.forEach(app.map._layers[service].visibleLayers, function (layerId) {
+                array.forEach(app.currentMap._layers[service].visibleLayers, function (layerId) {
                     if (layerId != id)
                         visibleLayers.push(layerId);
                 });
@@ -906,14 +1020,484 @@ define([
             }
             if (tile) {
                 if (b)
-                    app.map._layers[service].show();
+                    app.currentMap._layers[service].show();
                 else {
-                    app.map._layers[service].hide();
+                    app.currentMap._layers[service].hide();
                     app.legend.refresh();
                 }
             }
             else
-                app.map._layers[service].setVisibleLayers(visibleLayers);
+                app.currentMap._layers[service].setVisibleLayers(visibleLayers);
+        }
+
+        loadMainTheme = function (themeIndex)
+        {
+            query('.legendDiv').forEach(domConstruct.destroy);
+            query('.lv-map').forEach(domConstruct.destroy);
+            query('#timeSliderDiv').style('display', 'none');
+            domConstruct.destroy("radioWrapper");
+
+            if (domStyle.get(app.sidePanel, 'display') === 'block') {
+                behavior.add({
+                    '.esriLegendService' : {
+                        found: function(){updateLegend();}
+                    }
+                });
+
+                var notifyCount = 0;
+
+                notify('done',function(responseOrError){
+                    if (responseOrError.hasOwnProperty('url'))
+                        if (responseOrError.url.match(/legend?/i))
+                        {
+                            notifyCount++;
+                            if (notifyCount === configOptions.themes[app.themeIndex].maps.length) {
+                                notifyCount = 0;
+                                behavior.apply();
+                            }
+                        }
+                });
+
+                app.lv = true;
+                domStyle.set(app.sidePanel, 'display', 'none');
+                domStyle.set(app.dataViewer, 'display', 'none');
+                dojo.query('.lv').style({'display' : 'block'});
+                domStyle.set(app.navbar, 'height', '83px');
+                domClass.add('mapControls', 'lv');
+                domClass.remove('data-viewer', 'active');
+                app.mapHeight = app.mapHeight - 20;
+                dojo.query(app.mapPane).style({
+                    'marginTop' : '83px',
+                    'borderTop' : '1px solid rgb(51, 51, 51)'
+                });
+
+                var constraintBox = {
+                    l:  0,
+                    t:  83,
+                    w:  app.screenWidth,
+                    h:  app.mapHeight
+                };
+
+                var moveableLegend =  new move.constrainedMoveable("legend-lv", {
+                    within: true,
+                    handle: query('#legend-lv .title'),
+                    constraints: function(){return constraintBox;}
+                });
+
+                //query('#mapCarousel').carousel({interval: false});
+
+                // query('#mapCarousel button').on('click', function (e){
+                //     query('#loading').style("display", "block");
+                //     domClass.remove(query('#mapCarousel button.btn.active')[0], 'active');
+                //     domClass.add(query(e.target), 'active');
+                //     app.themeIndex = parseInt(e.currentTarget.id.substring(e.currentTarget.id.length - 1), 10);
+                //     getLayerIds();
+                // });
+
+                if (app.screenWidth < 1024)
+                    domClass.remove("legendButton", "active");
+                else
+                    query('#legend-lv').style('display', 'block');
+
+                // query('#legend-lv .modal-header button.close').on('click', function (e){
+                //     domClass.remove("legendButton", "active");
+                //     fadeOutLegend.play();
+                // });
+
+                var fadeInLegend = fx.fadeIn({node:'legend-lv'});
+                var fadeOutLegend = fx.fadeOut({node:'legend-lv'});
+
+                on(fadeOutLegend, 'End', function(){
+                    query('#legend-lv').style('display', 'none');
+                });
+
+                on(fadeInLegend, 'End', function(){
+                    query('#legend-lv').style('display', 'block');
+                });
+
+                query('#legendButton').on('click', function (e){
+                    if (query('#legend-lv').style('display') == 'none') {
+                        domClass.add("legendButton", "active");
+                        query('#legend-lv').style('display', 'block');
+                        fadeInLegend.play();
+                    }
+                    else {
+                        domClass.remove("legendButton", "active");
+                        fadeOutLegend.play();
+                    }
+                });
+
+                query('#shareModal').modal({
+                    show        : false
+                });
+
+                query('#shareButton').on('click', function (e){
+                    query('#shareModal').modal('show');
+                    share();
+                });
+
+                query('#feedbackModal').modal({
+                    show        : false
+                });
+
+                query('#feedbackButton').on('click', function (e){
+                    query('#feedbackModal').modal('show');
+                    share();
+                });
+
+                query('.btn').on('click', function (e){
+                    focusUtil.curNode && focusUtil.curNode.blur();
+                });
+
+                on(query('#themeButtonGroup button'), 'click', function (e){
+                    query('#loading').style("display", "block");
+                    app.themeIndex = parseInt(e.currentTarget.id.substring(e.currentTarget.id.length - 1), 10);
+                    getLayerIds();
+                });
+
+                on(query('.sub-theme-buttons button'), 'click', function (e){
+                    changeSubTheme(parseInt(e.currentTarget.id.substring(e.currentTarget.id.length - 1), 10));
+                });
+
+                on(query('#printButton'), 'click', function (e){
+                    query(e.target).button('loading');
+                    print();
+                });
+
+                updateAboutText(0);
+            }
+
+            app.subthemeIndex = themeIndex;
+            //updateAboutText(app.subthemeIndex);
+            app.maps = [];
+
+            createSubThemeButtons();
+
+            array.forEach(configOptions.themes[app.themeIndex].maps, function(map, mapIndex){
+                // place map div in map-pane
+                domConstruct.place('<div id="map' + mapIndex + '" class="map-pane lite-viewer' + ((mapIndex == 0) ? ' active"' : '"') + '></div>', 'map-container');
+                // create map
+                var mapDeferred = new Map('map' + mapIndex,{
+                    basemap                 : 'oceans',
+                    zoom                    : 7,
+                    minZoom                 : 7,
+                    maxZoom                 : 14,
+                    logo                    : false,
+                    nav                     : false,
+                    sliderStyle             : 'small',
+                    showInfoWindowOnClick   : false,
+                    center                  : [-70.5, 42],
+                    showAttribution         : false,
+                    sliderPosition          : 'top-left'
+                });
+
+                app.maps.push(mapDeferred);
+
+                mapDeferred.layers = [];
+
+                var layerInfo = [];
+
+                var visibleLayers = [];
+
+                if (map.layers.hasOwnProperty("dynamicLayers")) {
+                    array.forEach(map.layers.dynamicLayers, function (dynamicLayer, i) {
+                        var dl = new ArcGISDynamicMapServiceLayer(dynamicLayer.URL);
+                        mapDeferred.layer = dl;
+                        array.forEach(dynamicLayer.layers, function (layer, layerIndex) {
+                            if (layer.hasOwnProperty("checked")) {
+                                if (layerIndex === 0)
+                                     dojo.place("<div id='radioWrapper' class='btn-group-vertical' " +
+                                        "data-toggle='buttons-radio'></div>", "legendWrapper");
+                                dojo.place("<button data-id='" + layer.ID + "' class='btn btn-default" +
+                                (layer.checked ? " active" : " ") + "'>" + layer.name + "</button>", "radioWrapper");
+                                if (layer.checked)
+                                    visibleLayers.push(layer.ID)
+                            }
+                            else
+                                visibleLayers.push(layer.ID);
+                            if (layer.hasOwnProperty("showtimeSlider"))
+                            {
+                                var tsDiv = dojo.create("div", null, dojo.byId('timeSliderDiv'));
+                                var timeSlider = new esri.dijit.TimeSlider({
+                                    style: "padding-top:10px;padding-bottom:10px;",
+                                    id: 'timeSlider'
+                                }, tsDiv);
+
+                                mapDeferred.setTimeSlider(timeSlider);
+
+                                timeSlider.setThumbCount(1);
+                                var timeExtent = new esri.TimeExtent();
+                                timeExtent.startTime = new Date("2/1/2012 UTC");
+                                timeExtent.endTime = new Date("12/01/2012 UTC");
+                                timeSlider.singleThumbAsTimeInstant(true);
+                                timeSlider.createTimeStopsByTimeInterval(timeExtent, 1, 'esriTimeUnitsMonths');
+
+                                var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                                "Jul", "Aug", "Sep", "Oct", "Nov"];
+
+                                timeSlider.setLabels(monthNames);
+                                timeSlider.startup();
+                                query('#timeSliderDiv').style('display', 'block');
+                            }
+
+                            if (layer.hasOwnProperty("outField"))
+                            {
+                                var fl = new FeatureLayer(dynamicLayer.URL + layer.ID, {
+                                    infoTemplate : new InfoTemplate('', '${' + layer.outField + '}'),
+                                    outFields: [layer.outField],
+                                    opacity: 0.0,
+                                    displayOnPan: false
+                                });
+                                fl.on('mouse-over', function (e){
+                                    var g = e.graphic;
+                                    app.currentMap.infoWindow.setTitle(g._graphicsLayer.name);
+                                    app.currentMap.infoWindow.setContent(g.getContent());
+                                    app.currentMap.infoWindow.show(e.screenPoint, app.currentMap.getInfoWindowAnchor(e.screenPoint));
+                                });
+                                fl.on('mouse-out', function (e){
+                                    app.currentMap.infoWindow.hide();
+                                });
+                                mapDeferred.addLayer(fl);
+                            }
+                        });
+                        dl.setVisibleLayers(visibleLayers);
+                        map.flexLink = 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;admin=9999;hapc=9999;efh=9999;ngdc=9999;ocean=9999';
+                        array.forEach(visibleLayers, function (layerID) {
+                            map.flexLink += (',' + layerID);
+                        });
+                        map.flexLink += ';HereIsMyMap#';
+                        if (mapIndex === 0)
+                            query('#flex-link')[0].href = map.flexLink;
+                        mapDeferred.addLayers([dl]);
+                    });
+                }
+
+                mapDeferred.on('layers-add-result', function (e){
+                    array.forEach(e.layers, function (layer){
+                        layerInfo.push({layer: layer.layer});
+                    });
+                    createLegend(layerInfo, mapIndex);
+                });
+
+                mapDeferred.on('extent-change', function (e){
+                    if (mapDeferred.loaded && mapDeferred === app.currentMap) {
+                        query('#scale')[0].innerHTML = "Scale 1:" + e.lod.scale.toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        array.forEach(app.maps, function(thisMap, index){
+                            if (thisMap !== app.currentMap)
+                                thisMap.setExtent(e.extent);
+                        });
+                    }
+                });
+
+                mapDeferred.on('zoom-end', function (e){
+                    if (mapDeferred.loaded && mapDeferred === app.currentMap) {
+                        //updateNotice();
+                        if (app.subthemeIndex === 0){
+                            if (e.level >= 12 && app.oldZoomLevel < 12 || app.oldZoomLevel === 14) {
+                                app.currentMap.legend.refresh();
+                                behavior.apply();
+                            }
+                            else if (e.level < 12 && app.oldZoomLevel >= 12) {
+                                app.currentMap.legend.refresh();
+                                behavior.apply();
+                            }
+                            if (e.level === 14)
+                            {
+                                app.currentMap.legend.refresh();
+                                behavior.apply();
+                            }
+                        }
+                        else if (app.subthemeIndex === 1) {
+                            if (e.level >= 10 && app.oldZoomLevel < 10) {
+                                app.currentMap.legend.refresh();
+                                behavior.apply();
+                            }
+                            else if (e.level < 10 && app.oldZoomLevel >= 10) {
+                                app.currentMap.legend.refresh();
+                                behavior.apply();
+                            }
+                        }
+                        // if (e.level == 14) {
+                        //      var point = new esri.geometry.Point(app.currentMap.getCenter());
+                        //      if (point.x > -7754990.997596861) {
+                        //          if (osmLayer == null) {
+                        //              osmLayer = new esri.layers.OpenStreetMapLayer();
+                        //              app.currentMap.addLayer(osmLayer, 1);
+                        //          }
+                        //          else
+                        //              osmLayer.show();
+                        //      }
+                        //         else
+                        //             if (osmLayer != null)
+                        //              osmLayer.hide();
+                        //     }
+                        // else if (osmLayer != null)
+                        //     osmLayer.hide();
+                        app.oldZoomLevel = e.level;
+                    }
+                });
+
+
+                mapDeferred.on('update-start', function(){
+                    if (mapDeferred.loaded && mapDeferred === app.currentMap)
+                        query('#loading').style("display", "block");
+                });
+
+                mapDeferred.on('update-end', function(){
+                    if (mapDeferred.loaded && mapDeferred === app.currentMap)
+                        //share();
+                        query('#loading').style("display", "none");
+                });
+
+                if (mapIndex == 0)
+                    app.currentMap = mapDeferred;
+
+                mapDeferred.chart = new ArcGISImageServiceLayer('http://egisws02.nos.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer', 'chart');
+
+                mapDeferred.addLayer(mapDeferred.chart, 1);
+                mapDeferred.chart.hide();
+
+                var scalebar = new Scalebar({
+                    map         : mapDeferred,
+                    attachTo    : 'bottom-right'
+                });
+
+                mapDeferred.on('load', function(){
+                    if (mapDeferred === app.currentMap)
+                        query('#scale')[0].innerHTML = "Scale 1:" + mapDeferred.__LOD.scale.toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                });
+            });
+
+
+            query('#radioWrapper button').on('click', function(e){
+                radioClick(dojo.attr(this, 'data-id'));
+            });
+
+            app.oldZoomLevel = app.currentMap.getLevel();
+
+            query('#legendWrapper').style('width', configOptions.themes[app.themeIndex].maps[app.subthemeIndex].menuWidth + 'px');
+        }
+
+        createSubThemeButtons = function ()
+        {
+            domConstruct.destroy("subbuttons");
+            // var subThemes = '<div class="button-container" id="subbuttons"><div class="btn-group sub-theme-buttons" data-toggle="buttons-radio">';
+            var subThemes = '';
+            array.forEach(configOptions.themes[app.themeIndex].maps, function (map, i){
+                subThemes += '<div id="subThemeButton' + i + '" class="theme_' + app.themeIndex + (i === 0 ? ' active-subtheme' : '') + '">' + map.title + '</div>';
+            });
+            //subThemes += '</div></div>';
+            domConstruct.place(subThemes, 'subthemeButtonGroup');
+
+            on(query('#subthemeButtonGroup div'), 'click', function (e){
+                changeSubTheme(parseInt(e.currentTarget.id.substring(e.currentTarget.id.length - 1), 10));        
+            });
+        }
+
+        changeSubTheme = function (mapIndex)
+        {
+            var currentMapIndex = app.subthemeIndex;
+
+            var fadeOutLayers = fx.fadeOut({node:'map' + app.subthemeIndex}),
+                fadeOutLegend = fx.fadeOut({node: 'legendDiv' + app.subthemeIndex}),
+                fadeInLayers = fx.fadeIn({node:'map' + mapIndex});
+                fadeInLegend = fx.fadeIn({node: 'legendDiv' + mapIndex}),
+                fadeOutRadio = fx.fadeOut({node: 'radioWrapper'}),
+                fadeInRadio = fx.fadeIn({node: 'radioWrapper'});
+
+            // switch (mapIndex){
+            //     case 0:
+            //         aboutBox_setContent(1791);
+            //         updateNotice();
+            //         $j('a#flex-link').attr('href', 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,26,27,28,29,30,31,32,33;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#');
+            //         break;
+            //     case 1:
+            //         aboutBox_setContent(1822);
+            //         updateNotice();
+            //         $j('a#flex-link').attr('href', 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,13,14,15,19,24,25;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#');
+            //         break;
+            //     case 2:
+            //         aboutBox_setContent(1827);
+            //         radioClick(radioSelection);
+            //         break;
+            // }
+
+            on(fadeOutLayers, 'End', function(){
+                domClass.remove('map' + currentMapIndex, 'active');
+            });
+
+            on(fadeInLayers, 'End', function(){
+                domClass.add('map' + mapIndex, 'active');
+            });
+
+            on(fadeInRadio, 'End', function (){
+                query('#radioWrapper').style('display', 'block');
+            });
+
+            on(fadeOutRadio, 'End', function (){
+                query('#radioWrapper').style('display', 'none');
+            });
+
+            coreFx.combine([fadeOutLayers, /*fadeOutLegend,*/ fadeInLayers/*, fadeInLegend*/]).play();
+
+
+            domClass.remove('legendDiv' + currentMapIndex, 'active');
+            domClass.add('legendDiv' + mapIndex, 'active');
+            query('#legendModal').style('width', configOptions.themes[app.themeIndex].maps[mapIndex].menuWidth + 'px');
+            if (mapIndex != '2') {
+                domClass.remove('radioWrapper', 'active');
+                fadeOutRadio.play();
+            }
+            else {
+                domClass.add('radioWrapper', 'active');
+                fadeInRadio.play();
+            }
+
+            updateAboutText(mapIndex);
+
+            app.subthemeIndex = mapIndex;
+            app.currentMap = app.maps[mapIndex];
+            app.currentMap.legend.refresh();
+            behavior.apply();
+
+            query('#flex-link')[0].href = configOptions.themes[app.themeIndex].maps[mapIndex].flexLink;
+        }
+
+        updateAboutText = function (subthemeIndex)
+        {
+            query('#overview p')[0].innerHTML = configOptions.themes[app.themeIndex].maps[subthemeIndex].about.overview;
+            query('#data-considerations p')[0].innerHTML = configOptions.themes[app.themeIndex].maps[subthemeIndex].about.dataConsiderations;
+            query('#status p')[0].innerHTML = configOptions.themes[app.themeIndex].maps[subthemeIndex].about.status;
+        }
+
+        createLegend = function (layerInfos, i)
+        {
+            var legendContentDiv = query('#legendWrapper')[0];
+            var legendDivHTML = '<div id="legendDiv' + i + '" class="legendDiv' + (i == 0 ? ' active"' : '"') + '></div>';
+            domConstruct.place(legendDivHTML, legendContentDiv);
+            var legend = new Legend({
+                map         : app.maps[i],
+                layerInfos  : layerInfos,
+                autoUpdate  : false
+            }, 'legendDiv' + i);
+            legend.startup();
+            app.maps[i].legend = legend;
+        }
+
+        updateLegend = function ()
+        {
+            array.forEach(configOptions.themes[app.themeIndex].maps, function (map){
+                if (map.layers.hasOwnProperty("dynamicLayers"))
+                    array.forEach(map.layers.dynamicLayers, function (dynamicLayer) {
+                        array.forEach(dynamicLayer.layers, function (layer, i) {
+                            var td = query('.esriLegendService div table.esriLegendLayerLabel tr td:contains("' + layer.name + '")')
+                            if (td.text() == layer.name)
+                                // td.html('<a href="' + layer.metadata + '" target="_blank" rel="tooltip" data-toggle="tooltip" data-placement="right" title="' + layer.description +  ' <br /><br />Click layer for metadata">' + layer.name + '</a>');
+                                td.html('<a href="' + layer.metadata + '" target="_blank" title="' + layer.description +  ' **click layer name for metadata**">' + layer.name + '</a>');
+                        });
+                    });
+            });
+            query('.esriLegendService').tooltip({selector: 'a[rel="tooltip"]'});
         }
 
         return {

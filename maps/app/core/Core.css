@@ -28,10 +28,6 @@ button.close {
   font-size: 22px !important;
 }
 
-.main {
-  float: left;
-}
-
 #side-panel {
   width: 300px;
   background-color: #697396;
@@ -205,22 +201,24 @@ li.dropdown {
   background-color: rgb(153, 153, 153);
 }*/
 
-#mapList .btn.active,
-.carousel .btn.active {
-  background-color: rgb(105, 115, 150);
-}
 
 #mapList .navbar-right {
   margin-right: 123px;
 }
 
-#map-pane {
-    margin-top: 41px;
+.map-pane {
+    margin-top: 63px;
     min-height: 100%; 
     max-height: 100%;
     width: 100%;
     float: left;
     position: absolute;
+}
+
+.map-pane.lite-viewer {
+  margin-top: 83px;
+  border-top: 1px solid rgb(51, 51, 51);
+  opacity: 0;
 }
 
 .enabled {
@@ -230,7 +228,7 @@ li.dropdown {
 
 .map {
   position: absolute;
-  width: 100%;
+  width: 100% !important;
   height: 100%;
   z-index: 0;
 }
@@ -241,7 +239,7 @@ li.dropdown {
   z-index: 1;
 }
 
-#legend {
+#legend-dv {
   overflow-y      : auto;
   border-top      : 2px solid #eee;
   padding         : 10px 0 0 15px;
@@ -280,52 +278,6 @@ li.dropdown {
   margin-right: 17px;
 }
 
-.sub-theme-buttons {
-  -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-
-  border-bottom-right-radius: 4px;
-  -moz-border-radius-bottomright: 4px;
-  -moz-border-radius-bottomright: 4px;
-
-  border-bottom-left-radius: 4px;
-  -moz-border-radius-bottomleft: 4px;
-  -moz-border-radius-bottomleft: 4px;
-  z-index: 2;
-}
-
-.sub-theme-buttons .btn {
-  border-top: none;
-  background-color: rgb(149, 156, 180);
-  border-color: #fff;
-  color: #fff;
-  font-weight: bold;
-  padding: 3px 10px 3px 10px;
-  border-bottom: none;
-}
-
-  .sub-theme-buttons .btn:first-child {
-    -webkit-border-top-left-radius: 0px !important;
-    -moz-border-radius-topleft: 0px !important;
-    border-top-left-radius: 0px !important;
-    border-left: none;
-  }
-
-  .sub-theme-buttons .btn:last-child {
-    -webkit-border-top-right-radius: 0px !important;
-    -moz-border-radius-topright: 0px !important;
-    border-top-right-radius: 0px !important;
-    border-right: none;
-  }
-
-  .sub-theme-buttons .btn:hover {
-    background-color: rgb(125, 135, 165);
-}
-
-  .sub-theme-buttons .btn.active {
-    background-color: rgb(105, 115, 150);
-  }
-
 .btn-neod {
   color: #fff;
   background-color: rgb(149, 156, 180);
@@ -352,20 +304,12 @@ li.dropdown {
   position: absolute;
   right: 10px;
   z-index: 2;
+  top: 67px;
 }
-  #mapControls .btn-group {
-    margin-left: 0;
-  }
 
-  #mapControls .btn {
-    border-top: none;
-    padding: 3px 10px 3px 10px;
-    /*width: 140px;
-    text-align: left;*/
-  }
-
-  #mapControls .btn span {
-    margin-left: 5px;
+  #mapControls.lv {
+    top: 87px;
+    display: block;
   }
 
 .no-bottom-border {
@@ -518,7 +462,7 @@ table.esriLegendLayer tr td {
     margin-bottom: 0;
   }
 
-table.esriLegendLayerLabel {
+#side-panel table.esriLegendLayerLabel {
   padding-top: 5px;
   font-weight: bold;
 }
@@ -531,13 +475,9 @@ table.esriLegendLayerLabel {
   display: none !important;
 }
 
-.radio-wrapper {
-  padding-top: 15px;
-}
-
-.radio-wrapper button {
-  width: 224px;
-  text-align: left;
+#legend-lv .esriLegendService > div > table.esriLegendLayerLabel,
+#radioWrapper {
+  display: none;
 }
 
 .esriLegendService {
@@ -789,8 +729,14 @@ img[src="img/ais-legend.png"] {
   visibility: hidden;
 }
 
-#themeButtonGroup button {
+#themeButtonGroup button,
+#subthemeButtonGroup div {
   text-indent: -99999px;
+}
+
+#subthemeButtonGroup {
+  display: block;
+  text-align: center;
 }
 
 .container-fluid {
@@ -844,8 +790,13 @@ td.dijitMenuItemIconCell span{
   box-shadow: 0px 0px 7px black;
 }
 
-#side-panel a {
+#side-panel a,
+#legend-lv a {
   color: #006633;
+}
+
+#legend-lv a {
+  cursor: help;
 }
 
 #layer-info-content h5 {
@@ -914,87 +865,93 @@ td.dijitMenuItemIconCell span{
   left      : 15px;
 }
 
+/* theme buttons */
+
 #theme0 {
   border-top-left-radius: 0;
   background-image: url('../../img/theme-buttons/top/maritimecommerce-off.png');
-  width: 141px;
+  width: 73px;
 }
 
-#theme0:hover {
-  background-image: url('../../img/theme-buttons/top/maritimecommerce-mouseover.png');
-}
+  #theme0:hover {
+    background-image: url('../../img/theme-buttons/top/maritimecommerce-mouseover.png');
+  }
+
+  #theme0.active-theme {
+    background-image: url('../../img/theme-buttons/top/maritimecommerce-on.png');
+  }
 
 #theme1 {
   background-image: url('../../img/theme-buttons/top/energy-off.png');
   width: 57px;
 }
 
-#theme1:hover {
-  background-image: url('../../img/theme-buttons/top/energy-mouseover.png');
-}
+  #theme1:hover {
+    background-image: url('../../img/theme-buttons/top/energy-mouseover.png');
+  }
 
 #theme2 {
   background-image: url('../../img/theme-buttons/top/recreation-off.png');
   width: 87px;
 }
 
-#theme2:hover {
-  background-image: url('../../img/theme-buttons/top/recreation-mouseover.png');
-}
+  #theme2:hover {
+    background-image: url('../../img/theme-buttons/top/recreation-mouseover.png');
+  }
 
 #theme3 {
   background-image: url('../../img/theme-buttons/top/commercialfishing-off.png');
   width: 141px;
 }
 
-#theme3:hover {
-  background-image: url('../../img/theme-buttons/top/commercialfishing-mouseover.png');
-}
+  #theme3:hover {
+    background-image: url('../../img/theme-buttons/top/commercialfishing-mouseover.png');
+  }
 
 #theme4 {
   background-image: url('../../img/theme-buttons/top/aquaculture-off.png');
   width: 95px;
 }
 
-#theme4:hover {
-  background-image: url('../../img/theme-buttons/top/aquaculture-mouseover.png');
-}
+  #theme4:hover {
+    background-image: url('../../img/theme-buttons/top/aquaculture-mouseover.png');
+  }
 
 #theme5 {
   background-image: url('../../img/theme-buttons/top/culture-off.png');
   width: 59px;
 }
 
-#theme5:hover {
-  background-image: url('../../img/theme-buttons/top/culture-mouseover.png');
-}
+  #theme5:hover {
+    background-image: url('../../img/theme-buttons/top/culture-mouseover.png');
+  }
 
 #theme6 {
   background-image: url('../../img/theme-buttons/top/fish-shellfish-off.png');
   width: 111px;
 }
 
-#theme6:hover {
-  background-image: url('../../img/theme-buttons/top/fish-shellfish-mouseover.png');
-}
+  #theme6:hover {
+    background-image: url('../../img/theme-buttons/top/fish-shellfish-mouseover.png');
+  }
 
 #theme7 {
   background-image: url('../../img/theme-buttons/top/mammals-off.png');
-  width: 211px;
+  width: 157px;
 }
 
-#theme7:hover {
-  background-image: url('../../img/theme-buttons/top/mammals-mouseover.png');
-}
+  #theme7:hover {
+    background-image: url('../../img/theme-buttons/top/mammals-mouseover.png');
+  }
 
 #theme8 {
   background-image: url('../../img/theme-buttons/top/othermarinelife-off.png');
   width: 128px;
 }
 
-#theme8:hover {
-  background-image: url('../../img/theme-buttons/top/othermarinelife-mouseover.png');
-}
+  #theme8:hover {
+    background-image: url('../../img/theme-buttons/top/othermarinelife-mouseover.png');
+  }
 
 #theme9 {
   border-top-right-radius: 0;
@@ -1002,8 +959,68 @@ td.dijitMenuItemIconCell span{
   width: 105px;
 }
 
-#theme9:hover {
-  background-image: url('../../img/theme-buttons/top/waterquality-mouseover.png');
+  #theme9:hover {
+    background-image: url('../../img/theme-buttons/top/waterquality-mouseover.png');
+  }
+
+/* sub-theme buttons */
+
+#subthemeButtonGroup {
+  margin-top: 2px;
+}
+
+#subthemeButtonGroup div {
+  background-repeat : no-repeat;
+  height            : 29px;
+  background-color  : transparent;
+  display           : inline-block;
+  cursor            : pointer;
+  margin-right      : 1px;
+}
+
+.theme_0 {
+  width: 151px;
+}
+
+  .theme_0:nth-child(1) {
+    background-image: url('../../img/theme-buttons/sub/navigation-off.png');
+  }
+
+    .theme_0:nth-child(1):hover {
+      background-image: url('../../img/theme-buttons/sub/navigation-mouseover.png');
+    }
+
+    .theme_0.active-subtheme:nth-child(1) {
+      background-image: url('../../img/theme-buttons/sub/navigation-on.png');
+    }
+
+  .theme_0:nth-child(2) {
+    background-image: url('../../img/theme-buttons/sub/potentialhazards-off.png');
+  }
+
+    .theme_0:nth-child(2):hover {
+      background-image: url('../../img/theme-buttons/sub/potentialhazards-mouseover.png');
+    }
+
+    .theme_0.active-subtheme:nth-child(2) {
+      background-image: url('../../img/theme-buttons/sub/potentialhazards-on.png');
+    }
+
+  .theme_0:nth-child(3) {
+    background-image: url('../../img/theme-buttons/sub/commercialtraffic-off.png');
+  }
+
+    .theme_0:nth-child(3):hover {
+      background-image: url('../../img/theme-buttons/sub/commercialtraffic-mouseover.png');
+    }
+
+    .theme_0.active-subtheme:nth-child(3) {
+      background-image: url('../../img/theme-buttons/sub/commercialtraffic-on.png');
+    }
+
+.active-theme,
+.active-subtheme {
+  cursor: default !important;
 }
 
 .color-gradient {
@@ -1019,4 +1036,106 @@ td.dijitMenuItemIconCell span{
   width         : 100%;
   height        : 5px;
   margin-bottom : 10px;
+}
+
+.lv {
+  display: none;
+}
+
+#side-tabs img {
+  position: absolute;
+  z-index : 2;
+}
+
+  #side-tabs img:nth-child(1) {
+    top: 100px;
+  }
+
+  #side-tabs img:nth-child(2) {
+    top: 200px;
+  }
+
+  #side-tabs img:nth-child(3) {
+    top: 300px;
+  }
+
+#legend-lv {
+    background  : #FFF url('../../../images/new-map-background_2x75.png') 0 0 repeat-x;
+    position    : absolute;
+    z-index     : 2;
+    top         : 100px;
+    left        : 55px;
+    box-shadow  : 7px 7px 7px #888;
+    border      : 1px solid #ccc;
+}
+
+#legend-lv .new-map-box-head {
+  padding-right : 6px;
+}
+
+#legend-lv .new-map-box-head .title {
+  padding-top: 1px;
+  margin-left: 0;
+}
+
+.new-map-box-head {
+  padding-right: 20px;
+  line-height: 20px;
+  height: 20px;
+  font-weight: bold;
+  font-size: 11px;
+  font-family: arial, sans-serif;
+  color: #FFF;
+  cursor: move;
+}
+
+a.new-map-x:link {
+  text-decoration: none;
+  float: right;
+  display: block;
+  color: #FFF;
+  margin-top: -24px;
+}
+
+span#legendAbout p {
+  font-weight: bold;
+  border: 1px solid white;
+  line-height: 15px;
+  margin-top: 5px;
+  padding-left: 10px;
+}
+
+#about {
+  position: absolute;
+  display: none;
+}
+
+.legendDiv {
+  display: none;
+  padding: 10px;
+}
+
+.active {
+  display: block;
+}
+
+#map-container {
+  font-size : 11px;
+  color     : #444;
+}
+
+#legend-lv .title {
+  padding-left: 10px;
+}
+
+#legendWrapper {
+    max-height: 443px;
+    overflow-y: auto;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.map .container {
+  width: 100% !important;
+  height: 100% !important;
 }

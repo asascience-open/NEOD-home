@@ -36,7 +36,7 @@
 
     <body class='claro'>
         <!-- navbar -->
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation" id="navbar">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -78,8 +78,9 @@
                         <a class="carousel-control right" href="#mapCarousel" data-slide="next">&rsaquo;</a>
                     </div>
                 -->
-                    <div class='button-container'>
+                    <div class='button-container' id='theme-button-container'>
                         <div class='btn-group' data-toggle='buttons-radio' id='themeButtonGroup'></div>
+                        <div class='btn-group' data-toggle='buttons-radio' id='subthemeButtonGroup'></div>
                     </div>
                 </div><!--/.nav-collapse -->
             </div>
@@ -177,13 +178,18 @@
                 </div>
             <div id='layer-info-content'></div></div>
             <div id='tree'></div>
-            <div id='legend'></div>
+            <div id='legend-dv'></div>
             <div id='legend-control'>
                 Legend
                 <div class='panel-heading-arrow-vert' id='show-hide-legend-btn' title='Hide Legend'></div>
             </div>
         </div>
-        <div id="map-pane" class='main'>
+        <div id='side-tabs' class='lv'>
+            <img src='img/side-buttons/legend-tab-out-on.png' />
+            <img src='img/side-buttons/about-tab-out-off.png' />
+            <img src='img/side-buttons/feedback-tab-out-off.png' />
+        </div>
+        <div id='map-container'>
             <div id="mapControls">
                 <img src='img/loading.gif' id='loading' />
                 <span id='scale'></span>
@@ -192,8 +198,25 @@
                 <button id="shareButton" class="button-container" type="button"></button>
                 <button id="printButton" class="button-container" type="button"></button>
             </div>
-        </div>
-    
+            <div id='data-viewer' class='map-pane active'> </div>
+            <div id="legend-lv" class='lv'>
+                <div class="new-map-box-head">
+                    <div class="title">Legend</div>
+                    <div class="tools"><a class="new-map-x" onclick="neodShowHideBox('legend','Whatever',false);return false;" href="#"><img src="http://staging.northeastoceandata.org/images/mini-icon.png" border="0" height="14" style="margin-top: 3px;"></a></div>
+                </div>
+                <span id="legendAbout">
+                    <p>MARITIME COMMERCE: NAVIGATION</p>
+                </span>
+                <div id="legendWrapper"></div>
+                <div id='timeSliderDiv'></div>
+                <a id="flex-link" href=''>View this data with other layers</a>
+            </div>
+            <div id='about'>
+                <strong>Overview</strong><div id='overview'><p>blah</p></div>
+                <strong>Data Considerations</strong><div id='data-considerations'><p>blah</p></div>
+                <strong>Status</strong><div id='status'><p>blah</p></div>
+            </div>
+        </div>    
         <script type="text/javascript">
             var djConfig = {
                 parseOnLoad: true,
