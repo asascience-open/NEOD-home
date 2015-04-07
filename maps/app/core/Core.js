@@ -54,13 +54,13 @@ define([
     'dijit/DropDownMenu',
     'dijit/MenuItem',
     'dijit/form/Button',
-    'bootstrap/Dropdown',
-    'bootstrap/Collapse',
-    'bootstrap/Modal',
-    'bootstrap/Tooltip',
-    'bootstrap/Carousel',
-    'dojo/domReady!',
-    'bootstrap/Tab'
+    // 'bootstrap/Dropdown',
+    // 'bootstrap/Collapse',
+    // 'bootstrap/Modal',
+    // 'bootstrap/Tooltip',
+    // 'bootstrap/Carousel',
+    'dojo/domReady!'//,
+    //'bootstrap/Tab'
     ], 
     function(
         Map,
@@ -387,7 +387,7 @@ define([
         {
             getFullServices();
 
-            query(".collapse").collapse();
+            //query(".collapse").collapse();
 
             app.currentMap = new Map('data-viewer',{
                     basemap                 : 'oceans',
@@ -1127,23 +1127,23 @@ define([
                     }
                 });
 
-                query('#shareModal').modal({
-                    show        : false
-                });
+                // query('#shareModal').modal({
+                //     show        : false
+                // });
 
-                query('#shareButton').on('click', function (e){
-                    query('#shareModal').modal('show');
-                    share();
-                });
+                // query('#shareButton').on('click', function (e){
+                //     query('#shareModal').modal('show');
+                //     share();
+                // });
 
-                query('#feedbackModal').modal({
-                    show        : false
-                });
+                // query('#feedbackModal').modal({
+                //     show        : false
+                // });
 
-                query('#feedbackButton').on('click', function (e){
-                    query('#feedbackModal').modal('show');
-                    share();
-                });
+                // query('#feedbackButton').on('click', function (e){
+                //     query('#feedbackModal').modal('show');
+                //     share();
+                // });
 
                 query('.btn').on('click', function (e){
                     focusUtil.curNode && focusUtil.curNode.blur();
@@ -1152,11 +1152,7 @@ define([
                 on(query('#themeButtonGroup button'), 'click', function (e){
                     query('#loading').style("display", "block");
                     app.themeIndex = parseInt(e.currentTarget.id.substring(e.currentTarget.id.length - 1), 10);
-                    getLayerIds();
-                });
-
-                on(query('.sub-theme-buttons button'), 'click', function (e){
-                    changeSubTheme(parseInt(e.currentTarget.id.substring(e.currentTarget.id.length - 1), 10));
+                    getLayerIds(true);
                 });
 
                 on(query('#printButton'), 'click', function (e){
@@ -1206,10 +1202,9 @@ define([
                         array.forEach(dynamicLayer.layers, function (layer, layerIndex) {
                             if (layer.hasOwnProperty("checked")) {
                                 if (layerIndex === 0)
-                                     dojo.place("<div id='radioWrapper' class='btn-group-vertical' " +
-                                        "data-toggle='buttons-radio'></div>", "legendWrapper");
-                                dojo.place("<button data-id='" + layer.ID + "' class='btn btn-default" +
-                                (layer.checked ? " active" : " ") + "'>" + layer.name + "</button>", "radioWrapper");
+                                     dojo.place("<div id='radioWrapper'></div>", "legendWrapper");
+                                dojo.place("<input type='radio' name='radio-buttons' id='radio_" + layer.ID + "' data-id='" + layer.ID + "'" + 
+                                (layer.checked ? 'checked' : '') + " /><label for='radio_" + layer.ID + "'>" + layer.name + "</label><br />", "radioWrapper");
                                 if (layer.checked)
                                     visibleLayers.push(layer.ID)
                             }
@@ -1390,6 +1385,8 @@ define([
             domConstruct.place(subThemes, 'subthemeButtonGroup');
 
             on(query('#subthemeButtonGroup div'), 'click', function (e){
+                domClass.remove(query('#subthemeButtonGroup .active-subtheme')[0], 'active-subtheme');
+                domClass.add(this, 'active-subtheme');
                 changeSubTheme(parseInt(e.currentTarget.id.substring(e.currentTarget.id.length - 1), 10));        
             });
         }
@@ -1438,7 +1435,7 @@ define([
                 query('#radioWrapper').style('display', 'none');
             });
 
-            coreFx.combine([fadeOutLayers, /*fadeOutLegend,*/ fadeInLayers/*, fadeInLegend*/]).play();
+            coreFx.combine([fadeOutLayers, fadeOutLegend, fadeInLayers, fadeInLegend]).play();
 
 
             domClass.remove('legendDiv' + currentMapIndex, 'active');

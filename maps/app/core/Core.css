@@ -795,8 +795,17 @@ td.dijitMenuItemIconCell span{
   color: #006633;
 }
 
-#legend-lv a {
-  cursor: help;
+#legendWrapper a {
+  visibility      : visible !important;
+  text-decoration : none;
+  padding-right   : 17px;
+  background      : url("../../../images/extlink.gif") right center no-repeat !important;
+}
+
+#legendWrapper a:hover {
+  text-decoration : underline;
+  padding-right   : 22px;
+  background      : url("../../../images/extlink.gif") right center no-repeat !important;
 }
 
 #layer-info-content h5 {
