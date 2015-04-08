@@ -30,11 +30,17 @@ define([],
 					maps: [
 						{
 							title: "Navigation",
+							group: 'navigation',
 							menuWidth: 291,
+							flexLink: 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,26,27,28,29,30,31,32,33;admin=9999;HereIsMyMap#',
 							about: {
 								overview: "This map shows boundaries and designations that define the basic marine transportation system for commercial and recreational vessels in the region.",
 								dataConsiderations: "Most of the features on the map are officially designated and actively maintained by the U.S. Coast Guard or the U.S. Navy, and their locations are well established. Examples include Anchorages; Maintained Channels; Safety, Security, and Regulated Zones; Danger Zone and Restricted Areas; and WhalesNorth Mandatory Ship Reporting System.<br /><br />Some of the Pilot Boarding Areas on the map are not designated by federal or state government authorities. However, they are well known and considered important by the maritime commerce sector.",
 								status: "We are working with the U.S. Coast Guard, Bureau of Ocean Energy Management, National Oceanic and Atmospheric Administration, and the maritime commerce community to verify and enhance the datasets, such as by identifying additional areas that are important for marine operations."
+							},
+							scaleRestriction: {
+								minLevel : 12,
+								text : 'Aids to Navigation'
 							},
 							layers: {
 								dynamicLayers: [
@@ -91,10 +97,17 @@ define([],
 						},
 						{
 							title: "Potential Hazards",
+							group: 'hazards',
+							menuWidth: 271,
+							flexLink: 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,13,14,15,19,24,25;admin=9999;HereIsMyMap#',
 							about: {
 								overview: "This map shows the locations of some potential hazards on the seabed, including unexploded ordnance, disposal sites, cables, and pipelines.",
 								dataConsiderations: "This map can be used to help identify areas of risk to human health and property. People should take caution with the use of these data and recognize that the original sources are known to be incomplete.",
 								status: "We are actively working with the telecommunications industry to improve the submarine cable layer. We are not planning updates to the other datasets at this time."
+							},
+							scaleRestriction: {
+								minLevel : 10,
+								text : 'Submarine Cable and Pipeline Areas'
 							},
 							layers: {
 								dynamicLayers: [
@@ -135,7 +148,9 @@ define([],
 						},
 						{
 							title: "Commercial Traffic",
-							menuWidth: 240,
+							group: 'traffic',
+							menuWidth: 229,
+							hasRadioBtns : true,
 							about: {
 								overview: "This map shows the concentration of commercial vessel traffic in 2011 for cargo, tanker, tug and tow, passenger, and all vessels, based on data received from Automatic Identification Systems (AIS).",
 								dataConsiderations: "AIS are navigation safety devices that monitor and transmit the locations and characteristics of vessels in U.S. and international waters. All vessels 300 gross tons and above (except military) are required by the International Maritime Organization to carry an AIS transponder. For this map, vessel tracks were derived from raw AIS data provided by the U.S. Coast Guard. The vessel tracklines were then used to generate density grids to better display the patterns of vessel activity by vessel type. Accuracy and completeness of AIS data can be affected by transponder reception range, which varies with changes in atmosphere, weather, and time of day.",
@@ -150,61 +165,61 @@ define([],
 												name: "2011 All AIS Vessel Density",
 												metadata: metadataURL + "AIS/NorthAtlanticTotalAISVesselDensity2011.pdf",
 												checked: true,
-												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#"
+												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,34;admin=9999;HereIsMyMap#"
 											},
 											{
 												name: "2011 Cargo AIS Vessel Density",
 												metadata: metadataURL + "AIS/NorthAtlanticCargoAISVesselDensity2011.pdf",
 												checked: false,
-												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#"
+												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,35;admin=9999;HereIsMyMap#"
 											},
 											{
 												name: "2011 Passenger AIS Vessel Density",
 												metadata: metadataURL + "AIS/NorthAtlanticPassengerAISVesselDensity2011.pdf",
 												checked: false,
-												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#"
+												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,36;admin=9999;HereIsMyMap#"
 											},
 											{
 												name: "2011 Tug-Tow AIS Vessel Density",
 												metadata: metadataURL + "AIS/NorthAtlanticTugTowAISVesselDensity2011.pdf",
 												checked: false,
-												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#"
+												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,37;admin=9999;HereIsMyMap#"
 											},
 											{
 												name: "2011 Tanker AIS Vessel Density",
 												metadata: metadataURL + "AIS/NorthAtlanticTankerAISVesselDensity2011.pdf",
 												checked: false,
-												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#"
+												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,38;admin=9999;HereIsMyMap#"
 											},
 											{
 												name: "2012 All AIS Vessel Density",
 												metadata: metadataURL + "AIS/NorthAtlanticTotalAISVesselDensity2012.pdf",
 												checked: false,
-												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#"
+												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,39;admin=9999;HereIsMyMap#"
 											},
 											{
 												name: "2012 Cargo AIS Vessel Density",
 												metadata: metadataURL + "AIS/NorthAtlanticCargoAISVesselDensity2012.pdf",
 												checked: false,
-												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#"
+												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,40;admin=9999;HereIsMyMap#"
 											},
 											{
 												name: "2012 Passenger AIS Vessel Density",
 												metadata: metadataURL + "AIS/NorthAtlanticPassengerAISVesselDensity2012.pdf",
 												checked: false,
-												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#"
+												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,41;admin=9999;HereIsMyMap#"
 											},
 											{
 												name: "2012 Tug-Tow AIS Vessel Density",
 												metadata: metadataURL + "AIS/NorthAtlanticTugTowAISVesselDensity2012.pdf",
 												checked: false,
-												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#"
+												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,42;admin=9999;HereIsMyMap#"
 											},
 											{
 												name: "2012 Tanker AIS Vessel Density",
 												metadata: metadataURL + "AIS/NorthAtlanticTankerAISVesselDensity2012.pdf",
 												checked: false,
-												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,34;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#"
+												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,43;admin=9999;HereIsMyMap#"
 											}
 										]
 									}

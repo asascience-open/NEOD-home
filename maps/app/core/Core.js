@@ -811,29 +811,37 @@ define([
             });
         }
 
-        function checkMinScale() {
+        function checkMinScale (level, minLevel) {
             var scale = app.currentMap.getScale();
-            array.forEach(registry.toArray(), function (widget, i) {
-                if (widget.hasOwnProperty('item')) {
-                    if (widget.item.hasOwnProperty('minScale')) {
-                        if (widget.item.minScale != null) {
-                            var checkboxWidget = registry.byId(widget.item.id.substr(0, widget.item.id.indexOf('-')));
-                            if (widget.item.minScale < scale) {
-                                if (!checkboxWidget.get('disabled')) {
-                                    checkboxWidget.set('disabled', true);
-                                    domConstruct.place('<span class="zoom-notice" id="' + widget.item.id + 'zoom">zoom to view</span>', widget.domNode.childNodes[0]);
+            if (!level) {
+                array.forEach(registry.toArray(), function (widget, i) {
+                    if (widget.hasOwnProperty('item')) {
+                        if (widget.item.hasOwnProperty('minScale')) {
+                            if (widget.item.minScale != null) {
+                                var checkboxWidget = registry.byId(widget.item.id.substr(0, widget.item.id.indexOf('-')));
+                                if (widget.item.minScale < scale) {
+                                    if (!checkboxWidget.get('disabled')) {
+                                        checkboxWidget.set('disabled', true);
+                                        domConstruct.place('<span class="zoom-notice" id="' + widget.item.id + 'zoom">zoom to view</span>', widget.domNode.childNodes[0]);
+                                    }
                                 }
+                                else
+                                    if (checkboxWidget.get('disabled')) {
+                                        checkboxWidget.set('disabled', false);
+                                        domConstruct.destroy(widget.item.id + 'zoom');
+                                    }
                             }
-                            else
-                                if (checkboxWidget.get('disabled')) {
-                                    checkboxWidget.set('disabled', false);
-                                    domConstruct.destroy(widget.item.id + 'zoom');
-                                }
                         }
                     }
-                }
 
-            });
+                });
+            }
+            else {
+                if (level < minLevel)
+                    domClass.add(query('.notice.' + configOptions.themes[app.themeIndex].maps[app.subthemeIndex].group)[0], 'active');
+                else
+                    domClass.remove(query('.notice.active.' + configOptions.themes[app.themeIndex].maps[app.subthemeIndex].group)[0], 'active');
+            }
         }
 
         function updateScale() {
@@ -1247,13 +1255,13 @@ define([
                             }
                         });
                         dl.setVisibleLayers(visibleLayers);
-                        map.flexLink = 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;admin=9999;hapc=9999;efh=9999;ngdc=9999;ocean=9999';
-                        array.forEach(visibleLayers, function (layerID) {
-                            map.flexLink += (',' + layerID);
-                        });
-                        map.flexLink += ';HereIsMyMap#';
-                        if (mapIndex === 0)
-                            query('#flex-link')[0].href = map.flexLink;
+                        // map.flexLink = 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;admin=9999;hapc=9999;efh=9999;ngdc=9999;ocean=9999';
+                        // array.forEach(visibleLayers, function (layerID) {
+                        //     map.flexLink += (',' + layerID);
+                        // });
+                        // map.flexLink += ';HereIsMyMap#';
+                        // if (mapIndex === 0)
+                            // query('#flex-link')[0].href = map.flexLink;
                         mapDeferred.addLayers([dl]);
                     });
                 }
@@ -1275,34 +1283,42 @@ define([
                     }
                 });
 
-                mapDeferred.on('zoom-end', function (e){
+                 mapDeferred.on('zoom-end', function (e){
                     if (mapDeferred.loaded && mapDeferred === app.currentMap) {
-                        //updateNotice();
-                        if (app.subthemeIndex === 0){
-                            if (e.level >= 12 && app.oldZoomLevel < 12 || app.oldZoomLevel === 14) {
-                                app.currentMap.legend.refresh();
-                                behavior.apply();
-                            }
-                            else if (e.level < 12 && app.oldZoomLevel >= 12) {
-                                app.currentMap.legend.refresh();
-                                behavior.apply();
-                            }
-                            if (e.level === 14)
-                            {
+                        if (configOptions.themes[app.themeIndex].maps[app.subthemeIndex].scaleRestriction) {
+                            var minLevel = configOptions.themes[app.themeIndex].maps[app.subthemeIndex].scaleRestriction.minLevel;
+                            if ((e.level >= minLevel && app.oldZoomLevel < minLevel) || (e.level < minLevel && app.oldZoomLevel >= minLevel)) {
+                                checkMinScale(e.level, minLevel);
                                 app.currentMap.legend.refresh();
                                 behavior.apply();
                             }
                         }
-                        else if (app.subthemeIndex === 1) {
-                            if (e.level >= 10 && app.oldZoomLevel < 10) {
-                                app.currentMap.legend.refresh();
-                                behavior.apply();
-                            }
-                            else if (e.level < 10 && app.oldZoomLevel >= 10) {
-                                app.currentMap.legend.refresh();
-                                behavior.apply();
-                            }
-                        }
+                        // //updateNotice();
+                        // if (app.subthemeIndex === 0){
+                        //     if (e.level >= 12 && app.oldZoomLevel < 12 || app.oldZoomLevel === 14) {
+                        //         app.currentMap.legend.refresh();
+                        //         behavior.apply();
+                        //     }
+                        //     else if (e.level < 12 && app.oldZoomLevel >= 12) {
+                        //         app.currentMap.legend.refresh();
+                        //         behavior.apply();
+                        //     }
+                        //     if (e.level === 14)
+                        //     {
+                        //         app.currentMap.legend.refresh();
+                        //         behavior.apply();
+                        //     }
+                        // }
+                        // else if (app.subthemeIndex === 1) {
+                        //     if (e.level >= 10 && app.oldZoomLevel < 10) {
+                        //         app.currentMap.legend.refresh();
+                        //         behavior.apply();
+                        //     }
+                        //     else if (e.level < 10 && app.oldZoomLevel >= 10) {
+                        //         app.currentMap.legend.refresh();
+                        //         behavior.apply();
+                        //     }
+                        // }
                         // if (e.level == 14) {
                         //      var point = new esri.geometry.Point(app.currentMap.getCenter());
                         //      if (point.x > -7754990.997596861) {
@@ -1320,8 +1336,8 @@ define([
                         // else if (osmLayer != null)
                         //     osmLayer.hide();
                         app.oldZoomLevel = e.level;
-                    }
-                });
+                     }
+                 });
 
 
                 mapDeferred.on('update-start', function(){
@@ -1357,6 +1373,7 @@ define([
             app.oldZoomLevel = app.currentMap.getLevel();
 
             query('#legendWrapper').style('width', configOptions.themes[app.themeIndex].maps[app.subthemeIndex].menuWidth + 'px');
+            query('#flex-link')[0].href = configOptions.themes[app.themeIndex].maps[app.subthemeIndex].flexLink;
         }
 
         createSubThemeButtons = function ()
@@ -1384,26 +1401,9 @@ define([
             var fadeOutLayers = fx.fadeOut({node:'map' + app.subthemeIndex}),
                 fadeOutLegend = fx.fadeOut({node: 'legendDiv' + app.subthemeIndex}),
                 fadeInLayers = fx.fadeIn({node:'map' + mapIndex});
-                fadeInLegend = fx.fadeIn({node: 'legendDiv' + mapIndex}),
-                fadeOutRadio = fx.fadeOut({node: 'radioWrapper'}),
-                fadeInRadio = fx.fadeIn({node: 'radioWrapper'});
-
-            // switch (mapIndex){
-            //     case 0:
-            //         aboutBox_setContent(1791);
-            //         updateNotice();
-            //         $j('a#flex-link').attr('href', 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,26,27,28,29,30,31,32,33;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#');
-            //         break;
-            //     case 1:
-            //         aboutBox_setContent(1822);
-            //         updateNotice();
-            //         $j('a#flex-link').attr('href', 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;ocean=9999,13,14,15,19,24,25;admin=9999;hapc=9999;efh=9999;ngdc=9999;HereIsMyMap#');
-            //         break;
-            //     case 2:
-            //         aboutBox_setContent(1827);
-            //         radioClick(radioSelection);
-            //         break;
-            // }
+                fadeInLegend = fx.fadeIn({node: 'legendDiv' + mapIndex});
+                //fadeOutRadio = fx.fadeOut({node: 'radioWrapper'}),
+                //fadeInRadio = fx.fadeIn({node: 'radioWrapper'});
 
             on(fadeOutLayers, 'End', function(){
                 domClass.remove('map' + currentMapIndex, 'active');
@@ -1413,13 +1413,13 @@ define([
                 domClass.add('map' + mapIndex, 'active');
             });
 
-            on(fadeInRadio, 'End', function (){
-                query('#radioWrapper').style('display', 'block');
-            });
+            // on(fadeInRadio, 'End', function (){
+            //     query('#radioWrapper').style('display', 'block');
+            // });
 
-            on(fadeOutRadio, 'End', function (){
-                query('#radioWrapper').style('display', 'none');
-            });
+            // on(fadeOutRadio, 'End', function (){
+            //     query('#radioWrapper').style('display', 'none');
+            // });
 
             coreFx.combine([fadeOutLayers, fadeOutLegend, fadeInLayers, fadeInLegend]).play();
 
@@ -1427,23 +1427,38 @@ define([
             domClass.remove('legendDiv' + currentMapIndex, 'active');
             domClass.add('legendDiv' + mapIndex, 'active');
             query('#legendWrapper').style('width', configOptions.themes[app.themeIndex].maps[mapIndex].menuWidth + 'px');
-            if (mapIndex != '2') {
-                domClass.remove('radioWrapper', 'active');
-                fadeOutRadio.play();
+
+            if (configOptions.themes[app.themeIndex].maps[mapIndex].hasRadioBtns) {
+                domClass.add('radioWrapper', 'active');
+                //fadeInRadio.play();
+
             }
             else {
-                domClass.add('radioWrapper', 'active');
-                fadeInRadio.play();
+                if (domClass.contains('radioWrapper', 'active')) {
+                    domClass.remove('radioWrapper', 'active');
+                    //fadeOutRadio.play();
+                }
             }
 
             updateAboutText(mapIndex);
+
+            if (query('.notice.active')[0])
+                domClass.remove(query('.notice.active')[0], 'active');
+            if (configOptions.themes[app.themeIndex].maps[mapIndex].scaleRestriction) {
+                domClass.add(query('.' + configOptions.themes[app.themeIndex].maps[mapIndex].group)[0], 'active');
+            }
 
             app.subthemeIndex = mapIndex;
             app.currentMap = app.maps[mapIndex];
             app.currentMap.legend.refresh();
             behavior.apply();
+            if (configOptions.themes[app.themeIndex].maps[app.subthemeIndex].scaleRestriction)
+                checkMinScale(app.currentMap.getLevel(), configOptions.themes[app.themeIndex].maps[app.subthemeIndex].scaleRestriction.minLevel)
 
-            query('#flex-link')[0].href = configOptions.themes[app.themeIndex].maps[mapIndex].flexLink;
+            if (configOptions.themes[app.themeIndex].maps[mapIndex].flexLink)
+                query('#flex-link')[0].href = configOptions.themes[app.themeIndex].maps[mapIndex].flexLink;
+
+            query('#legendAbout p').text(configOptions.themes[app.themeIndex].title + ': ' + configOptions.themes[app.themeIndex].maps[mapIndex].title);
         }
 
         updateAboutText = function (subthemeIndex)
@@ -1455,8 +1470,13 @@ define([
 
         createLegend = function (layerInfos, i)
         {
+            var noticeHTML = '';
+            if (configOptions.themes[app.themeIndex].maps[i].scaleRestriction){
+                noticeHTML = "<div class='" + configOptions.themes[app.themeIndex].maps[i].group + (i === 0 ? ' active' : '') +
+                " notice'>Zoom in to view '" + configOptions.themes[app.themeIndex].maps[i].scaleRestriction.text + "'</div>";
+            }
             var legendContentDiv = query('#legendWrapper')[0];
-            var legendDivHTML = '<div id="legendDiv' + i + '" class="legendDiv' + (i == 0 ? ' active"' : '"') + '></div>';
+            var legendDivHTML = (noticeHTML + '<div id="legendDiv' + i + '" class="legendDiv' + (i == 0 ? ' active"' : '"') + '></div>');
             domConstruct.place(legendDivHTML, legendContentDiv);
             var legend = new Legend({
                 map         : app.maps[i],
@@ -1465,6 +1485,8 @@ define([
             }, 'legendDiv' + i);
             legend.startup();
             app.maps[i].legend = legend;
+            if (i === 0)
+                query('#legendAbout p').text(configOptions.themes[app.themeIndex].title + ': ' + configOptions.themes[app.themeIndex].maps[i].title);
         }
 
         updateLegend = function ()
@@ -1473,7 +1495,7 @@ define([
                 if (map.layers.hasOwnProperty("dynamicLayers"))
                     array.forEach(map.layers.dynamicLayers, function (dynamicLayer) {
                         array.forEach(dynamicLayer.layers, function (layer, i) {
-                            var td = query('.esriLegendService div table.esriLegendLayerLabel tr td:contains("' + layer.name + '")')
+                            var td = query('#legend-lv .esriLegendService div table.esriLegendLayerLabel tr td:contains("' + layer.name + '")')
                             if (td.text() == layer.name)td.html('<a href="' + layer.metadata + '" target="_blank" rel="tooltip" data-toggle="tooltip" data-placement="right" title="' + layer.description +  ' <br /><br />click link for metadata">' + layer.name + '</a>');
                         });
                     });
@@ -1487,6 +1509,10 @@ define([
             radioSelection = id;
             app.currentMap.legend.refresh();
             behavior.apply();
+            array.forEach(configOptions.themes[app.themeIndex].maps[app.subthemeIndex].layers.dynamicLayers[0].layers, function (v, i) {
+                if (v.ID === id)
+                    query('#flex-link')[0].href = v.flexLink;
+            });
         }
 
         return {
