@@ -54,13 +54,9 @@ define([
     'dijit/DropDownMenu',
     'dijit/MenuItem',
     'dijit/form/Button',
-    // 'bootstrap/Dropdown',
-    // 'bootstrap/Collapse',
-    // 'bootstrap/Modal',
-    // 'bootstrap/Tooltip',
-    // 'bootstrap/Carousel',
-    'dojo/domReady!'//,
-    //'bootstrap/Tab'
+    'bootstrap/Tooltip',
+    'bootstrap/Modal',
+    'dojo/domReady!'
     ], 
     function(
         Map,
@@ -119,7 +115,6 @@ define([
                 domClass.add(this, 'active-theme');
                 getLayerIds(true);
                 app.currentThemeIndex = parseInt(this.attributes["data-theme-id"].value, 10);
-                //loadMainTheme(parseInt(this.attributes["data-theme-id"].value, 10));
             });
 
             getLayerIds();
@@ -1127,24 +1122,6 @@ define([
                     }
                 });
 
-                // query('#shareModal').modal({
-                //     show        : false
-                // });
-
-                // query('#shareButton').on('click', function (e){
-                //     query('#shareModal').modal('show');
-                //     share();
-                // });
-
-                // query('#feedbackModal').modal({
-                //     show        : false
-                // });
-
-                // query('#feedbackButton').on('click', function (e){
-                //     query('#feedbackModal').modal('show');
-                //     share();
-                // });
-
                 query('.btn').on('click', function (e){
                     focusUtil.curNode && focusUtil.curNode.blur();
                 });
@@ -1152,7 +1129,7 @@ define([
                 on(query('#themeButtonGroup button'), 'click', function (e){
                     query('#loading').style("display", "block");
                     app.themeIndex = parseInt(e.currentTarget.id.substring(e.currentTarget.id.length - 1), 10);
-                    getLayerIds(true);
+                    getLayerIds(app.liteViewer);
                 });
 
                 on(query('#printButton'), 'click', function (e){
@@ -1203,8 +1180,22 @@ define([
                             if (layer.hasOwnProperty("checked")) {
                                 if (layerIndex === 0)
                                      dojo.place("<div id='radioWrapper'></div>", "legendWrapper");
-                                dojo.place("<input type='radio' name='radio-buttons' id='radio_" + layer.ID + "' data-id='" + layer.ID + "'" + 
-                                (layer.checked ? 'checked' : '') + " /><label for='radio_" + layer.ID + "'>" + layer.name + "</label><br />", "radioWrapper");
+                                //dojo.place("<input type='radio' name='radio-buttons' id='radio_" + layer.ID + "' data-id='" + layer.ID + "'" + 
+                                //(layer.checked ? 'checked' : '') + " /><label for='radio_" + layer.ID + "'>" + layer.name + "</label><br />", "radioWrapper");
+
+                                radio = new dijit.form.RadioButton({
+                                    id          : 'radio_' + layer.ID,
+                                    label       : layer.name,
+                                    value       : layer.ID,
+                                    name        : 'radio-buttons', //layer[i].group,
+                                    //'class'     : layer[i].group,
+                                    checked     : layer.checked,
+                                    onClick     : function(e) {radioClick(this.value);
+                                                  }
+                                }, dojo.create('input', null, dojo.byId('radioWrapper')));
+                                dojo.create('label', { 'for' : 'radio_' + layer.ID , innerHTML : layer.name, 'class' : 'radio-buttons' }, dojo.byId('radioWrapper'));
+
+
                                 if (layer.checked)
                                     visibleLayers.push(layer.ID)
                             }
@@ -1363,11 +1354,6 @@ define([
                 });
             });
 
-
-            query('#radioWrapper button').on('click', function(e){
-                radioClick(dojo.attr(this, 'data-id'));
-            });
-
             app.oldZoomLevel = app.currentMap.getLevel();
 
             query('#legendWrapper').style('width', configOptions.themes[app.themeIndex].maps[app.subthemeIndex].menuWidth + 'px');
@@ -1440,7 +1426,7 @@ define([
 
             domClass.remove('legendDiv' + currentMapIndex, 'active');
             domClass.add('legendDiv' + mapIndex, 'active');
-            query('#legendModal').style('width', configOptions.themes[app.themeIndex].maps[mapIndex].menuWidth + 'px');
+            query('#legendWrapper').style('width', configOptions.themes[app.themeIndex].maps[mapIndex].menuWidth + 'px');
             if (mapIndex != '2') {
                 domClass.remove('radioWrapper', 'active');
                 fadeOutRadio.play();
@@ -1488,13 +1474,19 @@ define([
                     array.forEach(map.layers.dynamicLayers, function (dynamicLayer) {
                         array.forEach(dynamicLayer.layers, function (layer, i) {
                             var td = query('.esriLegendService div table.esriLegendLayerLabel tr td:contains("' + layer.name + '")')
-                            if (td.text() == layer.name)
-                                // td.html('<a href="' + layer.metadata + '" target="_blank" rel="tooltip" data-toggle="tooltip" data-placement="right" title="' + layer.description +  ' <br /><br />Click layer for metadata">' + layer.name + '</a>');
-                                td.html('<a href="' + layer.metadata + '" target="_blank" title="' + layer.description +  ' **click layer name for metadata**">' + layer.name + '</a>');
+                            if (td.text() == layer.name)td.html('<a href="' + layer.metadata + '" target="_blank" rel="tooltip" data-toggle="tooltip" data-placement="right" title="' + layer.description +  ' <br /><br />click link for metadata">' + layer.name + '</a>');
                         });
                     });
             });
             query('.esriLegendService').tooltip({selector: 'a[rel="tooltip"]'});
+        }
+
+        radioClick = function (id)
+        {
+            app.currentMap.layer.setVisibleLayers([id]);
+            radioSelection = id;
+            app.currentMap.legend.refresh();
+            behavior.apply();
         }
 
         return {

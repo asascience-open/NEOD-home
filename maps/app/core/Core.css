@@ -1148,3 +1148,34 @@ span#legendAbout p {
   width: 100% !important;
   height: 100% !important;
 }
+
+#radioWrapper {
+  padding: 10px;
+}
+
+  #radioWrapper label {
+    line-height: 21px;
+    cursor: pointer;
+    display: table-cell;
+    white-space: normal;
+    font-weight: normal;
+  }
+
+.dijitRadio {
+  float: left;
+  clear: both;
+  height: 21px !important;
+  vertical-align: middle;
+  margin-right: 10px !important;
+}
+
+.esriPopupWrapper {
+  margin-top: -4px !important;
+}
+
+.esriPopup .contentPane {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding-bottom: 9px !important;
+    margin-bottom: 0 !important;
+}
