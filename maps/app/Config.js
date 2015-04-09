@@ -322,10 +322,10 @@ define([],
 					title: "Water Quality",
 					maps: []
 				}
-				// ,{
-				// 	title: "Data Viewer",
-				// 	maps: []
-				// }
+				,{
+					title: "Data Viewer",
+					maps: []
+				}
 			],
 			comp_viewer: {
 				fullServices: [

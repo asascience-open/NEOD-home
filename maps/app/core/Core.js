@@ -56,6 +56,7 @@ define([
     'dijit/form/Button',
     'bootstrap/Tooltip',
     'bootstrap/Modal',
+    'bootstrap/Tab',
     'dojo/domReady!'
     ], 
     function(
@@ -112,9 +113,16 @@ define([
             app.dataViewer = dom.byId('data-viewer');
 
             on(dojo.query('#themeButtonGroup button'), 'click', function (e) {
-                domClass.add(this, 'active-theme');
-                getLayerIds(true);
                 app.currentThemeIndex = parseInt(this.attributes["data-theme-id"].value, 10);
+                if (app.currentThemeIndex !== 10) {
+                    domClass.add(this, 'active-theme');
+                    app.lv = true;
+                    getLayerIds(app.lv);
+                    app.currentThemeIndex = parseInt(this.attributes["data-theme-id"].value, 10);
+                }
+                else {
+                    app.sidePanel.style.display = 'block';
+                }
             });
 
             getLayerIds();
@@ -133,7 +141,6 @@ define([
             app.headerOffset = query('.navbar-fixed-top').style('height')[0];
             if (app.lv) {
                 app.headerOffset = app.headerOffset + 20;
-                // console.log(moveableLegend);
             }
             app.sidePanelWidth = 281;
             app.mapHeight = app.screenHeight - app.headerOffset;
@@ -1035,6 +1042,7 @@ define([
 
         loadMainTheme = function (themeIndex)
         {
+            dojo.byId('loading').style.display = 'block';
             query('.legendDiv').forEach(domConstruct.destroy);
             query('.lv-map').forEach(domConstruct.destroy);
             query('#timeSliderDiv').style('display', 'none');
@@ -1061,7 +1069,6 @@ define([
                         }
                 });
 
-                app.lv = true;
                 domStyle.set(app.sidePanel, 'display', 'none');
                 domStyle.set(app.dataViewer, 'display', 'none');
                 dojo.query('.lv').style({'display' : 'block'});
@@ -1081,9 +1088,9 @@ define([
                     h:  app.mapHeight
                 };
 
-                var moveableLegend =  new move.constrainedMoveable("legend-lv", {
+                var moveableLegend =  new move.constrainedMoveable("legendModal", {
                     within: true,
-                    handle: query('#legend-lv .title'),
+                    handle: query('#legendModal .modal-header'),
                     constraints: function(){return constraintBox;}
                 });
 
@@ -1100,28 +1107,30 @@ define([
                 if (app.screenWidth < 1024)
                     domClass.remove("legendButton", "active");
                 else
-                    query('#legend-lv').style('display', 'block');
+                    query('#legendModal').style('display', 'block');
 
-                // query('#legend-lv .modal-header button.close').on('click', function (e){
-                //     domClass.remove("legendButton", "active");
-                //     fadeOutLegend.play();
-                // });
+                query('#legendModal .modal-header button.close').on('click', function (e){
+                    domClass.remove("legendButton", "active");
+                    fadeOutLegend.play();
+                });
 
-                var fadeInLegend = fx.fadeIn({node:'legend-lv'});
-                var fadeOutLegend = fx.fadeOut({node:'legend-lv'});
+                query('#legendModal').modal({show : false});
+
+                var fadeInLegend = fx.fadeIn({node:'legendModal'});
+                var fadeOutLegend = fx.fadeOut({node:'legendModal'});
 
                 on(fadeOutLegend, 'End', function(){
-                    query('#legend-lv').style('display', 'none');
+                    query('#legendModal').style('display', 'none');
                 });
 
                 on(fadeInLegend, 'End', function(){
-                    query('#legend-lv').style('display', 'block');
+                    query('#legendModal').style('display', 'block');
                 });
 
                 query('#legendButton').on('click', function (e){
-                    if (query('#legend-lv').style('display') == 'none') {
+                    if (query('#legendModal').style('display') == 'none') {
                         domClass.add("legendButton", "active");
-                        query('#legend-lv').style('display', 'block');
+                        query('#legendModal').style('display', 'block');
                         fadeInLegend.play();
                     }
                     else {
@@ -1134,11 +1143,11 @@ define([
                     focusUtil.curNode && focusUtil.curNode.blur();
                 });
 
-                on(query('#themeButtonGroup button'), 'click', function (e){
-                    query('#loading').style("display", "block");
-                    app.themeIndex = parseInt(e.currentTarget.id.substring(e.currentTarget.id.length - 1), 10);
-                    getLayerIds(app.liteViewer);
-                });
+                // on(query('#themeButtonGroup button'), 'click', function (e){
+                //     query('#loading').style("display", "block");
+                //     app.themeIndex = parseInt(e.currentTarget.id.substring(e.currentTarget.id.length - 1), 10);
+                //     getLayerIds(app.lv);
+                // });
 
                 on(query('#printButton'), 'click', function (e){
                     query(e.target).button('loading');
@@ -1372,7 +1381,9 @@ define([
 
             app.oldZoomLevel = app.currentMap.getLevel();
 
-            query('#legendWrapper').style('width', configOptions.themes[app.themeIndex].maps[app.subthemeIndex].menuWidth + 'px');
+            var menuWidth = configOptions.themes[app.themeIndex].maps[app.subthemeIndex].menuWidth;
+            query('#legendModal').style('width', menuWidth + 'px');
+            //query('#legend-lv').style('width', (menuWidth + 2) + 'px');
             query('#flex-link')[0].href = configOptions.themes[app.themeIndex].maps[app.subthemeIndex].flexLink;
         }
 
@@ -1426,7 +1437,11 @@ define([
 
             domClass.remove('legendDiv' + currentMapIndex, 'active');
             domClass.add('legendDiv' + mapIndex, 'active');
-            query('#legendWrapper').style('width', configOptions.themes[app.themeIndex].maps[mapIndex].menuWidth + 'px');
+
+            var menuWidth = configOptions.themes[app.themeIndex].maps[mapIndex].menuWidth;
+
+            query('#legendModal').style('width', menuWidth + 'px');
+            //query('#legend-lv').style('width', (menuWidth + 2) + 'px');
 
             if (configOptions.themes[app.themeIndex].maps[mapIndex].hasRadioBtns) {
                 domClass.add('radioWrapper', 'active');

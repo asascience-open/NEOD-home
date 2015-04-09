@@ -258,24 +258,22 @@ li.dropdown {
   text-decoration: underline;
 }
 
-.about {
-  border-bottom: 1px dashed #ddd;
-  margin-right: 17px;
+#about {
+  padding-top: 7px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+#about div {
+  border-top: 1px solid #ccc;
+  padding-top: 3px;
+  font-size: 11px;
+  line-height: 14px;
+  color: rgb(128, 128, 128);
 }
 
 .legend h5 {
   font-weight: bold;
-}
-
-.about p {
-  line-height: 14px;
-  color: #808080;
-}
-
-.about div {
-  border-top: 1px solid #ddd;
-  padding-top: 3px;
-  margin-right: 17px;
 }
 
 .btn-neod {
@@ -443,10 +441,6 @@ table.esriLegendLayer tr td {
   padding-left: 0!important;
 }
 
-.modal {
-  overflow-y: hidden;
-}
-
 #shareModal,
 #feedbackModal {
   display: none;
@@ -456,10 +450,92 @@ table.esriLegendLayer tr td {
   text-decoration: none;
 }
 
-  #shareModal .modal-header h5,
-  #feedbackModal .modal-header h5 {
+#legendModal .modal-content {
+  background-color: #fff;
+}
+
+#legendModal.modal {
+  top: 100px;
+  left: 65px;
+}
+  
+  #legendModal.modal .modal-dialog {
+    width: auto !important;
     margin-top: 0;
     margin-bottom: 0;
+  }
+
+  #legendModal .modal-header {
+    padding: 0;
+    background-color: rgb(104, 115, 150);
+    color: white;
+    -webkit-border-top-left-radius: 6px;
+    -moz-border-radius-topleft: 6px;
+    border-top-left-radius: 6px;
+    -webkit-border-top-right-radius: 6px;
+    -moz-border-radius-topright: 6px;
+    border-top-right-radius: 6px;
+  }
+
+  #legendModal .modal-header button.close {
+    margin-right: 3px;
+    margin-top: 0;
+  }
+
+#legendWrapper {
+  max-height: 443px;
+  height: auto;
+  overflow-y: auto;
+}
+
+#legendModal .modal-body {
+    height: auto;
+    padding: 0;
+  }
+
+#legendModal .modal-header #tabs {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    cursor: move !important;
+  }
+
+    #legendModal .modal-header #tabs li {
+      text-align: center;
+      font-weight: bold;
+      font-size: 13px;
+      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
+    }
+
+    #legendModal .modal-header #tabs li {
+      width: 45%;
+    }
+
+    #legendModal .modal-header #tabs li.active a {
+      color: rgb(104, 115, 150);
+    }
+
+    #legendModal .modal-header #tabs li a{
+      color: #fff;
+      padding-top: 3px;
+      padding-bottom: 3px;
+      cursor: move !important;
+    }
+
+    #legendModal .modal-header #tabs li a:hover{
+      color: #555;
+      color: rgb(104, 115, 150);
+    }
+
+  #legendModal .modal-footer {
+    text-align: left;
+    font-size: 11px;
+    margin-top: 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 17px;
+    background-color: #F5F5F5;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
   }
 
 #side-panel table.esriLegendLayerLabel {
@@ -792,7 +868,7 @@ td.dijitMenuItemIconCell span{
 }
 
 #side-panel a,
-#legend-lv a {
+#legendWrapper a {
   color: #006633;
 }
 
@@ -973,6 +1049,19 @@ td.dijitMenuItemIconCell span{
     background-image: url('../../img/theme-buttons/top/waterquality-mouseover.png');
   }
 
+/* for data viewer button */
+
+button#theme10 {
+  width       : 93px;
+  text-indent : 0;
+  border-top-right-radius: 0;
+}
+
+button#theme10:hover {
+  background-color: #999;
+  border-top-right-radius: 0;
+}
+
 /* sub-theme buttons */
 
 #subthemeButtonGroup {
@@ -1069,25 +1158,6 @@ td.dijitMenuItemIconCell span{
     top: 300px;
   }
 
-#legend-lv {
-    background  : #FFF url('../../../images/new-map-background_2x75.png') 0 0 repeat-x;
-    position    : absolute;
-    z-index     : 2;
-    top         : 100px;
-    left        : 55px;
-    box-shadow  : 7px 7px 7px #888;
-    border      : 1px solid #ccc;
-}
-
-#legend-lv .new-map-box-head {
-  padding-right : 6px;
-}
-
-#legend-lv .new-map-box-head .title {
-  padding-top: 1px;
-  margin-left: 0;
-}
-
 .new-map-box-head {
   padding-right: 20px;
   line-height: 20px;
@@ -1116,11 +1186,6 @@ span#legendAbout p {
   text-transform: uppercase;
 }
 
-#about {
-  position: absolute;
-  display: none;
-}
-
 .legendDiv {
   display: none;
   padding: 10px 0 10px 10px;
@@ -1137,13 +1202,6 @@ span#legendAbout p {
 
 #legend-lv .title {
   padding-left: 10px;
-}
-
-#legendWrapper {
-    max-height: 443px;
-    overflow-y: auto;
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
 }
 
 .map .container {

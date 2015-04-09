@@ -85,7 +85,8 @@
                 </div><!--/.nav-collapse -->
             </div>
         </div>
-        <div class='modal fade' id='shareModal'>
+
+        <!-- <div class='modal fade' id='shareModal'>
             <div class='modal-dialog'>
                 <div class='modal-content'>
                     <div class='modal-header'>
@@ -102,7 +103,6 @@
                             <a href='#' onclick='doShare(\'linkedin\');return false;'>
                                 <img src='http://www.northeastoceandata.org/images/linkedin_32.png' border='0' align='center' style='margin-right: 8px;' />
                             </a>
-                            <!--<a href='#' onclick='doShare(\'pinterest\');return false;'><img src='http://www.northeastoceandata.org/images/pinterest_32.png' border='0' align='center' style='margin-right: 8px;' /></a -->
                             <a href='#' onclick='doShare(\'google+\');return false;'>
                                 <img src='http://www.northeastoceandata.org/images/googleplus_32.png' border='0' align='center' style='margin-right: 8px;' />
                             </a>
@@ -135,16 +135,15 @@
                             </table>
                         </div>
                     </div>
-                <!--<script>showRecaptcha('nobots');</script>-->
                 </form>
             </div>
             <div class='modal-footer'>
                 <button class='btn btn-default' data-dismiss='modal'>Close</button>
                 <button class='btn btn-primary' type="submit" name="submit" value="Submit">Submit</button>
-                <!--&nbsp;<a href="#" onclick="window.top.tabChg('feedback',false);window.top.neodShowHideBox('feedback','Whatever',false);return false;">Not right now</a>-->
             </div>
-        </div>
-        <div class='modal fade' id='source-data-modal'>
+        </div> -->
+
+        <div class='modal fade' id='source-data-modal' style="display:none;">
             <div class='modal-dialog'>
                 <div class='modal-content'>
                     <div class='modal-header'>
@@ -186,7 +185,7 @@
         </div>
         <div id='side-tabs' class='lv'>
             <img src='img/side-buttons/legend-tab-out-on.png' />
-            <img src='img/side-buttons/about-tab-out-off.png' />
+            <!-- <img src='img/side-buttons/about-tab-out-off.png' /> -->
             <img src='img/side-buttons/feedback-tab-out-off.png' />
         </div>
         <div id='map-container'>
@@ -199,22 +198,31 @@
                 <button id="printButton" class="button-container" type="button"></button>
             </div>
             <div id='data-viewer' class='map-pane active'> </div>
-            <div id="legend-lv" class='lv'>
-                <div class="new-map-box-head">
-                    <div class="title">LEGEND</div>
-                    <div class="tools"><a class="new-map-x" onclick="neodShowHideBox('legend','Whatever',false);return false;" href="#"><img src="http://staging.northeastoceandata.org/images/mini-icon.png" border="0" height="14" style="margin-top: 3px;"></a></div>
+
+            <div id='legendModal' class='modal' data-backdrop='false' tabindex='-1'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <ul id='tabs' class='nav nav-tabs'>
+                            <li class='active'><a href='#legend-lv' data-toggle='tab'>Legend</a></li>
+                            <li><a href='#about' data-toggle='tab'>About</a></li>
+                        </ul>
+                    </div>
+                    <div class='modal-body'>
+                        <div class='tab-content'>
+                            <div id='legend-lv' class='tab-pane fade active in'>
+                                <div id='legendWrapper'></div>
+                                <div id='timeSliderDiv'></div>
+                                <div class='modal-footer'><a id='flex-link' target='_blank'>View this data with other layers</a></div>
+                            </div>
+                            <div id='about' class='tab-pane fade'>
+                                <strong>Overview</strong><div id='overview'><p>blah</p></div>
+                                <strong>Data Considerations</strong><div id='data-considerations'><p>blah</p></div>
+                                <strong>Status</strong><div id='status'><p>blah</p></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <span id="legendAbout">
-                    <p></p>
-                </span>
-                <div id="legendWrapper"></div>
-                <div id='timeSliderDiv'></div>
-                <div id='flex-div'><a target="_blank" id="flex-link" href=''>View this data with other layers</a></div>
-            </div>
-            <div id='about'>
-                <strong>Overview</strong><div id='overview'><p>blah</p></div>
-                <strong>Data Considerations</strong><div id='data-considerations'><p>blah</p></div>
-                <strong>Status</strong><div id='status'><p>blah</p></div>
             </div>
         </div>    
         <script type="text/javascript">
