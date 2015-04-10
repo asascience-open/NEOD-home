@@ -453,6 +453,7 @@ table.esriLegendLayer tr td {
 #legendModal.modal {
   top: 100px;
   left: 65px;
+  z-index: 9999999999;
 }
   
   #legendModal.modal .modal-dialog {
