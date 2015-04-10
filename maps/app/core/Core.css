@@ -213,13 +213,14 @@ li.dropdown {
     width: 100%;
     float: left;
     position: absolute;
+    opacity: 0;
 }
 
-.map-pane.lite-viewer {
+/*.map-pane.lite-viewer {
   margin-top: 83px;
   border-top: 1px solid rgb(51, 51, 51);
   opacity: 0;
-}
+}*/
 
 .enabled {
   font-style: italic !important;
@@ -301,14 +302,9 @@ li.dropdown {
 #mapControls {
   position: absolute;
   right: 10px;
-  z-index: 2;
+  z-index: 999999;
   top: 67px;
 }
-
-  #mapControls.lv {
-    top: 87px;
-    display: block;
-  }
 
 .no-bottom-border {
   border-bottom: none;
@@ -571,7 +567,7 @@ table.esriLegendLayer tr td {
 
 
 .esriSimpleSlider {
-  z-index: 99!important;
+  z-index: 9999999!important;
   top: 2px !important;
   text-align: center;
   border: 1px solid #666666 !important;
@@ -665,6 +661,7 @@ table.esriLegendLayer tr td {
   box-shadow          : 0px 0px 7px black;
 }
 
+/*
 #side-buttons {
   position: absolute;
   margin-top: -33px;
@@ -688,7 +685,7 @@ table.esriLegendLayer tr td {
     width: 87px;
     margin-left: 22px;
     margin-top: 87px;
-  }
+  }*/
 
 /*  time slider 
 ================= */
@@ -826,6 +823,17 @@ img[src="img/ais-legend.png"] {
 
 .button-container {
   display: inline-block;
+}
+
+#subthemeButtonGroup {
+  margin-top: 63px;
+  margin-left: auto;
+  margin-right: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: auto;
+  z-index: 99999999;
 }
 
 .dijitMenuItemLabel {
@@ -1062,11 +1070,11 @@ button#theme10:hover {
   border-top-right-radius: 0;
 }
 
-/* sub-theme buttons */
-
-#subthemeButtonGroup {
-  margin-top: 2px;
+button#theme10.active-theme {
+  background-color: #697396;
 }
+
+/* sub-theme buttons */
 
 #subthemeButtonGroup div {
   background-repeat : no-repeat;
@@ -1144,6 +1152,7 @@ button#theme10:hover {
 #side-tabs img {
   position: absolute;
   z-index : 2;
+  cursor: pointer;
 }
 
   #side-tabs img:nth-child(1) {

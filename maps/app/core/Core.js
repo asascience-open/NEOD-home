@@ -104,8 +104,7 @@ define([
         {
             // create buttons for each theme
             array.forEach(configOptions.themes, function (theme, themeIndex){
-                //domConstruct.place('<li><a dataIdx='+ themeIndex + ' id="dropdownTheme' + themeIndex + '" href="#">' + theme.title.toUpperCase() + '</a></li>', 'themeDropdown');
-                domConstruct.place('<button id="theme' + themeIndex + '" data-theme-id="' + themeIndex + '" type="button" class="btn no-bottom-border-radius' + (themeIndex === (configOptions.themes.length - 1) ? ' no-bottom-right-border-radius"' : '"') + ' data-toggle="button">' + theme.title.toUpperCase() + '</button>', 'themeButtonGroup');
+                domConstruct.place('<button id="theme' + themeIndex + '" data-theme-id="' + themeIndex + '" type="button" class="btn no-bottom-border-radius' + (themeIndex === (configOptions.themes.length - 1) ? ' active-theme no-bottom-right-border-radius"' : '"') + ' data-toggle="button">' + theme.title.toUpperCase() + '</button>', 'themeButtonGroup');
             });
 
             app.navbar = dom.byId('navbar'),
@@ -115,6 +114,7 @@ define([
             on(dojo.query('#themeButtonGroup button'), 'click', function (e) {
                 app.currentThemeIndex = parseInt(this.attributes["data-theme-id"].value, 10);
                 if (app.currentThemeIndex !== 10) {
+                    domClass.remove(query('#themeButtonGroup .active-theme')[0], 'active-theme');
                     domClass.add(this, 'active-theme');
                     app.lv = true;
                     getLayerIds(app.lv);
@@ -122,6 +122,8 @@ define([
                 }
                 else {
                     app.sidePanel.style.display = 'block';
+                    query('.legendDiv').forEach(domConstruct.destroy);
+                    query('.lite-viewer.map').forEach(domConstruct.destroy);
                 }
             });
 
@@ -1072,18 +1074,11 @@ define([
                 domStyle.set(app.sidePanel, 'display', 'none');
                 domStyle.set(app.dataViewer, 'display', 'none');
                 dojo.query('.lv').style({'display' : 'block'});
-                domStyle.set(app.navbar, 'height', '83px');
-                domClass.add('mapControls', 'lv');
                 domClass.remove('data-viewer', 'active');
-                app.mapHeight = app.mapHeight - 20;
-                dojo.query(app.mapPane).style({
-                    'marginTop' : '83px',
-                    'borderTop' : '1px solid rgb(51, 51, 51)'
-                });
 
                 var constraintBox = {
                     l:  0,
-                    t:  83,
+                    t:  63,
                     w:  app.screenWidth,
                     h:  app.mapHeight
                 };
@@ -1110,7 +1105,7 @@ define([
                     query('#legendModal').style('display', 'block');
 
                 query('#legendModal .modal-header button.close').on('click', function (e){
-                    domClass.remove("legendButton", "active");
+                    domAttr.set(query('#side-tabs img:eq(0)')[0], 'src', 'img/side-buttons/legend-tab-out-off.png');
                     fadeOutLegend.play();
                 });
 
@@ -1127,21 +1122,21 @@ define([
                     query('#legendModal').style('display', 'block');
                 });
 
-                query('#legendButton').on('click', function (e){
+                query('#legend-tab').on('click', function (e){
                     if (query('#legendModal').style('display') == 'none') {
-                        domClass.add("legendButton", "active");
+                        domAttr.set(query('#side-tabs img:eq(0)')[0], 'src', 'img/side-buttons/legend-tab-out-on.png');
                         query('#legendModal').style('display', 'block');
                         fadeInLegend.play();
                     }
                     else {
-                        domClass.remove("legendButton", "active");
+                        domAttr.set(query('#side-tabs img:eq(0)')[0], 'src', 'img/side-buttons/legend-tab-out-off.png');
                         fadeOutLegend.play();
                     }
                 });
 
-                query('.btn').on('click', function (e){
-                    focusUtil.curNode && focusUtil.curNode.blur();
-                });
+                // query('.btn').on('click', function (e){
+                //     focusUtil.curNode && focusUtil.curNode.blur();
+                // });
 
                 // on(query('#themeButtonGroup button'), 'click', function (e){
                 //     query('#loading').style("display", "block");
@@ -1396,6 +1391,7 @@ define([
                 subThemes += '<div id="subThemeButton' + i + '" class="theme_' + app.themeIndex + (i === 0 ? ' active-subtheme' : '') + '">' + map.title + '</div>';
             });
             //subThemes += '</div></div>';
+            // domConstruct.place(subThemes, 'subthemeButtonGroup');
             domConstruct.place(subThemes, 'subthemeButtonGroup');
 
             on(query('#subthemeButtonGroup div'), 'click', function (e){
@@ -1403,6 +1399,13 @@ define([
                 domClass.add(this, 'active-subtheme');
                 changeSubTheme(parseInt(e.currentTarget.id.substring(e.currentTarget.id.length - 1), 10));        
             });
+
+            app.subThemeButtonWidth = 0;
+            array.forEach(query('#subthemeButtonGroup div'), function (v, i) {
+                app.subThemeButtonWidth += domStyle.get(v, 'width');
+                app.subThemeButtonWidth++; //to account for 1px right padding
+            });
+            domStyle.set(dojo.byId('subthemeButtonGroup'), 'width', app.subThemeButtonWidth + 'px');
         }
 
         changeSubTheme = function (mapIndex)
