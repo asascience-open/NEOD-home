@@ -49,6 +49,7 @@ button.close {
     overflow-y: auto;
     border-top: 2px solid #eee;
     background-color: #FFF;
+    display: none;
   }
 .panel-heading {
   padding: 5px 15px !important;
@@ -785,7 +786,6 @@ img[src="img/ais-legend.png"] {
 }
 
 #layer-info {
-  padding: 10px 15px 15px 15px;
   background-color: #fff;
   overflow-y: auto;
 }
@@ -796,6 +796,7 @@ img[src="img/ais-legend.png"] {
 }
 
 #back-to-layers {
+  padding       : 10px 15px 0 15px;
   margin-bottom : 15px;
   cursor        : pointer;
 }
@@ -892,6 +893,10 @@ td.dijitMenuItemIconCell span{
   text-decoration : underline;
   padding-right   : 22px;
   background      : url("../../../images/extlink.gif") right center no-repeat !important;
+}
+
+#layer-info-content {
+  padding: 0 15px 15px 15px;
 }
 
 #layer-info-content h5 {
@@ -1264,4 +1269,37 @@ span#legendAbout p {
 #flex-div {
     background-color: #f5f5f5;
     padding         : 5px 10px;;
+}
+
+#search-container {
+  padding           : 5px 0 5px 5px;
+  background-color  : #fff;
+}
+
+  #search-container input[type='submit'] {
+    margin-left: 5px;
+  }
+
+#widget_layer-select {
+  margin-top: -1px;
+}
+
+#widget_layer-select .dijitArrowButtonContainer {
+  display: none;
+}
+
+#widget_layer-select .dijitInputInner {
+  height: 21px;
+}
+
+#widget_layer-select .dijitValidationContainer {
+  display: none;
+}
+
+#widget_layer-select .dijitPlaceHolder {
+  padding-top: 6px;
+}
+
+#search-results-container {
+  background-color: #fff;
 }

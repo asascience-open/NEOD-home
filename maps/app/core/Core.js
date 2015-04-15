@@ -55,6 +55,7 @@ define([
     'dijit/DropDownMenu',
     'dijit/MenuItem',
     'dijit/form/Button',
+    'dijit/form/FilteringSelect',
     'bootstrap/Tooltip',
     'bootstrap/Modal',
     'bootstrap/Tab',
@@ -96,7 +97,8 @@ define([
         DropDownButton,
         DropDownMenu,
         MenuItem,
-        Button
+        Button,
+        FilteringSelect
         ) 
     {
         //isMobile();
@@ -149,7 +151,8 @@ define([
 
             esri.config.defaults.io.proxyUrl = "http://services.asascience.com/Proxy/esriproxy/proxy.ashx";
 
-            app.subthemeIndex = 0;
+            app.subthemeIndex = 0,
+            app.searchResults = false;
         }
 
         function resizeMap()
@@ -173,9 +176,9 @@ define([
         }
 
         function resizeSidePanel() {
-            var treeHeight = (app.mapHeight - 46 /*top button*/)/2;
+            var treeHeight = (app.mapHeight - 108 /* account for layers button and search */)/2;
             dojo.query('#tree').style('height', treeHeight + 'px');
-            dojo.query('#legend-dv').style('height', (treeHeight - 26) + 'px');
+            dojo.query('#legend-dv').style('height', treeHeight + 'px');
             dojo.query('#layer-info').style('height', treeHeight + 'px');
         }
 
@@ -525,13 +528,13 @@ define([
                     var expandTree = fx.animateProperty({
                         node: tree,
                         properties: {
-                            height: (currentTreeHeight * 2) - 15
+                            height: (currentTreeHeight * 2) + 10
                         }
                     });
                     var expandLayerInfo = fx.animateProperty({
                         node: layerInfo,
                         properties: {
-                            height: (currentTreeHeight * 2) - 15
+                            height: (currentTreeHeight * 2) + 10
                         }
                     });
                     coreFx.combine([expandTree, expandLayerInfo]).play();
@@ -546,13 +549,13 @@ define([
                     var collapseTree = fx.animateProperty({
                         node: tree,
                         properties: {
-                            height: (currentTreeHeight / 2) + 7.5
+                            height: (currentTreeHeight / 2) - 5
                         }
                     });
                     var collapseLayerInfo = fx.animateProperty({
                         node: layerInfo,
                         properties: {
-                            height: (currentTreeHeight / 2) + 7.5
+                            height: (currentTreeHeight / 2) - 5
                         }
                     });
                     coreFx.combine([collapseTree, collapseLayerInfo]).play();
@@ -620,8 +623,8 @@ define([
                     hasChildren : true,
                     index       : service.index
                 });
-                // });
                 if (service.layers.length > 0) {
+                    var subGroupName = '';
                     array.forEach(service.layers, function (layer, j) {
                         if (layer.subLayerIds == null)
                             app.unOrderedGroups.push({
@@ -635,9 +638,10 @@ define([
                                 metadata    : layer.metadata,
                                 external    : layer.external ? layer.external : null,
                                 noSource    : layer.noSource ? layer.noSource : null,
-                                index       : service.index
+                                index       : service.index,
+                                keyword     : (subGroupName === '') ? null : subGroupName
                             });
-                        else
+                        else {
                             app.unOrderedGroups.push({
                                 id          : service.url + '_subgroup-' + layer.id,
                                 name        : layer.label ? layer.label : layer.name,
@@ -646,6 +650,8 @@ define([
                                 hasChildren : true,
                                 index       : service.index
                             });
+                            subGroupName = layer.name;
+                        }
                     });
                 }
             });
@@ -694,6 +700,9 @@ define([
                 query: {id: 'server'}
             });
 
+            var treeItemCount = 0,
+                firstCompLoad = true;
+
             // create the tree
             app.tree = new Tree({
                 model: app.myModel,
@@ -703,6 +712,9 @@ define([
                 },
                 getRowClass: function (item, opened) {
                     return (!item.hasChildren) ? "no-children" : "";
+                },
+                onLoad: function () {
+                    this.expandAll();
                 },
                 onOpen: function (item, node) {
                     if (!item.root) {
@@ -754,58 +766,68 @@ define([
                         }
                         checkMinScale();
 
-                        on(query('.dijitIconFile'), 'click', function (e) {
-                            dom.byId('loading').style.display = 'block';
-                            var serviceUrl = e.target.attributes['data-service_layer'].value;
-                            if (serviceUrl.match(/duplicate/))
-                                serviceUrl = serviceUrl.substr(0, serviceUrl.indexOf('duplicate'));
-                            dojo.query('#tree').hide();
-                            dojo.query('#layer-info').show();
-                            var request = EsriRequest({
-                                url: serviceUrl,
-                                content: {
-                                    f: "json"
-                                },
-                                handleAs: "json",
-                                callbackParamName: "callback"
-                            });
+                        treeItemCount++;
+                        if (treeItemCount === app.myStore.data.length - 1 && firstCompLoad) {
+                            app.tree.collapseAll();
+                            dojo.query('#tree').show();
+                            firstCompLoad = false;
 
-                            request.then(
-                                function(result) {
-                                    var contentHtml = '<div id="layer-info-content"><h5>' + result.name + '</h5>';
-                                    contentHtml += '<div class="color-gradient"></div>';
-                                    if (result.copyrightText != '')
-                                        contentHtml += '<p><strong>Source:</strong> ' + result.copyrightText + '</p>';
-                                    contentHtml += '<strong>Description:</strong><p id="description-text">' + result.description;
-                                    var id = parseInt(serviceUrl.substr(serviceUrl.lastIndexOf('/') + 1), 10),
-                                        metadataLink = '';
-                                    var sourceDataHtml = '<a href="#" onClick="sourceDataClick(\'' + result.name + '\')">Source Data</a>';
-                                    var dataIndex = 0;
-                                    array.forEach(app.tree.model.store.data, function (v, i) {
-                                        if (v.name === result.name || v.realName === result.name) {
-                                            dataIndex = i;
-                                            return false;
-                                        }
-                                    });
-                                    metadataLink = app.tree.model.store.data[dataIndex].metadata;
-                                    if (app.tree.model.store.data[dataIndex].noSource)
-                                        sourceDataHtml = 'Source Data';
-                                    if (app.tree.model.store.data[dataIndex].external)
-                                        sourceDataHtml = '<a href="' + app.tree.model.store.data[dataIndex].external + '" target="_blank">Source Data (External)</a>';
-                                    contentHtml += '<br /><br /><strong>Data:</strong> ';
-                                    if (metadataLink === '')
-                                        contentHtml += 'Metadata | ';
-                                    else
-                                        contentHtml += '<a href="' + metadataLink + '" target="_blank">Metadata</a> | ';
-                                    var extent = new esri.geometry.Extent(result.extent);
-                                    var centerPoint = extent.getCenter();
-                                    contentHtml += sourceDataHtml + ' | <a href="' + serviceUrl + '" target="_blank">Web Service</a> | <a href="#" onClick="app.currentMap.centerAndZoom(new esri.geometry.Point(' + centerPoint.getLongitude() + ', ' + centerPoint.getLatitude() + '), 7);">Zoom to Layer</a>';
-                                    dom.byId('loading').style.display = 'none';
-                                    domConstruct.place(contentHtml + '</p></div>', dojo.byId('layer-info-content'), 'replace');
-                                }, function(error) {
-                                    console.log("Error: ", error.message);
+                            on(query('.dijitIconFile'), 'click', function (e) {
+                                console.log(e);
+                                dom.byId('loading').style.display = 'block';
+                                var serviceUrl = e.target.attributes['data-service_layer'].value;
+                                if (serviceUrl.match(/duplicate/))
+                                    serviceUrl = serviceUrl.substr(0, serviceUrl.indexOf('duplicate'));
+                                dojo.query('#tree, #search-container').hide();
+                                dojo.query('#layer-info').show();
+                                var request = EsriRequest({
+                                    url: serviceUrl,
+                                    content: {
+                                        f: "json"
+                                    },
+                                    handleAs: "json",
+                                    callbackParamName: "callback"
+                                });
+
+                                request.then(
+                                    function(result) {
+                                        if (app.searchResults)
+                                            returnSearchRows();
+                                        var contentHtml = '<div id="layer-info-content"><h5>' + result.name + '</h5>';
+                                        contentHtml += '<div class="color-gradient"></div>';
+                                        if (result.copyrightText != '')
+                                            contentHtml += '<p><strong>Source:</strong> ' + result.copyrightText + '</p>';
+                                        contentHtml += '<strong>Description:</strong><p id="description-text">' + result.description;
+                                        var id = parseInt(serviceUrl.substr(serviceUrl.lastIndexOf('/') + 1), 10),
+                                            metadataLink = '';
+                                        var sourceDataHtml = '<a href="#" onClick="sourceDataClick(\'' + result.name + '\')">Source Data</a>';
+                                        var dataIndex = 0;
+                                        array.forEach(app.tree.model.store.data, function (v, i) {
+                                            if (v.name === result.name || v.realName === result.name) {
+                                                dataIndex = i;
+                                                return false;
+                                            }
+                                        });
+                                        metadataLink = app.tree.model.store.data[dataIndex].metadata;
+                                        if (app.tree.model.store.data[dataIndex].noSource)
+                                            sourceDataHtml = 'Source Data';
+                                        if (app.tree.model.store.data[dataIndex].external)
+                                            sourceDataHtml = '<a href="' + app.tree.model.store.data[dataIndex].external + '" target="_blank">Source Data (External)</a>';
+                                        contentHtml += '<br /><br /><strong>Data:</strong> ';
+                                        if (metadataLink === '')
+                                            contentHtml += 'Metadata | ';
+                                        else
+                                            contentHtml += '<a href="' + metadataLink + '" target="_blank">Metadata</a> | ';
+                                        var extent = new esri.geometry.Extent(result.extent);
+                                        var centerPoint = extent.getCenter();
+                                        contentHtml += sourceDataHtml + ' | <a href="' + serviceUrl + '" target="_blank">Web Service</a> | <a href="#" onClick="app.currentMap.centerAndZoom(new esri.geometry.Point(' + centerPoint.getLongitude() + ', ' + centerPoint.getLatitude() + '), 7);">Zoom to Layer</a>';
+                                        dom.byId('loading').style.display = 'none';
+                                        domConstruct.place(contentHtml + '</p></div>', dojo.byId('layer-info-content'), 'replace');
+                                    }, function(error) {
+                                        console.log("Error: ", error.message);
+                                });
                             });
-                        });
+                        }
                     }
                 }
             });
@@ -833,8 +855,46 @@ define([
             });
             on(dom.byId('back-to-layers'), 'click', function (e) {
                 e.preventDefault();
-                dojo.query('#tree').show();
+                if (app.searchResults)
+                    returnSearchRows();
+                dojo.query('#tree, #search-container').show();
                 dojo.query('#layer-info').hide();
+            });
+
+            app.lastQueryResults = {};
+
+            app.filteringSelect = new FilteringSelect({
+                id: 'layer-select',
+                store: app.myStore,
+                required: false,
+                autoComplete: false,
+                queryExpr : '*${0}*',
+                query: {
+                    type : "layer"
+                },
+                style: {
+                    width   : '232px',
+                    height  : '25px'
+                },
+                placeHolder : 'Keyword',
+                invalidMessage : 'no matching layers'
+                ,
+                onSearch    : function(r, q, o) {
+                    app.lastQueryResults = r;
+                }
+            }, 'layer-select').startup();
+
+            on(dom.byId('layer-search-button'), 'click', function (e) {
+                e.preventDefault();
+                app.lastQueryResults.forEach(function (v, i) {
+                    var layerUrl = v.id.substr(0, v.id.length-1);
+                    var row = dojo.query('div[widgetid="' + layerUrl + '"]').parent().parent()[0];
+                    domConstruct.place(row, dom.byId('back-to-layers'), 'after');
+                });
+                dojo.query('#layer-info').show();
+                dojo.query('#tree, #search-container').hide();
+                dom.byId('layer-info-content').innerHTML = '';
+                app.searchResults = true;
             });
         }
 
@@ -1555,6 +1615,22 @@ define([
             array.forEach(configOptions.themes[app.themeIndex].maps[app.subthemeIndex].layers.dynamicLayers[0].layers, function (v, i) {
                 if (v.ID === id)
                     query('#flex-link')[0].href = v.flexLink;
+            });
+        }
+
+        returnSearchRows = function () {
+            query('.dijitTreeNode', dom.byId('layer-info')).forEach(function (v, i) {
+                var treeNodeID = domAttr.get(v, 'id');
+                treeNodeID = parseInt(treeNodeID.substr(treeNodeID.lastIndexOf('_') + 1), 10);
+                var rowBefore = query('#dijit__TreeNode_' + (treeNodeID - 1), dom.byId('tree'))[0];
+                if (rowBefore) {
+                    if (!domClass.contains(rowBefore, 'dijitTreeIsLast'))
+                        domConstruct.place(v, rowBefore, 'after');
+                    else
+                        domConstruct.place(v, query('#dijit__TreeNode_' + (treeNodeID + 1), dom.byId('tree'))[0], 'before');
+                }
+                else
+                    domConstruct.place(v, query('#dijit__TreeNode_' + (treeNodeID + 1), dom.byId('tree'))[0], 'before');
             });
         }
 
