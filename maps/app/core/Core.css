@@ -1303,3 +1303,13 @@ span#legendAbout p {
 #search-results-container {
   background-color: #fff;
 }
+
+.dijitTooltip {
+  display: none !important;
+}
+
+#search-results-header {
+  display: none;
+  font-weight: bold;
+  padding-left: 10px;
+}

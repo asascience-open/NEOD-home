@@ -773,12 +773,11 @@ define([
                             firstCompLoad = false;
 
                             on(query('.dijitIconFile'), 'click', function (e) {
-                                console.log(e);
                                 dom.byId('loading').style.display = 'block';
                                 var serviceUrl = e.target.attributes['data-service_layer'].value;
                                 if (serviceUrl.match(/duplicate/))
                                     serviceUrl = serviceUrl.substr(0, serviceUrl.indexOf('duplicate'));
-                                dojo.query('#tree, #search-container').hide();
+                                dojo.query('#tree, #search-container, #search-results-header').hide();
                                 dojo.query('#layer-info').show();
                                 var request = EsriRequest({
                                     url: serviceUrl,
@@ -868,6 +867,7 @@ define([
                 store: app.myStore,
                 required: false,
                 autoComplete: false,
+                searchDelay: 0,
                 queryExpr : '*${0}*',
                 query: {
                     type : "layer"
@@ -879,19 +879,26 @@ define([
                 placeHolder : 'Keyword',
                 invalidMessage : 'no matching layers'
                 ,
-                onSearch    : function(r, q, o) {
+                onSearch    : function (r, q, o) {
                     app.lastQueryResults = r;
+                },
+                onKeyUp     : function (e) {
+                    if (e.keyCode === 13)
+                        on.emit(dom.byId('layer-search-button'), 'click', {bubbles: true, cancelable: true});
                 }
             }, 'layer-select').startup();
 
             on(dom.byId('layer-search-button'), 'click', function (e) {
                 e.preventDefault();
+                dojo.byId('layer-select').value = '';
                 app.lastQueryResults.forEach(function (v, i) {
                     var layerUrl = v.id.substr(0, v.id.length-1);
                     var row = dojo.query('div[widgetid="' + layerUrl + '"]').parent().parent()[0];
-                    domConstruct.place(row, dom.byId('back-to-layers'), 'after');
+                    domConstruct.place(row, dom.byId('search-results-header'), 'after');
                 });
-                dojo.query('#layer-info').show();
+                var layerInfoHeight = domStyle.get(dom.byId('layer-info'), 'height') + 36.5;
+                domStyle.set(dom.byId('layer-info'), 'height', layerInfoHeight + 'px');
+                dojo.query('#layer-info, #search-results-header').show();
                 dojo.query('#tree, #search-container').hide();
                 dom.byId('layer-info-content').innerHTML = '';
                 app.searchResults = true;
