@@ -885,23 +885,22 @@ define([
                 onKeyUp     : function (e) {
                     if (e.keyCode === 13)
                         on.emit(dom.byId('layer-search-button'), 'click', {bubbles: true, cancelable: true});
+                },
+                onChange    : function (newValue) {
+                    var checkboxId = newValue.substr(0, newValue.length-1);
+                    domConstruct.place(dojo.query('input[name="' + checkboxId + '"]').parent().parent().parent()[0], dom.byId('search-results-header'), 'after');
+                    showSearchResults();
                 }
             }, 'layer-select').startup();
 
             on(dom.byId('layer-search-button'), 'click', function (e) {
                 e.preventDefault();
-                dojo.byId('layer-select').value = '';
                 app.lastQueryResults.forEach(function (v, i) {
                     var layerUrl = v.id.substr(0, v.id.length-1);
                     var row = dojo.query('div[widgetid="' + layerUrl + '"]').parent().parent()[0];
                     domConstruct.place(row, dom.byId('search-results-header'), 'after');
                 });
-                var layerInfoHeight = domStyle.get(dom.byId('layer-info'), 'height') + 36.5;
-                domStyle.set(dom.byId('layer-info'), 'height', layerInfoHeight + 'px');
-                dojo.query('#layer-info, #search-results-header').show();
-                dojo.query('#tree, #search-container').hide();
-                dom.byId('layer-info-content').innerHTML = '';
-                app.searchResults = true;
+                showSearchResults();
             });
         }
 
@@ -1639,6 +1638,16 @@ define([
                 else
                     domConstruct.place(v, query('#dijit__TreeNode_' + (treeNodeID + 1), dom.byId('tree'))[0], 'before');
             });
+        }
+
+        showSearchResults = function () {
+            var layerInfoHeight = domStyle.get(dom.byId('layer-info'), 'height') + 36.5;
+            domStyle.set(dom.byId('layer-info'), 'height', layerInfoHeight + 'px');
+            dojo.query('#layer-info, #search-results-header').show();
+            dojo.query('#tree, #search-container').hide();
+            dom.byId('layer-info-content').innerHTML = '';
+            app.searchResults = true;
+            dojo.byId('layer-select').value = '';
         }
 
         return {
