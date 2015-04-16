@@ -176,10 +176,16 @@ define([
         }
 
         function resizeSidePanel() {
-            var treeHeight = (app.mapHeight - 108 /* account for layers button and search */)/2;
-            dojo.query('#tree').style('height', treeHeight + 'px');
-            dojo.query('#legend-dv').style('height', treeHeight + 'px');
-            dojo.query('#layer-info').style('height', treeHeight + 'px');
+            app.treeHeight = domStyle.get(app.sidePanel, 'height');
+            app.treeHeight = app.treeHeight - domStyle.get(dom.byId('legend-control'), 'height') - domStyle.get(dom.byId('remove-button-div'), 'height');
+            app.searchContainerHeight = domStyle.get(dom.byId('search-container'), 'height');
+            if (!app.searchResults)
+                app.treeHeight -= app.searchContainerHeight;
+            if (app.legendVisible)
+                app.treeHeight *= .5;
+            dojo.query('#legend-dv').style('height', app.treeHeight + 'px');
+            dojo.query('#tree').style('height', app.treeHeight + 'px');
+            dojo.query('#layer-info').style('height', (app.treeHeight + app.searchContainerHeight) + 'px');
         }
 
         window.onresize = function(event) {
@@ -523,18 +529,18 @@ define([
             on(dom.byId('show-hide-legend-btn'), 'click', function (e) {
                 var tree = dom.byId('tree'),
                     layerInfo = dom.byId('layer-info');
-                var currentTreeHeight = domStyle.get(tree, 'height');
                 if (app.legendVisible) {
+                    app.treeHeight = app.treeHeight *2;
                     var expandTree = fx.animateProperty({
                         node: tree,
                         properties: {
-                            height: (currentTreeHeight * 2) + 10
+                            height: app.treeHeight
                         }
                     });
                     var expandLayerInfo = fx.animateProperty({
                         node: layerInfo,
                         properties: {
-                            height: (currentTreeHeight * 2) + 10
+                            height: app.treeHeight
                         }
                     });
                     coreFx.combine([expandTree, expandLayerInfo]).play();
@@ -546,18 +552,20 @@ define([
                     domAttr.set(this, 'title', 'Show Legend');
                 }
                 else {
+                    app.treeHeight = app.treeHeight / 2;
                     var collapseTree = fx.animateProperty({
                         node: tree,
                         properties: {
-                            height: (currentTreeHeight / 2) - 5
+                            height: app.treeHeight
                         }
                     });
                     var collapseLayerInfo = fx.animateProperty({
                         node: layerInfo,
                         properties: {
-                            height: (currentTreeHeight / 2) - 5
+                            height: app.treeHeight
                         }
                     });
+                    dojo.query('#legend-dv').style('height', app.treeHeight + 'px');
                     coreFx.combine([collapseTree, collapseLayerInfo]).play();
                     app.legendVisible = true;
                     domStyle.set(this, {
@@ -779,6 +787,7 @@ define([
                                     serviceUrl = serviceUrl.substr(0, serviceUrl.indexOf('duplicate'));
                                 dojo.query('#tree, #search-container, #search-results-header').hide();
                                 dojo.query('#layer-info').show();
+                                resizeSidePanel();
                                 var request = EsriRequest({
                                     url: serviceUrl,
                                     content: {
@@ -858,6 +867,8 @@ define([
                     returnSearchRows();
                 dojo.query('#tree, #search-container').show();
                 dojo.query('#layer-info').hide();
+                app.searchResults = false;
+                resizeSidePanel();
             });
 
             app.lastQueryResults = {};
@@ -1651,6 +1662,8 @@ define([
             dojo.query('#tree, #search-container').hide();
             dom.byId('layer-info-content').innerHTML = '';
             app.searchResults = true;
+            app.treeHeight += app.searchContainerHeight;
+            resizeSidePanel();
             dojo.byId('layer-select').value = '';
         }
 

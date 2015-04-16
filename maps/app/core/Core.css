@@ -38,7 +38,8 @@ button.close {
   visibility: hidden;
 }
   #side-panel #remove-button-div {
-    margin: 5px 0 5px 10px;
+    margin: 0 0 0 10px;
+    padding: 5px 0;
   }
     #side-panel #remove-button-div a {
       color: #fff;
@@ -243,10 +244,9 @@ li.dropdown {
 
 #legend-dv {
   overflow-y      : auto;
-  border-top      : 2px solid #eee;
-  padding         : 10px 0 0 15px;
+  border-top      : 2px solid #ddd;
+  padding         : 10px 0 10px 15px;
   background-color: #FFF;
-  margin-top      : 10px;
   z-index         : -1;
 }
 
