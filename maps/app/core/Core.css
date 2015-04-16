@@ -1313,3 +1313,7 @@ span#legendAbout p {
   font-weight: bold;
   padding-left: 10px;
 }
+
+.dijitComboBoxMenu {
+  font-size: 11px !important;
+}
