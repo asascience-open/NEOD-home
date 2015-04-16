@@ -896,7 +896,11 @@ define([
             on(dom.byId('layer-search-button'), 'click', function (e) {
                 e.preventDefault();
                 app.lastQueryResults.forEach(function (v, i) {
-                    var layerUrl = v.id.substr(0, v.id.length-1);
+                    var layerUrl = v.id;
+                    if (layerUrl.match(/duplicate/i))
+                        layerUrl = layerUrl.substr(0, layerUrl.indexOf('duplicate'));
+                    else
+                        layerUrl = layerUrl.substr(0, layerUrl.length-1);
                     var row = dojo.query('div[widgetid="' + layerUrl + '"]').parent().parent()[0];
                     domConstruct.place(row, dom.byId('search-results-header'), 'after');
                 });
