@@ -15,7 +15,7 @@ define([],
 			noaaEFH				= 'http://egisws02.nos.noaa.gov/ArcGIS/rest/services/NMFS/EFHAreasProtectedFromFishing/MapServer/',
 			noaaHAPC			= 'http://egisws02.nos.noaa.gov/ArcGIS/rest/services/NMFS/HAPC/MapServer/',
 			tncDemersal			= 'http://50.18.215.52/arcgis/rest/services/NAMERA/EUSD_NAM_DEMERSAL/MapServer/',
-			noaaNGDC			= 'http://maps.ngdc.noaa.gov/arcgis/rest/services/web_mercator/dem_hillshades_mosaic/MapServer/',
+			//noaaNGDC			= 'http://maps.ngdc.noaa.gov/arcgis/rest/services/web_mercator/dem_hillshades_mosaic/MapServer/',
 			mmc					= 'http://coast.noaa.gov/arcgis/rest/services/MarineCadastre/NationalViewer/MapServer/',
 			aisAll 				= 'http://coast.noaa.gov/arcgis/rest/services/MarineCadastre/2011VesselDensity/MapServer/',
 			aisCargo 			= 'http://coast.noaa.gov/arcgis/rest/services/MarineCadastre/2011CargoVesselDensity/MapServer/',
@@ -773,8 +773,8 @@ define([],
 						serviceURLs: [
 							aquaculture,
 							fedFish,
-							otherMarineLife,
-							noaaNGDC
+							otherMarineLife
+							//,noaaNGDC
 						],
 						layers: [
 							{
@@ -811,14 +811,15 @@ define([],
 								name	: 	'Sediment Grain Size',
 								metadata:	metadataURL + 'PhysicalOceanography/SedimentGrainSize',
 								service	:	aquaculture
-							},
-							{
-								name	:	'DEM Hillshades',
-								metadata:	'http://ngdc.noaa.gov/mgg/inundation/tsunami/general.html',
-								label	:	'NGDC DEM Hillshades',
-								service	:	noaaNGDC,
-								tile	:	true
 							}
+							// ,
+							// {
+							// 	name	:	'DEM Hillshades',
+							// 	metadata:	'http://ngdc.noaa.gov/mgg/inundation/tsunami/general.html',
+							// 	label	:	'NGDC DEM Hillshades',
+							// 	service	:	noaaNGDC,
+							// 	tile	:	true
+							// }
 						]
 					},
 					{
