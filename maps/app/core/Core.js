@@ -180,7 +180,7 @@ define([
             var legendControl = domStyle.get(dom.byId('legend-control'), 'height'),
                 removeButton = domStyle.get(dom.byId('remove-button-div'), 'height'),
                 searchContainerHeight = domStyle.get(dom.byId('search-container'), 'height');
-            if (navigator.userAgent.match(/rv:/i) || navigator.userAgent.match(/MSIE/i)) {
+            if (navigator.userAgent.match(/rv:11.0/i) || navigator.userAgent.match(/MSIE/i)) {
                 legendControl += 12,
                 removeButton += 10;
                 if (searchContainerHeight !== 0)
@@ -796,6 +796,7 @@ define([
                                     serviceUrl = serviceUrl.substr(0, serviceUrl.indexOf('duplicate'));
                                 dojo.query('#tree, #search-container, #search-results-header').hide();
                                 dojo.query('#layer-info').show();
+                                resizeSidePanel();
                                 var request = EsriRequest({
                                     url: serviceUrl,
                                     content: {
@@ -839,7 +840,6 @@ define([
                                         contentHtml += sourceDataHtml + ' | <a href="' + serviceUrl + '" target="_blank">Web Service</a> | <a href="#" onClick="app.currentMap.centerAndZoom(new esri.geometry.Point(' + centerPoint.getLongitude() + ', ' + centerPoint.getLatitude() + '), 7);">Zoom to Layer</a>';
                                         dom.byId('loading').style.display = 'none';
                                         domConstruct.place(contentHtml + '</p></div>', dojo.byId('layer-info-content'), 'replace');
-                                        resizeSidePanel();
                                     }, function(error) {
                                         console.log("Error: ", error.message);
                                 });
