@@ -1598,7 +1598,8 @@ define([
         {
             query('#overview p')[0].innerHTML = configOptions.themes[app.themeIndex].maps[subthemeIndex].about.overview;
             query('#data-considerations p')[0].innerHTML = configOptions.themes[app.themeIndex].maps[subthemeIndex].about.dataConsiderations;
-            query('#status p')[0].innerHTML = configOptions.themes[app.themeIndex].maps[subthemeIndex].about.status;
+            query('#status p')[0].innerHTML = configOptions.themes[app.themeIndex].maps[subthemeIndex].about.status +
+                "<br><br>For information about how these data and maps are being developed with stakeholder input and used to support regional ocean planning, please visit the <a href='http://neoceanplanning.org/projects/maritime-commerce/' target='_blank'>maritime commerce</a> page on the Northeast Regional Planning Body's website.";
         }
 
         createLegend = function (layerInfos, i)
