@@ -52,6 +52,7 @@ define([
     'dijit/Tree',
     'dijit/form/CheckBox',
     'dijit/form/DropDownButton',
+    'dijit/form/HorizontalSlider',
     'dijit/DropDownMenu',
     'dijit/MenuItem',
     'dijit/form/Button',
@@ -95,6 +96,7 @@ define([
         Tree,
         CheckBox,
         DropDownButton,
+        HorizontalSlider,
         DropDownMenu,
         MenuItem,
         Button,
@@ -479,7 +481,6 @@ define([
             app.currentMap.on('layers-add-result', function () {
                 app.legend = new Legend({
                     map         : app.currentMap,
-                    layerInfos  : app.layerInfos,
                     autoUpdate  : false
                 }, 'legend-dv');
                 app.legend.startup();
@@ -584,6 +585,22 @@ define([
                     domAttr.set(this, 'title', 'Hide Legend');
                 }
             });
+
+            app.sliderValue = 10;
+            app.opacitySlider = new HorizontalSlider({
+                    name                : "opacitySlider",
+                    value               : app.sliderValue,
+                    minimum             : 0,
+                    maximum             : 10,
+                    discreteValues      : 1,
+                    intermediateChanges : true,
+                    style               : "width: 75px;",
+                    onChange            : function(value){
+                        app.sliderValue = value;
+                        app.currentMap._layers['http://50.19.218.171/arcgis1/rest/services/SiteDev/Energy/MapServer/1'].setOpacity(app.sliderValue*.1);
+                    }
+                }, "opacity-slider");
+                app.opacitySlider.startup();
         }
 
         function getFullServices() {
@@ -1109,45 +1126,68 @@ define([
 
         checkboxChange = function (b, service, id, theme, tile) {
             var visibleLayers = [];
-            if (b) {
-                if (!app.currentMap._layers[service]) {
-                    if (theme) {
-                        if (tile)
-                            var layer = new ArcGISTiledMapServiceLayer(service, {id : service});
-                        else
-                            var layer = new ArcGISDynamicMapServiceLayer(service, {id : service});
-                    }
-                    else
-                        var layer = new ArcGISDynamicMapServiceLayer(app.serverUrl + service + '/MapServer', {id : service});
-                    app.layerInfos.push({layer: layer});
-                    visibleLayers = [id];
+            if (service === 'http://50.19.218.171/arcgis1/rest/services/SiteDev/Energy/MapServer/' && id === 1) {
+                var layerId = service + id;
+                if (b) {
+                    var layer = new FeatureLayer(layerId, {id : layerId, opacity : 1.0});
                     app.currentMap.addLayers([layer]);
+                    //app.layerInfos.push({layer: layer, title: layer.name});
+                    dojo.query('#opacity-slider').show();
                 }
                 else {
-                    array.forEach(app.currentMap._layers[service].visibleLayers, function (layerId) {
-                        visibleLayers.push(layerId);
+                    var visibleLayerInfos = [];
+                    array.forEach(app.layerInfos, function (layerInfo) {
+                        if (layerInfo.layer.id !== layerId)
+                            visibleLayerInfos.push(layerInfo);
                     });
-                    visibleLayers.push(id);
+                    //app.legend.layerInfos = visibleLayerInfos;
+                    app.currentMap.removeLayer(app.currentMap._layers[layerId]);
+                    app.legend.refresh();
+                    dojo.query('#opacity-slider, #legend-dv_http\:\/\/50\.19\.218\.171\/arcgis1\/rest\/services\/SiteDev\/Energy\/MapServer\/1').hide();
                 }
             }
             else {
-                array.forEach(app.currentMap._layers[service].visibleLayers, function (layerId) {
-                    if (layerId != id)
-                        visibleLayers.push(layerId);
-                });
-                if (visibleLayers.length == 0)
-                    visibleLayers[0] = -1;
-            }
-            if (tile) {
-                if (b)
-                    app.currentMap._layers[service].show();
-                else {
-                    app.currentMap._layers[service].hide();
-                    app.legend.refresh();
+                if (b) {
+                    if (!app.currentMap._layers[service]) {
+                        if (theme) {
+                            if (tile)
+                                var layer = new ArcGISTiledMapServiceLayer(service, {id : service});
+                            else
+                                var layer = new ArcGISDynamicMapServiceLayer(service, {id : service});
+                        }
+                        else
+                            var layer = new ArcGISDynamicMapServiceLayer(app.serverUrl + service + '/MapServer', {id : service});
+                        // app.layerInfos.push({layer: layer});
+                        visibleLayers = [id];
+                        app.currentMap.addLayers([layer]);
+                        //app.layerInfos.push({layer: layer});
+                    }
+                    else {
+                        array.forEach(app.currentMap._layers[service].visibleLayers, function (layerId) {
+                            visibleLayers.push(layerId);
+                        });
+                        visibleLayers.push(id);
+                    }
                 }
+                else {
+                    array.forEach(app.currentMap._layers[service].visibleLayers, function (layerId) {
+                        if (layerId != id)
+                            visibleLayers.push(layerId);
+                    });
+                    if (visibleLayers.length == 0)
+                        visibleLayers[0] = -1;
+                }
+                if (tile) {
+                    if (b)
+                        app.currentMap._layers[service].show();
+                    else {
+                        app.currentMap._layers[service].hide();
+                        app.legend.refresh();
+                    }
+                }
+                else
+                    app.currentMap._layers[service].setVisibleLayers(visibleLayers);
             }
-            else
-                app.currentMap._layers[service].setVisibleLayers(visibleLayers);
         }
 
         loadMainTheme = function (themeIndex)
