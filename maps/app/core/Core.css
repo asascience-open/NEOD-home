@@ -1329,14 +1329,21 @@ span#legendAbout p {
 }
 
 #opacity-slider {
-  position: absolute;
-  display : none;
-  left    : 205px;
-  z-index : 9999;
-  bottom  : 7px;
+  display     : none;
+  z-index     : 9999;
+  float       : right;
+  margin-top  : 6px;
 }
 
 #legend-dv_layer0,
-#legend-dv_layer1 {
+#legend-dv_layer1,
+.dijitSliderDecrementIconH,
+.dijitSliderIncrementIconH {
   display: none !important;
+}
+
+.dijitIconFunction {
+  float: right;
+  margin-right: 10px;
+  cursor: pointer;
 }
