@@ -1331,8 +1331,8 @@ span#legendAbout p {
 #opacity-slider {
   display     : none;
   z-index     : 9999;
-  float       : right;
-  margin-top  : 6px;
+  left        : 200px;
+  position    : absolute;
 }
 
 #legend-dv_layer0,
