@@ -14,7 +14,6 @@ app.firstLV_load = true,
 app.fullServiceUrls = [
     'http://50.19.218.171/arcgis1/rest/services/Administrative/MapServer/',
     'http://50.19.218.171/arcgis1/rest/services/SiteDev/MarineMammalsAndSeaTurtles/MapServer/',
-    'http://50.19.218.171/arcgis1/rest/services/SiteDev/OtherMarineLife/MapServer/',
     'http://50.19.218.171/arcgis1/rest/services/SiteDev/RecreationAndCulture/MapServer/'
 ];
 define([
@@ -1139,6 +1138,8 @@ define([
             }
             else {
                 app.currentMap.removeLayer(app.currentMap._layers[layerId]);
+                if (duplicate)
+                    layerId += 'duplicate';
                 array.forEach(registry.toArray(), function (widget, i) {
                     if(widget.name === 'slider_' + layerId)
                         widget.destroy();

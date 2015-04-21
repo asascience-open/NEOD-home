@@ -2,6 +2,7 @@ define([],
 	function ()
 	{
 		var serviceURL 			= "http://50.19.218.171/arcgis1/rest/services/",
+			marineCadastre		= 'http://coast.noaa.gov/arcgis/rest/services/MarineCadastre/',
 			oceanUses 			= serviceURL + "OceanUses/MapServer/",
 			maritimeCommerce 	= serviceURL + 'SiteDev/MaritimeCommerce/MapServer/',
 			aquaculture			= serviceURL + 'SiteDev/Aquaculture/MapServer/',
@@ -17,16 +18,19 @@ define([],
 			noaaHAPC			= 'http://egisws02.nos.noaa.gov/ArcGIS/rest/services/NMFS/HAPC/MapServer/',
 			tncDemersal			= 'http://50.18.215.52/arcgis/rest/services/NAMERA/EUSD_NAM_DEMERSAL/MapServer/',
 			//noaaNGDC			= 'http://maps.ngdc.noaa.gov/arcgis/rest/services/web_mercator/dem_hillshades_mosaic/MapServer/',
-			mmc					= 'http://coast.noaa.gov/arcgis/rest/services/MarineCadastre/NationalViewer/MapServer/',
-			aisAll 				= 'http://coast.noaa.gov/arcgis/rest/services/MarineCadastre/2011VesselDensity/MapServer/',
-			aisCargo 			= 'http://coast.noaa.gov/arcgis/rest/services/MarineCadastre/2011CargoVesselDensity/MapServer/',
-			aisPassenger 		= 'http://coast.noaa.gov/arcgis/rest/services/MarineCadastre/2011PassengerVesselDensity/MapServer/',
-			aisTugTow 			= 'http://coast.noaa.gov/arcgis/rest/services/MarineCadastre/2011TugTowingVesselDensity/MapServer/',
-			aisTanker 			= 'http://coast.noaa.gov/arcgis/rest/services/MarineCadastre/2011TankerVesselDensity/MapServer/',
+			mmc					= marineCadastre + 'NationalViewer/MapServer/',
+			noaaPhysOcean		= marineCadastre + 'PhysicalOceanographicAndMarineHabitat/MapServer/',
+			noaaCoral			= marineCadastre + 'DeepSeaCorals/MapServer/',
+			aisAll 				= marineCadastre + '2011VesselDensity/MapServer/',
+			aisCargo 			= marineCadastre + '2011CargoVesselDensity/MapServer/',
+			aisPassenger 		= marineCadastre + '2011PassengerVesselDensity/MapServer/',
+			aisTugTow 			= marineCadastre + '2011TugTowingVesselDensity/MapServer/',
+			aisTanker 			= marineCadastre + '2011TankerVesselDensity/MapServer/',
 			watersGeo_303d		= 'http://watersgeo.epa.gov/arcgis/rest/services/OWRAD_NP21/303D_NP21/MapServer/',
 			watersGeo_tmdl		= 'http://watersgeo.epa.gov/arcgis/rest/services/OWRAD_NP21/TMDL_NP21/MapServer/',
 			pcs					= 'http://geodata.epa.gov/arcgis/rest/services/OEI/FRS_INTERESTS/MapServer/',
 			hucs				= 'http://50.19.218.171/arcgis1/rest/services/HydrologicUnitCodes/MapServer/',
+			tncChlorophyll		= 'http://50.18.215.52/arcgis/rest/services/NAMERA/EUSD_NAM_ocean/MapServer/',
 			metadataURL 		= "http://www.northeastoceandata.org/files/metadata/";
 		configOptions = {
 			themes: [
@@ -336,7 +340,7 @@ define([],
 				fullServices: [
 					{
 						title	: 'Administrative',
-						index	: 8,
+						index	: 9,
 						layers	: [
 							{
 								name			: 'Marine Jurisdictions',
@@ -582,44 +586,6 @@ define([],
 								name			: 	'Green Sea Turtle Fall, SPUE',
 								metadata		:	metadataURL + 'Biology/SeaTurtleSPUEFall.pdf'
 							},
-						]
-					},
-					{
-						title	: 'Other Marine Life',
-						index	: 7,
-						layers	: [
-							{
-								name			: 'Eelgrass Beds',
-								metadata		: metadataURL + 'Biology/EelgrassBeds.pdf'
-							},
-							{
-								name			: 'Coastal Wetlands',
-								metadata		: metadataURL + 'Biology/CoastalWetlands.pdf'
-							},
-							{
-								name			: 'Primary Production',
-								metadata		: metadataURL + 'Biology/NEFSC_spatial_metadata.pdf'
-							},
-							{
-								name			: 'Calanus Finmarchicus Fall',
-								metadata		: metadataURL + 'Biology/NEFSC_spatial_metadata.pdf'
-							},
-							{
-								name			: 'Euphausiids Fall',
-								metadata		: metadataURL + 'Biology/NEFSC_spatial_metadata.pdf'
-							},
-							{
-								name			: 'Gammarid Amphipods Fall',
-								metadata		: metadataURL + 'Biology/NEFSC_spatial_metadata.pdf'
-							},
-							{
-								name			: 'Mysid Shrimp Fall',
-								metadata		: metadataURL + 'Biology/NEFSC_spatial_metadata.pdf'
-							},
-							{
-								name			: 'Seafloor Habitats',
-								metadata		: metadataURL + 'Biology/TNCBenthicHabitatModel'
-							}
 						]
 					},
 					{
@@ -896,6 +862,132 @@ define([],
 						]
 					},
 					{
+						title	: 'Other Marine Life',
+						index	: 7,
+						serviceURLs: [
+							otherMarineLife,
+							noaaPhysOcean,
+							noaaCoral,
+							tncChlorophyll
+						],
+						layers	: [
+							{
+								name			: 'Artificial Reefs',
+								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/ArtificialReefs.htm',
+								service			: noaaPhysOcean
+							},
+							{
+								name			: 'Critical Habitat Designations',
+								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/CriticalHabitatDesignations.htm',
+								service			: noaaPhysOcean
+							},
+							{
+								name			: 'Eelgrass Beds',
+								metadata		: metadataURL + 'Biology/EelgrassBeds.pdf',
+								service			: otherMarineLife
+							},
+							{
+								name			: 'Alcyonacea',
+								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/Alcyonacea.htm',
+								service			: noaaCoral
+							},
+							{
+								name			: 'Gorgonian Alcyonacea',
+								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/GorgonianAlcyonacea.htm',
+								service			: noaaCoral
+							},
+							{
+								name			: 'Non-Gorgonian Alcyonacea',
+								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/NonGorgonianAlcyonacea.htm',
+								service			: noaaCoral
+							},
+							{
+								name			: 'Pennatulacea',
+								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/Pennatulacea.htm',
+								service			: noaaCoral
+							},
+							{
+								name			: 'Pennatulacea Sessiliflorae',
+								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/PennatulaceaSessiliflorae.htm',
+								service			: noaaCoral
+							},
+							{
+								name			: 'Pennatulacea Subsessiliflorae',
+								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/PennatulaceaSubsessiliflorae.htm',
+								service			: noaaCoral
+							},
+							{
+								name			: 'Scleractinia Caryophylliidae',
+								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/ScleractiniaCaryophylliidae.htm',
+								service			: noaaCoral
+							},
+							{
+								name			: 'Scleractinia Flabellidae',
+								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/ScleractiniaFlabellidae.htm',
+								service			: noaaCoral
+							},
+							{
+								name			: 'Coastal Wetlands',
+								metadata		: metadataURL + 'Biology/CoastalWetlands.pdf',
+								service			: otherMarineLife
+							},
+							{
+								name			: 'Primary Production',
+								metadata		: metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
+								service			: otherMarineLife
+							},
+							{
+								name			: 'Calanus Finmarchicus Fall',
+								metadata		: metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
+								service			: otherMarineLife
+							},
+							{
+								name			: 'Euphausiids Fall',
+								metadata		: metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
+								service			: otherMarineLife
+							},
+							{
+								name			: 'Gammarid Amphipods Fall',
+								metadata		: metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
+								service			: otherMarineLife
+							},
+							{
+								name			: 'Mysid Shrimp Fall',
+								metadata		: metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
+								service			: otherMarineLife
+							},
+							{
+								name			: 'Winter',
+								label			: 'Chlorophyll A Winter',
+								metadata		: metadataURL + 'Biology/ChlorophyllAfall.pdf',
+								service			: tncChlorophyll
+							},
+							{
+								name			: 'Spring',
+								label			: 'Chlorophyll A Spring',
+								metadata		: metadataURL + 'Biology/ChlorophyllAspring.pdf',
+								service			: tncChlorophyll
+							},
+							{
+								name			: 'Summer',
+								label			: 'Chlorophyll A Summer',
+								metadata		: metadataURL + 'Biology/ChlorophyllAsummer.pdf',
+								service			: tncChlorophyll
+							},
+							{
+								name			: 'Fall',
+								label			: 'Chlorophyll A Fall',
+								metadata		: metadataURL + 'Biology/ChlorophyllAfall.pdf',
+								service			: tncChlorophyll
+							},
+							{
+								name			: 'Seafloor Habitats',
+								metadata		: metadataURL + 'Biology/TNCBenthicHabitatModel',
+								service			: otherMarineLife
+							}
+						]
+					},
+					{
 						title: 'Fish and Shellfish',
 						index: 5,
 						serviceURLs: [
@@ -1124,7 +1216,7 @@ define([],
 					},
 					{
 						title: 'Water Quality',
-						index: 9,
+						index: 8,
 						serviceURLs: [
 							maritimeCommerce,
 							watersGeo_303d,
