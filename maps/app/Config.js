@@ -793,12 +793,12 @@ define([],
 							},
 							{
 								name	: 	'Environmental Degradation Closures',
-								metadata:	metadataURL + 'NERO/Environmental_Degradation_Closures_METADATA.pdf',
+								metadata:	'http://www.greateratlantic.fisheries.noaa.gov/educational_resources/gis/data/shapefiles/Environmental_Degradation_Closures/Environmental_Degradation_Closures_METADATA.pdf',
 								service	:	fedFish
 							},
 							{
 								name	: 	'Food Safety Program Temporary PSP Closures',
-								metadata:	metadataURL + 'NERO/Food_Safety_Program_Temporary_PSP_Closures_METADATA.pdf',
+								metadata:	'http://www.greateratlantic.fisheries.noaa.gov/educational_resources/gis/data/shapefiles/Food_Safety_Program_PSP_Closures/Food_Safety_Program_Temporary_PSP_Closures_METADATA.pdf',
 								service	:	fedFish
 							},
 							{
