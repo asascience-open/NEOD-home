@@ -759,8 +759,11 @@ define([
                                     tile = app.tree.model.store.data[dataIndex].tile;
                                     dataIndex++;
                                 }
-                                if (registry.byId(checkboxId))
+                                var duplicate = false;
+                                if (registry.byId(checkboxId)) {
                                     checkboxId += 'duplicate';
+                                    duplicate = true;
+                                }
                                 domConstruct.place('<input type="checkbox" id="' + checkboxId + '" />', element, 'first');
                                 var checkBox = new CheckBox({
                                     name: checkboxId,
@@ -775,7 +778,7 @@ define([
                                             service = name.substr(0, name.lastIndexOf('/') + 1);
                                             var theme = true;
                                         }
-                                        checkboxChange(b, service, id, theme, tile);
+                                        checkboxChange(b, service, id, theme, tile, duplicate);
                                     }
                                 }, checkboxId).startup();
                                 domConstruct.place('<span role="presentation" class="dijitInline dijitIcon dijitTreeIcon dijitIconFile" data-dojo-attach-point="iconNode" title="Layer Information" data-service_layer="' + checkboxId + '"></span><div class="slider-container" data-service_layer="' + checkboxId + '"></div>', element, 'last');
@@ -1096,7 +1099,7 @@ define([
             }
         }
 
-        checkboxChange = function (b, service, id, theme, tile) {
+        checkboxChange = function (b, service, id, theme, tile, duplicate) {
             var layerId = service + id;
             if (b) {
                 if (theme) {
@@ -1111,6 +1114,9 @@ define([
                     var layer = new ArcGISDynamicMapServiceLayer(app.serverUrl + service + '/MapServer', {id : service});
 
                 app.currentMap.addLayers([layer]);
+
+                if (duplicate)
+                    layerId += 'duplicate';
 
                 var sliderContainer = query('.slider-container[data-service_layer="' + layerId + '"]')[0];
                 domConstruct.place('<div></div>', sliderContainer);
