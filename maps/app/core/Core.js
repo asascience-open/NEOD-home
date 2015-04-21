@@ -11,7 +11,6 @@ app.unOrderedGroups = [],
 app.groupCount = 9,
 app.lv = false,
 app.firstLV_load = true,
-app.slider = false;
 app.fullServiceUrls = [
     'http://50.19.218.171/arcgis1/rest/services/Administrative/MapServer/',
     'http://50.19.218.171/arcgis1/rest/services/SiteDev/Energy/MapServer/',
@@ -198,7 +197,6 @@ define([
             dojo.query('#legend-dv').style('height', app.treeHeight + 'px');
             dojo.query('#tree').style('height', app.treeHeight + 'px');
             dojo.query('#layer-info').style('height', (app.treeHeight + app.searchContainerHeight) + 'px');
-            dojo.query('#opacity-slider').style('top', (app.treeHeight + 105) + 'px');
         }
 
         window.onresize = function(event) {
@@ -482,8 +480,7 @@ define([
 
             app.currentMap.on('layers-add-result', function () {
                 app.legend = new Legend({
-                    map         : app.currentMap,
-                    autoUpdate  : false
+                    map         : app.currentMap
                 }, 'legend-dv');
                 app.legend.startup();
             });
@@ -562,8 +559,6 @@ define([
                         borderTop : '0'
                     });
                     domAttr.set(this, 'title', 'Show Legend');
-                    if (app.slider)
-                        query('#opacity-slider').hide();
                 }
                 else {
                     app.treeHeight = app.treeHeight / 2;
@@ -587,27 +582,8 @@ define([
                         borderBottom  : '0'
                     });
                     domAttr.set(this, 'title', 'Hide Legend');
-                    if (app.slider)
-                        query('#opacity-slider').show();
                 }
             });
-
-            app.sliderValue = 10;
-            app.opacitySlider = new HorizontalSlider({
-                    name                : "opacitySlider",
-                    value               : app.sliderValue,
-                    minimum             : 0,
-                    maximum             : 10,
-                    discreteValues      : 1,
-                    intermediateChanges : true,
-                    style               : "width: 75px;",
-                    onChange            : function(value){
-                        app.sliderValue = value;
-                        app.currentMap._layers['http://50.19.218.171/arcgis1/rest/services/OceanUses/VMSNortheastMultispecies2006To2011/MapServer/'].setOpacity(app.sliderValue*.1);
-                        app.legend.refresh();
-                    }
-                }, "opacity-slider");
-                app.opacitySlider.startup();
         }
 
         function getFullServices() {
@@ -802,7 +778,7 @@ define([
                                         checkboxChange(b, service, id, theme, tile);
                                     }
                                 }, checkboxId).startup();
-                                domConstruct.place('<span role="presentation" class="dijitInline dijitIcon dijitTreeIcon dijitIconFile" data-dojo-attach-point="iconNode" title="Layer Information" data-service_layer="' + checkboxId + '"></span>', element, 'last');
+                                domConstruct.place('<span role="presentation" class="dijitInline dijitIcon dijitTreeIcon dijitIconFile" data-dojo-attach-point="iconNode" title="Layer Information" data-service_layer="' + checkboxId + '"></span><div class="slider-container" data-service_layer="' + checkboxId + '"></div>', element, 'last');
                             });
                         }
                         checkMinScale();
@@ -868,8 +844,6 @@ define([
                                         console.log("Error: ", error.message);
                                 });
                             });
-
-                            //domConstuct.place('<span class="dijitInline dijitIcon dijitTreeIcon dijitIconFunction"></span>', dom.byId('dijit__TreeNode_2_label'));
                         }
                     }
                 }
@@ -879,17 +853,6 @@ define([
 
             on(dom.byId('remove-layers'), 'click', function (e){
                 e.preventDefault();
-                array.forEach(app.currentMap.layerIds, function (layerId) {
-                    if (app.currentMap._layers[layerId].url != 'http://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer' &&
-                        app.currentMap._layers[layerId].url != 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer' &&
-                        app.currentMap._layers[layerId].url != 'http://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Reference/MapServer' &&
-                        app.currentMap._layers[layerId].url != 'http://egisws02.nos.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer') {
-                        if (!app.currentMap._layers[layerId].setVisibleLayers)
-                            app.currentMap._layers[layerId].hide();
-                        else
-                            app.currentMap._layers[layerId].setVisibleLayers([-1]);
-                    }
-                });
                 array.forEach(registry.toArray(), function (widget, i) {
                     if(widget.type == 'checkbox')
                         if (widget.checked)
@@ -1134,54 +1097,46 @@ define([
         }
 
         checkboxChange = function (b, service, id, theme, tile) {
-            var visibleLayers = [];
+            var layerId = service + id;
             if (b) {
-                if (!app.currentMap._layers[service]) {
-                    if (theme) {
-                        if (tile)
-                            var layer = new ArcGISTiledMapServiceLayer(service, {id : service});
-                        else
-                            var layer = new ArcGISDynamicMapServiceLayer(service, {id : service});
+                if (theme) {
+                    if (tile)
+                        var layer = new ArcGISTiledMapServiceLayer(service, {id : layerId});
+                    else {
+                        var layer = new ArcGISDynamicMapServiceLayer(service, {id : layerId});
+                        layer.setVisibleLayers([id]);
                     }
-                    else
-                        var layer = new ArcGISDynamicMapServiceLayer(app.serverUrl + service + '/MapServer', {id : service});
-                    visibleLayers = [id];
-                    app.currentMap.addLayers([layer]);
                 }
-                else {
-                    array.forEach(app.currentMap._layers[service].visibleLayers, function (layerId) {
-                        visibleLayers.push(layerId);
-                    });
-                    visibleLayers.push(id);
-                }
+                else
+                    var layer = new ArcGISDynamicMapServiceLayer(app.serverUrl + service + '/MapServer', {id : service});
+
+                app.currentMap.addLayers([layer]);
+
+                var sliderContainer = query('.slider-container[data-service_layer="' + layerId + '"]')[0];
+                domConstruct.place('<div></div>', sliderContainer);
+
+                var slider = new HorizontalSlider({
+                    name                : 'slider_' + layerId,
+                    value               : 10,
+                    minimum             : 0,
+                    maximum             : 10,
+                    discreteValues      : 1,
+                    intermediateChanges : true,
+                    style               : 'width: 75px;',
+                    onChange            : function(value){
+                        layer.setOpacity(value*.1);
+                        app.legend.refresh();
+                    }
+                }, query('.slider-container[data-service_layer="' + layerId + '"] div')[0]);
+                slider.startup();
             }
             else {
-                array.forEach(app.currentMap._layers[service].visibleLayers, function (layerId) {
-                    if (layerId != id)
-                        visibleLayers.push(layerId);
+                app.currentMap.removeLayer(app.currentMap._layers[layerId]);
+                array.forEach(registry.toArray(), function (widget, i) {
+                    if(widget.name === 'slider_' + layerId)
+                        widget.destroy();
                 });
-                if (visibleLayers.length == 0)
-                    visibleLayers[0] = -1;
             }
-            if (tile) {
-                if (b) {
-                    app.currentMap._layers[service].show();
-                    if (service === 'http://50.19.218.171/arcgis1/rest/services/OceanUses/VMSNortheastMultispecies2006To2011/MapServer/') {
-                        dojo.query('#opacity-slider').show();
-                        app.slider = true;
-                    }
-                }
-                else {
-                    app.currentMap._layers[service].hide();
-                    if (service === 'http://50.19.218.171/arcgis1/rest/services/OceanUses/VMSNortheastMultispecies2006To2011/MapServer/') {
-                        dojo.query('#opacity-slider').hide();
-                        app.slider = false;
-                    }
-                    app.legend.refresh();
-                }
-            }
-            else
-                app.currentMap._layers[service].setVisibleLayers(visibleLayers);
         }
 
         loadMainTheme = function (themeIndex)
@@ -1507,7 +1462,7 @@ define([
                 if (mapIndex == 0)
                     app.currentMap = mapDeferred;
 
-                mapDeferred.chart = new ArcGISImageServiceLayer('http://egisws02.nos.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer', 'chart');
+                mapDeferred.chart = new ArcGISImageServiceLayer('http://seamlessrnc.nauticalcharts.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer', 'chart');
 
                 mapDeferred.addLayer(mapDeferred.chart, 1);
                 mapDeferred.chart.hide();

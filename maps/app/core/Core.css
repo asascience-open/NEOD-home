@@ -541,11 +541,7 @@ table.esriLegendLayer tr td {
   font-weight: bold;
 }
 
-#legend-dv_http\:\/\/50\.19\.218\.171\/arcgis1\/rest\/services\/SiteDev\/OtherMarineLife\/MapServer\/_0_group > table:first-child,
-#legend-dv_http\:\/\/50\.19\.218\.171\/arcgis1\/rest\/services\/SiteDev\/MarineMammalsAndSeaTurtles\/MapServer\/_0_group > table:first-child,
-#legend-dv_http\:\/\/50\.19\.218\.171\/arcgis1\/rest\/services\/SiteDev\/Energy\/MapServer\/_0_group > table:first-child,
-#legend-dv_http\:\/\/50\.19\.218\.171\/arcgis1\/rest\/services\/SiteDev\/MaritimeCommerce\/MapServer\/_0_group > table:first-child,
-#legend-dv_http\:\/\/50\.18\.215\.52\/arcgis\/rest\/services\/NAMERA\/EUSD_NAM_DEMERSAL\/MapServer\/_0_group > table:first-child,
+#legend-dv div[id*="_group"] > table:first-child,
 #legend-dv_http\:\/\/maps\.ngdc\.noaa\.gov\/arcgis\/rest\/services\/web_mercator\/dem_hillshades_mosaic\/MapServer\/ {
   display: none !important;
 }
@@ -561,10 +557,6 @@ table.esriLegendLayer tr td {
 
   .esriLegendService > table:first-child {
     display: none;
-  }
-
-  #legend-dv_http\:\/\/50\.19\.218\.171\/arcgis1\/rest\/services\/SiteDev\/Energy\/MapServer\/1.esriLegendService > table:first-child {
-    display: block;
   }
 
 /*  legend END
@@ -781,12 +773,17 @@ img[src="img/ais-legend.png"] {
   cursor      : pointer !important;
   margin-right: 5px;
   margin-top  : 2px;
+  display     : inline-block;
 }
 
 .no-children span.dijitTreeLabel {
   display     : inline-block;
-  max-width   : 194px;
+  max-width   : 120px;
   line-height : 16px;
+}
+
+.slider-container {
+  float: right;
 }
 
 #layer-info {
@@ -1328,13 +1325,6 @@ span#legendAbout p {
   padding-right: 5px;
 }
 
-#opacity-slider {
-  display     : none;
-  z-index     : 9999;
-  left        : 200px;
-  position    : absolute;
-}
-
 #legend-dv_layer0,
 #legend-dv_layer1,
 .dijitSliderDecrementIconH,
@@ -1342,8 +1332,8 @@ span#legendAbout p {
   display: none !important;
 }
 
-.dijitIconFunction {
+.dijit.dijitReset.dijitSliderH.dijitSlider {
+  display: inline-block;
+  margin-top: 7px;
   float: right;
-  margin-right: 10px;
-  cursor: pointer;
 }
