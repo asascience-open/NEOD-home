@@ -13,7 +13,6 @@ app.lv = false,
 app.firstLV_load = true,
 app.fullServiceUrls = [
     'http://50.19.218.171/arcgis1/rest/services/Administrative/MapServer/',
-    'http://50.19.218.171/arcgis1/rest/services/SiteDev/Energy/MapServer/',
     'http://50.19.218.171/arcgis1/rest/services/SiteDev/MarineMammalsAndSeaTurtles/MapServer/',
     'http://50.19.218.171/arcgis1/rest/services/SiteDev/OtherMarineLife/MapServer/',
     'http://50.19.218.171/arcgis1/rest/services/SiteDev/RecreationAndCulture/MapServer/'

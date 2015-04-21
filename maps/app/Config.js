@@ -12,6 +12,7 @@ define([],
 			multispecies		= serviceURL + 'OceanUses/VMSNortheastMultispecies2006To2011/MapServer/',
 			scallop				= serviceURL + 'OceanUses/VMSScallop2006To2011/MapServer/',
 			quahog				= serviceURL + 'OceanUses/VMSSurfClamQuahog2006To2011/MapServer/',
+			energy				= serviceURL + 'SiteDev/Energy/MapServer/',
 			noaaEFH				= 'http://egisws02.nos.noaa.gov/ArcGIS/rest/services/NMFS/EFHAreasProtectedFromFishing/MapServer/',
 			noaaHAPC			= 'http://egisws02.nos.noaa.gov/ArcGIS/rest/services/NMFS/HAPC/MapServer/',
 			tncDemersal			= 'http://50.18.215.52/arcgis/rest/services/NAMERA/EUSD_NAM_DEMERSAL/MapServer/',
@@ -362,84 +363,6 @@ define([],
 							{
 								name			: 'States',
 								metadata		: metadataURL + 'Administrative/States.htm'
-							}
-						]
-					},
-					{
-						title	: 'Energy',
-						index	: 1,
-						layers	: [
-							{
-								name			: 	'Maximum Tidal Currents Speed m/s, January 2009',
-								metadata		:	metadataURL + 'PhysicalOceanography/MaxTidalCurrentsSpeed.pdf'
-							},
-							{
-								name			: 	'Annual Mean Offshore Wind Speed m/s ',
-								metadata		:	metadataURL + 'PhysicalOceanography/OffshoreWindEnergyPotential'
-							},
-							{
-								name			: 	'Offshore Tidal Hydrokinetic Projects',
-								metadata		:	metadataURL + 'OceanUses/OffshoreTidalHydrokineticProjects'
-							},
-							{
-								name			: 	'UMaine Wind Turbine Test Project',
-								metadata		:	metadataURL + 'OceanUses/UMaineTestDemonstrationProject.pdf'
-							},
-							{
-								name			: 	'Block Island Proposed Turbine Locations',
-								metadata		:	metadataURL + 'OceanUses/BlockIslandProposedTurbineLocations.pdf'
-							},
-							{
-								name			: 	'Block Island Transmission Cables',
-								metadata		:	metadataURL + 'OceanUses/BlockIslandTransmissionCables.pdf'
-							},
-							{
-								name			: 	'Block Island Renewable Energy Zone',
-								metadata		:	metadataURL + 'OceanUses/RenewableEnergyZone'
-							},
-							{
-								name			:	'Massachusetts Wind Energy Areas - State Designated',
-								metadata		:	metadataURL + 'OceanUses/moris_om_wind_energy_areas_poly'
-							},
-							{
-								name			:	'Ocean Energy Demonstration Sites',
-								metadata		:	metadataURL + 'OceanUses/OceanEnergyDemonstrationSites.pdf'
-							},
-							{
-								name			:	'Active Renewable Energy Lease Areas',
-								metadata		:	metadataURL + 'OceanUses/BOEMLeaseAreas09182013'
-							},
-							{
-								name			:	'BOEM Wind Planning Areas',
-								metadata		:	metadataURL + 'OceanUses/BOEMWindPlanningAreas09182013'
-							},
-							{
-								name			:	'LNG Sites',
-								metadata		:	metadataURL + 'OceanUses/LNGsites'
-							},
-							{
-								name			:	'Coastal Energy Facilities',
-								metadata		:	metadataURL + 'OceanUses/CoastalEnergyFacilities'
-							},
-							{
-								name			:	'New England Electrical Transmission Substations',
-								metadata		:	metadataURL + 'OceanUses/NewEnglandElectricalTransmissionSubstations.pdf'
-							},
-							{
-								name			:	'New England Electrical Transmission Lines',
-								metadata		:	metadataURL + 'OceanUses/NewEnglandElectricalTransmissionLines.pdf'
-							},
-							{
-								name			:	'Submarine Cables',
-								metadata		:	metadataURL + 'OceanUses/SubmarineCables'
-							},
-							{
-								name			:	'Submarine Cable Areas',
-								metadata		:	metadataURL + 'OceanUses/CableAndPipelineAreas'
-							},
-							{
-								name			:	'Submarine Pipeline Areas',
-								metadata		:	metadataURL + 'OceanUses/CableAndPipelineAreas'
 							}
 						]
 					},
@@ -1096,6 +1019,106 @@ define([],
 								metadata:	metadataURL + 'CommercialFishing/VMSSurfClamQuahogFishery2006-2010.pdf',
 								service	:	quahog,
 								tile	:	true
+							}
+						]
+					},
+					{
+						title	: 'Energy',
+						index	: 1,
+						serviceURLs: [
+							energy,
+							mmc
+						],
+						layers	: [
+							{
+								name			: 	'Maximum Tidal Currents Speed m/s, January 2009',
+								metadata		:	metadataURL + 'PhysicalOceanography/MaxTidalCurrentsSpeed.pdf',
+								service			:	energy
+							},
+							{
+								name			: 	'Annual Mean Offshore Wind Speed m/s',
+								metadata		:	metadataURL + 'PhysicalOceanography/OffshoreWindEnergyPotential',
+								service			:	energy
+							},
+							{
+								name			: 	'Offshore Tidal Hydrokinetic Projects',
+								metadata		:	metadataURL + 'OceanUses/OffshoreTidalHydrokineticProjects',
+								service			:	energy
+							},
+							{
+								name			: 	'UMaine Wind Turbine Test Project',
+								metadata		:	metadataURL + 'OceanUses/UMaineTestDemonstrationProject.pdf',
+								service			:	energy
+							},
+							{
+								name			: 	'Block Island Proposed Turbine Locations',
+								metadata		:	metadataURL + 'OceanUses/BlockIslandProposedTurbineLocations.pdf',
+								service			:	energy
+							},
+							{
+								name			: 	'Block Island Transmission Cables',
+								metadata		:	metadataURL + 'OceanUses/BlockIslandTransmissionCables.pdf',
+								service			:	energy
+							},
+							{
+								name			: 	'Block Island Renewable Energy Zone',
+								metadata		:	metadataURL + 'OceanUses/RenewableEnergyZone',
+								service			:	energy
+							},
+							{
+								name			:	'Massachusetts Wind Energy Areas - State Designated',
+								metadata		:	metadataURL + 'OceanUses/moris_om_wind_energy_areas_poly',
+								service			:	energy
+							},
+							{
+								name			:	'Ocean Energy Demonstration Sites',
+								metadata		:	metadataURL + 'OceanUses/OceanEnergyDemonstrationSites.pdf',
+								service			:	energy
+							},
+							{
+								name			:	'Active Renewable Energy Leases',
+								metadata		:	'http://www.boem.gov/BOEM-Lease-Areas-Metadata/',
+								service			:	mmc
+							},
+							{
+								name			:	'BOEM Wind Planning Areas',
+								metadata		:	'http://metadata.boem.gov/geospatial/BOEM_Wind_Planning_Areas.xml',
+								service			:	mmc
+							},
+							{
+								name			:	'LNG Sites',
+								metadata		:	metadataURL + 'OceanUses/LNGsites',
+								service			:	energy
+							},
+							{
+								name			:	'Coastal Energy Facilities',
+								metadata		:	metadataURL + 'OceanUses/CoastalEnergyFacilities',
+								service			:	energy
+							},
+							{
+								name			:	'New England Electrical Transmission Substations',
+								metadata		:	metadataURL + 'OceanUses/NewEnglandElectricalTransmissionSubstations.pdf',
+								service			:	energy
+							},
+							{
+								name			:	'New England Electrical Transmission Lines',
+								metadata		:	metadataURL + 'OceanUses/NewEnglandElectricalTransmissionLines.pdf',
+								service			:	energy
+							},
+							{
+								name			:	'Submarine Cables',
+								metadata		:	metadataURL + 'OceanUses/SubmarineCables',
+								service			:	energy
+							},
+							{
+								name			:	'Submarine Cable Areas',
+								metadata		:	metadataURL + 'OceanUses/CableAndPipelineAreas',
+								service			:	energy
+							},
+							{
+								name			:	'Submarine Pipeline Areas',
+								metadata		:	metadataURL + 'OceanUses/CableAndPipelineAreas',
+								service			:	energy
 							}
 						]
 					},
