@@ -22,6 +22,10 @@ define([],
 			aisPassenger 		= 'http://coast.noaa.gov/arcgis/rest/services/MarineCadastre/2011PassengerVesselDensity/MapServer/',
 			aisTugTow 			= 'http://coast.noaa.gov/arcgis/rest/services/MarineCadastre/2011TugTowingVesselDensity/MapServer/',
 			aisTanker 			= 'http://coast.noaa.gov/arcgis/rest/services/MarineCadastre/2011TankerVesselDensity/MapServer/',
+			watersGeo_303d		= 'http://watersgeo.epa.gov/arcgis/rest/services/OWRAD_NP21/303D_NP21/MapServer/',
+			watersGeo_tmdl		= 'http://watersgeo.epa.gov/arcgis/rest/services/OWRAD_NP21/TMDL_NP21/MapServer/',
+			pcs					= 'http://geodata.epa.gov/arcgis/rest/services/OEI/FRS_INTERESTS/MapServer/',
+			hucs				= 'http://50.19.218.171/arcgis1/rest/services/HydrologicUnitCodes/MapServer/',
 			metadataURL 		= "http://www.northeastoceandata.org/files/metadata/";
 		configOptions = {
 			themes: [
@@ -1008,7 +1012,6 @@ define([],
 								name	: 	'Fall weighted persistence',
 								label	:	'Atlantic Cod Fall, Weighted Persistence',
 								metadata:	metadataURL + 'Biology/MarineFishWeightedPersistenceFall',
-								label	:	'Atlantic Cod Fall, Weighted Persistence',
 								service	:	tncDemersal,
 								parent	:	'Atlantic Cod'
 							},
@@ -1016,7 +1019,6 @@ define([],
 								name	: 	'Spring weighted persistence',
 								label	:	'Atlantic Cod Spring, Weighted Persistence',
 								metadata:	metadataURL + 'Biology/MarineFishWeightedPersistenceSpring',
-								label	:	'Atlantic Cod Spring, Weighted Persistence',
 								service	:	tncDemersal,
 								parent	:	'Atlantic Cod'
 							},
@@ -1094,6 +1096,74 @@ define([],
 								metadata:	metadataURL + 'CommercialFishing/VMSSurfClamQuahogFishery2006-2010.pdf',
 								service	:	quahog,
 								tile	:	true
+							}
+						]
+					},
+					{
+						title: 'Water Quality',
+						index: 9,
+						serviceURLs: [
+							maritimeCommerce,
+							watersGeo_303d,
+							watersGeo_tmdl,
+							pcs,
+							hucs
+						],
+						layers: [
+							{
+								name	: 	'No Discharge Zones',
+								metadata:	metadataURL + 'OceanUses/NoDischargeZones.pdf',
+								service	:	maritimeCommerce
+							},
+							{
+								name	: 	'Impaired Waters Line',
+								label	:	'Impaired Rivers or Coastline',
+								metadata:	'https://edg.epa.gov/metadata/rest/document?id={66F27299-6B1B-42BF-8AA0-1127D7646631}&xsl=metadata_to_html_full',
+								service	:	watersGeo_303d
+							},
+							{
+								name	: 	'Impaired Waters Area',
+								label	:	'Impaired Water Bodies',
+								metadata:	'https://edg.epa.gov/metadata/rest/document?id={66F27299-6B1B-42BF-8AA0-1127D7646631}&xsl=metadata_to_html_full',
+								service	:	watersGeo_303d
+							},
+							{
+								name	: 	'Total Max Daily Loads Line',
+								label	:	'TMDL Rivers or Coastline',
+								metadata:	'https://edg.epa.gov/metadata/rest/document?id={88E53742-CF0D-443C-94AF-8139C09471F9}&xsl=metadata_to_html_full',
+								service	:	watersGeo_tmdl
+							},
+							{
+								name	: 	'Total Max Daily Loads Area',
+								label	:	'TMDL Water Bodies',
+								metadata:	'https://edg.epa.gov/metadata/rest/document?id={88E53742-CF0D-443C-94AF-8139C09471F9}&xsl=metadata_to_html_full',
+								service	:	watersGeo_tmdl
+							},
+							{
+								name	: 	'PCS_NPDES',
+								label	:	'Wastewater Discharges',
+								metadata:	'https://edg.epa.gov/metadata/rest/document?id={6C7CBE2A-6547-4211-A328-6759D11DC117}&xsl=metadata_to_html_full',
+								service	:	pcs
+							},
+							{
+								name	: 	'6-digit HUC',
+								metadata:	metadataURL + 'PhysicalOceanography/WBDHU6.htm',
+								service	:	hucs
+							},
+							{
+								name	: 	'8-digit HUC',
+								metadata:	metadataURL + 'PhysicalOceanography/WBDHU8.htm',
+								service	:	hucs
+							},
+							{
+								name	: 	'10-digit HUC',
+								metadata:	metadataURL + 'PhysicalOceanography/WBDHU10.htm',
+								service	:	hucs
+							},
+							{
+								name	: 	'12-digit HUC',
+								metadata:	metadataURL + 'PhysicalOceanography/WBDHU12.htm',
+								service	:	hucs
 							}
 						]
 					}

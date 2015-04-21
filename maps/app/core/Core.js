@@ -8,7 +8,7 @@ app.fullServices = [],
 app.layerInfos = [],
 app.timeoutID,
 app.unOrderedGroups = [],
-app.groupCount = 9,
+app.groupCount = configOptions.comp_viewer.fullServices.length + configOptions.comp_viewer.groups.length,
 app.lv = false,
 app.firstLV_load = true,
 app.fullServiceUrls = [
