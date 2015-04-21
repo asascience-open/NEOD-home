@@ -932,12 +932,14 @@ define([
                                     if (!checkboxWidget.get('disabled')) {
                                         checkboxWidget.set('disabled', true);
                                         domConstruct.place('<span class="zoom-notice" id="' + widget.item.id + 'zoom">zoom to view</span>', widget.domNode.childNodes[0]);
+                                        dojo.setStyle(query('.slider-container[data-service_layer="' + widget.item.id.substr(0, widget.item.id.length-1) + '"]')[0], 'display', 'none');
                                     }
                                 }
                                 else
                                     if (checkboxWidget.get('disabled')) {
                                         checkboxWidget.set('disabled', false);
                                         domConstruct.destroy(widget.item.id + 'zoom');
+                                        dojo.setStyle(query('.slider-container[data-service_layer="' + widget.item.id.substr(0, widget.item.id.length-1) + '"]')[0], 'display', 'inline-block');
                                     }
                             }
                         }
