@@ -14,6 +14,8 @@ define([],
 			scallop				= serviceURL + 'OceanUses/VMSScallop2006To2011/MapServer/',
 			quahog				= serviceURL + 'OceanUses/VMSSurfClamQuahog2006To2011/MapServer/',
 			energy				= serviceURL + 'SiteDev/Energy/MapServer/',
+			recAndCulture		= serviceURL + 'SiteDev/RecreationAndCulture/MapServer/',
+			securedLands		= serviceURL + 'SecuredLands2012/MapServer/',
 			noaaEFH				= 'http://egisws02.nos.noaa.gov/ArcGIS/rest/services/NMFS/EFHAreasProtectedFromFishing/MapServer/',
 			noaaHAPC			= 'http://egisws02.nos.noaa.gov/ArcGIS/rest/services/NMFS/HAPC/MapServer/',
 			tncDemersal			= 'http://50.18.215.52/arcgis/rest/services/NAMERA/EUSD_NAM_DEMERSAL/MapServer/',
@@ -28,6 +30,8 @@ define([],
 			aisTanker 			= marineCadastre + '2011TankerVesselDensity/MapServer/',
 			watersGeo_303d		= 'http://watersgeo.epa.gov/arcgis/rest/services/OWRAD_NP21/303D_NP21/MapServer/',
 			watersGeo_tmdl		= 'http://watersgeo.epa.gov/arcgis/rest/services/OWRAD_NP21/TMDL_NP21/MapServer/',
+			epaBeaches			= 'http://watersgeo.epa.gov/arcgis/rest/services/OWPROGRAM/BEACON_NAD83/MapServer/',
+			nps					= 'http://mapservices.nps.gov/arcgis/rest/services/LandResourcesDivisionTractAndBoundaryService/MapServer/',
 			pcs					= 'http://geodata.epa.gov/arcgis/rest/services/OEI/FRS_INTERESTS/MapServer/',
 			hucs				= 'http://50.19.218.171/arcgis1/rest/services/HydrologicUnitCodes/MapServer/',
 			tncChlorophyll		= 'http://50.18.215.52/arcgis/rest/services/NAMERA/EUSD_NAM_ocean/MapServer/',
@@ -587,76 +591,6 @@ define([],
 								metadata		:	metadataURL + 'Biology/SeaTurtleSPUEFall.pdf'
 							},
 						]
-					},
-					{
-						title	: 'Recreation & Culture',
-						index	: 2,
-						layers	: [
-							{
-								name			: 'Wrecks and Obstructions',
-								metadata		: metadataURL + 'OceanUses/WrecksandObstructions'
-							},
-							{
-								name			: 'Water Trails',
-								metadata		: metadataURL + 'OceanUses/WaterTrails.pdf'
-							},
-							{
-								name			: 'Boat Launches',
-								metadata		: metadataURL + 'OceanUses/BoatLaunches.pdf'
-							},
-							{
-								name			: 'National Marine Sanctuary',
-								metadata		: metadataURL + 'Administrative/NationalMarineSanctuary'
-							},
-							{
-								name			: 'Recreational Boater Activities',
-								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf'
-							},
-							{
-								name			: 'Recreational Diving',
-								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf'
-							},
-							{
-								name			: 'Recreational Fishing',
-								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf'
-							},
-							{
-								name			: 'Recreational Relaxing',
-								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf'
-							},
-							{
-								name			: 'Recreational Swimming',
-								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf'
-							},
-							{
-								name			: 'Recreational Wildlife Viewing',
-								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf'
-							},
-							{
-								name			: 'Recreational Target Fish Species',
-								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf'
-							},
-							{
-								name			: 'Recreational Target Wildlife Viewing',
-								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf'
-							},
-							{
-								name			: 'Recreational Boater Routes',
-								metadata		: metadataURL + 'OceanUses/RecreationalBoaterRoutes.pdf'
-							},
-							{
-								name			: 'Recreational Boating Density',
-								metadata		: metadataURL + 'OceanUses/RecreationalBoaterRouteDensity.pdf'
-							},
-							{
-								name			: 'National Register of Historic Places: Sites and Landmarks',
-								metadata		: metadataURL + 'OceanUses/NationalRegisterHistoricPlacesPoints.pdf'
-							},
-							{
-								name			: 'National Register of Historic Places: Districts and Properties',
-								metadata		: metadataURL + 'OceanUses/NationalRegisterHistoricPlacesPolygons.pdf'
-							}
-						]
 					}
 				],
 				groups: [
@@ -1211,6 +1145,121 @@ define([],
 								name			:	'Submarine Pipeline Areas',
 								metadata		:	metadataURL + 'OceanUses/CableAndPipelineAreas',
 								service			:	energy
+							}
+						]
+					},
+					{
+						title	: 'Recreation & Culture',
+						index	: 2,
+						serviceURLs: [
+							recAndCulture,
+							epaBeaches,
+							nps,
+							mmc,
+							securedLands
+						],
+						layers	: [
+							{
+								name			: 'Wrecks and Obstructions',
+								metadata		: metadataURL + 'OceanUses/WrecksandObstructions',
+								service			: recAndCulture
+							},
+							{
+								name			: 'Water Trails',
+								metadata		: metadataURL + 'OceanUses/WaterTrails.pdf',
+								service			: recAndCulture
+							},
+							{
+								name			: 'Boat Launches',
+								metadata		: metadataURL + 'OceanUses/BoatLaunches.pdf',
+								service			: recAndCulture
+							},
+							{
+								name			: 'National Marine Sanctuary',
+								metadata		: metadataURL + 'Administrative/NationalMarineSanctuary',
+								service			: recAndCulture
+							},
+							{
+								name			: 'Beaches_Line_View',
+								label			: 'Beaches',
+								metadata		: 'https://edg.epa.gov/metadata/rest/document?id={4A2F897E-E1E4-453E-9A29-674A520E4B92}&xsl=metadata_to_html_full',
+								service			: epaBeaches
+							},
+							{
+								name			: 'National Park Service Boundaries',
+								label			: 'National Parks',
+								metadata		: 'https://irma.nps.gov/App/Reference/Profile/2218503',
+								service			: nps
+							},
+							{
+								name			: 'Coastal Tribal Lands',
+								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/CoastalTribalLands.htm',
+								service			: mmc
+							},
+							{
+								name			: 'Recreational Boater Activities',
+								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
+								service			: recAndCulture
+							},
+							{
+								name			: 'Recreational Diving',
+								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
+								service			: recAndCulture
+							},
+							{
+								name			: 'Recreational Fishing',
+								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
+								service			: recAndCulture
+							},
+							{
+								name			: 'Recreational Relaxing',
+								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
+								service			: recAndCulture
+							},
+							{
+								name			: 'Recreational Swimming',
+								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
+								service			: recAndCulture
+							},
+							{
+								name			: 'Recreational Wildlife Viewing',
+								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
+								service			: recAndCulture
+							},
+							{
+								name			: 'Recreational Target Fish Species',
+								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
+								service			: recAndCulture
+							},
+							{
+								name			: 'Recreational Target Wildlife Viewing',
+								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
+								service			: recAndCulture
+							},
+							{
+								name			: 'Recreational Boater Routes',
+								metadata		: metadataURL + 'OceanUses/RecreationalBoaterRoutes.pdf',
+								service			: recAndCulture
+							},
+							{
+								name			: 'Recreational Boating Density',
+								metadata		: metadataURL + 'OceanUses/RecreationalBoaterRouteDensity.pdf',
+								service			: recAndCulture
+							},
+							{
+								name			: 'National Register of Historic Places: Sites and Landmarks',
+								metadata		: metadataURL + 'OceanUses/NationalRegisterHistoricPlacesPoints.pdf',
+								service			: recAndCulture
+							},
+							{
+								name			: 'National Register of Historic Places: Districts and Properties',
+								metadata		: metadataURL + 'OceanUses/NationalRegisterHistoricPlacesPolygons.pdf',
+								service			: recAndCulture
+							},
+							{
+								name			: 'Secured Lands',
+								metadata		: metadataURL + 'SecuredLands/SecuredLands2012.pdf',
+								service			: securedLands
 							}
 						]
 					},
