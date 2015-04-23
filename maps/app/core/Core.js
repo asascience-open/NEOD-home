@@ -921,7 +921,7 @@ define([
                     else
                         layerUrl = layerUrl.substr(0, layerUrl.length-1);
                     var row = dojo.query('div[widgetid="' + layerUrl + '"]').parent().parent()[0];
-                    domConstruct.place(row, dom.byId('search-results-header'), 'after');
+                    domConstruct.place(row, dom.byId('search-results-container'));
                 });
                 showSearchResults();
             });
