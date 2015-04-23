@@ -653,7 +653,8 @@ define([
                                 external    : layer.external ? layer.external : null,
                                 noSource    : layer.noSource ? layer.noSource : null,
                                 index       : service.index,
-                                keyword     : (subGroupName === '') ? null : subGroupName
+                                keyword     : layer.label ? layer.label : layer.name + ' '
+                                                + subGroupName !== '' ? subGroupName : service.documentInfo.Title
                             });
                         else {
                             app.unOrderedGroups.push({
@@ -695,7 +696,8 @@ define([
                             metadata    : layer.metadata,
                             realName    : layer.label ? layer.name : null,
                             external    : layer.external ? layer.external : null,
-                            index       : layer.index
+                            index       : layer.index,
+                            keyword     : layer.label ? layer.label : layer.name + ' ' + group.title
                         });
                     });
                 }
@@ -869,7 +871,7 @@ define([
                 resizeSidePanel();
             });
 
-            app.lastQueryResults = {};
+            app.lastQueryResults = [];
 
             app.filteringSelect = new FilteringSelect({
                 id: 'layer-select',
@@ -877,10 +879,9 @@ define([
                 required: false,
                 autoComplete: false,
                 searchDelay: 0,
+                searchAttr : 'keyword',
+                labelAttr : 'name',
                 queryExpr : '*${0}*',
-                query: {
-                    type : "layer"
-                },
                 style: {
                     width   : '232px',
                     height  : '25px'
@@ -889,16 +890,25 @@ define([
                 invalidMessage : 'no matching layers'
                 ,
                 onSearch    : function (r, q, o) {
-                    app.lastQueryResults = r;
+                    app.lastQueryResults = [];
+                    if (r.length > 0) {
+                        r.forEach(function (v) {
+                            if (v.type === 'layer')
+                                app.lastQueryResults.push(v);
+                        });
+                    }
+                    //app.lastQueryResults = r;
                 },
                 onKeyUp     : function (e) {
                     if (e.keyCode === 13)
                         on.emit(dom.byId('layer-search-button'), 'click', {bubbles: true, cancelable: true});
                 },
                 onChange    : function (newValue) {
-                    var checkboxId = newValue.substr(0, newValue.length-1);
-                    domConstruct.place(dojo.query('input[name="' + checkboxId + '"]').parent().parent().parent()[0], dom.byId('search-results-header'), 'after');
-                    showSearchResults();
+                    if (newValue !== '') {
+                        var checkboxId = newValue.substr(0, newValue.length-1);
+                        domConstruct.place(dojo.query('input[name="' + checkboxId + '"]').parent().parent().parent()[0], dom.byId('search-results-header'), 'after');
+                        showSearchResults();
+                    }
                 }
             }, 'layer-select').startup();
 
