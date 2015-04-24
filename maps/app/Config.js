@@ -616,13 +616,13 @@ define([],
 							{
 								name		: 	'National Marine Sanctuary',
 								metadata	: 	metadataURL + 'Administrative/NationalMarineSanctuary',
-								serviceURL	: recAndCulture
+								serviceURL	: 	recAndCulture
 							},
 							{
 								name		:	'Beaches_Line_View',
-								label		:	 'Beaches',
-								metadata	: 'https://edg.epa.gov/metadata/rest/document?id={4A2F897E-E1E4-453E-9A29-674A520E4B92}&xsl=metadata_to_html_full',
-								serviceURL	: epaBeaches
+								label		:	'Beaches',
+								metadata	: 	'https://edg.epa.gov/metadata/rest/document?id={4A2F897E-E1E4-453E-9A29-674A520E4B92}&xsl=metadata_to_html_full',
+								serviceURL	: 	epaBeaches
 							},
 							{
 								name		:	'National Park Service Boundaries',

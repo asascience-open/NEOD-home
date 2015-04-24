@@ -630,7 +630,6 @@ define([
                     hasChildren : true
                 });
                 if (group.layers.length > 0) {
-                    console.log('creating datastore');
                     array.forEach(group.layers, function (layer, j) {
                         app.myStore.data.push({
                             name        : layer.label ? layer.label : layer.name,
@@ -685,7 +684,6 @@ define([
                                     }
                                 });
                             }
-                            console.log('creating checkboxes');
                             array.forEach(query('.no-children', node.domNode), function (element, i) {
                                 var checkboxId = app.tree.model.store.data[dataIndex].id.substr(0, app.tree.model.store.data[dataIndex].id.length-1),
                                     tile = app.tree.model.store.data[dataIndex].tile,
