@@ -359,7 +359,8 @@ define([],
 							{
 								name		: 	'Wrecks and Obstructions',
 								metadata	:	metadataURL + 'OceanUses/WrecksandObstructions',
-								serviceURL	:	maritimeCommerce
+								serviceURL	:	maritimeCommerce,
+								subGroup	:	'Navigation'
 							},
 							{
 								name		: 	'Aids to Navigation',
@@ -390,7 +391,8 @@ define([],
 							{
 								name		: 	'Danger Zones and Restricted Areas',
 								metadata	:	'http://coast.noaa.gov/htdata/CMSP/Metadata/DangerZonesAndRestrictedAreas.htm',
-								serviceURL	:	mmc
+								serviceURL	:	mmc,
+								subGroup	:	'Potential Hazards'
 							},
 							{
 								name		:	'Safety, Security, and Regulated Zones',
@@ -436,7 +438,8 @@ define([],
 								name		:	'2011 Vessel Density',
 								metadata	:	'',
 								serviceURL	:	aisAll,
-								tile		:	true
+								tile		:	true,
+								subGroup	:	'Commercial Traffic'
 							},
 							{
 								name		:	'2011 Cargo Vessel Density',
@@ -499,7 +502,8 @@ define([],
 							{
 								name		: 	'Maximum Tidal Currents Speed m/s, January 2009',
 								metadata	:	metadataURL + 'PhysicalOceanography/MaxTidalCurrentsSpeed.pdf',
-								serviceURL	:	energy
+								serviceURL	:	energy,
+								subGroup	:	'Resources'
 							},
 							{
 								name		: 	'Annual Mean Offshore Wind Speed m/s',
@@ -509,7 +513,8 @@ define([],
 							{
 								name		: 	'Offshore Tidal Hydrokinetic Projects',
 								metadata	:	metadataURL + 'OceanUses/OffshoreTidalHydrokineticProjects',
-								serviceURL	:	energy
+								serviceURL	:	energy,
+								subGroup	:	'Planning Areas'
 							},
 							{
 								name		: 	'UMaine Wind Turbine Test Project',
@@ -554,7 +559,8 @@ define([],
 							{
 								name		:	'LNG Sites',
 								metadata	:	metadataURL + 'OceanUses/LNGsites',
-								serviceURL	:	energy
+								serviceURL	:	energy,
+								subGroup	:	'Infrastructure'
 							},
 							{
 								name		:	'Coastal Energy Facilities',
@@ -601,7 +607,8 @@ define([],
 							{
 								name		: 	'Wrecks and Obstructions',
 								metadata	:	metadataURL + 'OceanUses/WrecksandObstructions',
-								serviceURL	: 	recAndCulture
+								serviceURL	: 	recAndCulture,
+								subGroup	:	'Recreation'
 							},
 							{
 								name		: 	'Water Trails',
@@ -686,19 +693,20 @@ define([],
 								serviceURL	: 	recAndCulture
 							},
 							{
+								name		: 	'Secured Lands',
+								metadata	: 	metadataURL + 'SecuredLands/SecuredLands2012.pdf',
+								serviceURL	: 	securedLands
+							},
+							{
 								name		: 	'National Register of Historic Places: Sites and Landmarks',
 								metadata	: 	metadataURL + 'OceanUses/NationalRegisterHistoricPlacesPoints.pdf',
-								serviceURL	: 	recAndCulture
+								serviceURL	: 	recAndCulture,
+								subGroup	:	'Culture'
 							},
 							{
 								name		: 	'National Register of Historic Places: Districts and Properties',
 								metadata	: 	metadataURL + 'OceanUses/NationalRegisterHistoricPlacesPolygons.pdf',
 								serviceURL	: 	recAndCulture
-							},
-							{
-								name		: 	'Secured Lands',
-								metadata	: 	metadataURL + 'SecuredLands/SecuredLands2012.pdf',
-								serviceURL	: 	securedLands
 							}
 						]
 					},
@@ -890,7 +898,8 @@ define([],
 							{
 								name		: 	'Marine Mammals Habitat',
 								metadata	:	metadataURL + 'Biology/MarineMammals',
-								serviceURL	:	marineMammals
+								serviceURL	:	marineMammals,
+								subGroup	:	'Marine Mammals'
 							},
 							{
 								name		: 	'Fin Whale Winter, SPUE',
@@ -1096,73 +1105,62 @@ define([],
 								name		: 	'Leatherback Sea Turtle Winter, SPUE',
 								metadata	:	metadataURL + 'Biology/SeaTurtleSPUEwinter.pdf',
 								serviceURL	:	marineMammals,
-								parent		:	'Sea Turtles'
+								subGroup	:	'Sea Turtles'
 							},
 							{
 								name		: 	'Leatherback Sea Turtle Spring, SPUE',
 								metadata	:	metadataURL + 'Biology/SeaTurtleSPUESpring.pdf',
-								serviceURL	:	marineMammals,
-								parent		:	'Sea Turtles'
+								serviceURL	:	marineMammals
 							},
 							{
 								name		: 	'Leatherback Sea Turtle Summer, SPUE',
 								metadata	:	metadataURL + 'Biology/SeaTurtleSPUESummer.pdf',
-								serviceURL	:	marineMammals,
-								parent		:	'Sea Turtles'
+								serviceURL	:	marineMammals
 							},
 							{
 								name		: 	'Leatherback Sea Turtle Fall, SPUE',
 								metadata	:	metadataURL + 'Biology/SeaTurtleSPUEFall.pdf',
-								serviceURL	:	marineMammals,
-								parent		:	'Sea Turtles'
+								serviceURL	:	marineMammals
 							},
 							{
 								name		: 	'Loggerhead Sea Turtle Winter, SPUE',
 								metadata	:	metadataURL + 'Biology/SeaTurtleSPUEwinter.pdf',
-								serviceURL	:	marineMammals,
-								parent		:	'Sea Turtles'
+								serviceURL	:	marineMammals
 							},
 							{
 								name		: 	'Loggerhead Sea Turtle Spring, SPUE',
 								metadata	:	metadataURL + 'Biology/SeaTurtleSPUESpring.pdf',
-								serviceURL	:	marineMammals,
-								parent		:	'Sea Turtles'
+								serviceURL	:	marineMammals
 							},
 							{
 								name		: 	'Loggerhead Sea Turtle Summer, SPUE',
 								metadata	:	metadataURL + 'Biology/SeaTurtleSPUESummer.pdf',
-								serviceURL	:	marineMammals,
-								parent		:	'Sea Turtles'
+								serviceURL	:	marineMammals
 							},
 							{
 								name		: 	'Loggerhead Sea Turtle Fall, SPUE',
 								metadata	:	metadataURL + 'Biology/SeaTurtleSPUEFall.pdf',
-								serviceURL	:	marineMammals,
-								parent		:	'Sea Turtles'
+								serviceURL	:	marineMammals
 							},
 							{
 								name		: 	'Green Sea Turtle Winter, SPUE',
 								metadata	:	metadataURL + 'Biology/SeaTurtleSPUEwinter.pdf',
-								serviceURL	:	marineMammals,
-								parent		:	'Sea Turtles'
+								serviceURL	:	marineMammals
 							},
 							{
 								name		: 	'Green Sea Turtle Spring, SPUE',
 								metadata	:	metadataURL + 'Biology/SeaTurtleSPUESpring.pdf',
-								serviceURL	:	marineMammals,
-								parent		:	'Sea Turtles'
+								serviceURL	:	marineMammals
 							},
 							{
 								name		: 	'Green Sea Turtle Summer, SPUE',
 								metadata	:	metadataURL + 'Biology/SeaTurtleSPUESummer.pdf',
-								serviceURL	:	marineMammals,
-								parent		:	'Sea Turtles'
+								serviceURL	:	marineMammals
 							},
 							{
 								name		: 	'Green Sea Turtle Fall, SPUE',
 								metadata	:	metadataURL + 'Biology/SeaTurtleSPUEFall.pdf',
-								serviceURL	:	marineMammals,
-								parent		:	'Sea Turtles'
+								serviceURL	:	marineMammals
 							}
 						]
 					}
@@ -1179,7 +1177,8 @@ define([],
 							{
 								name		: 	'Artificial Reefs',
 								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/ArtificialReefs.htm',
-								serviceURL	: 	noaaPhysOcean
+								serviceURL	: 	noaaPhysOcean,
+								subGroup	:	'Habitat'
 							},
 							{
 								name		: 	'Critical Habitat Designations',
@@ -1192,9 +1191,20 @@ define([],
 								serviceURL	:	otherMarineLife
 							},
 							{
+								name		: 	'Coastal Wetlands',
+								metadata	: 	metadataURL + 'Biology/CoastalWetlands.pdf',
+								serviceURL	: 	otherMarineLife
+							},
+							{
+								name		: 	'Seafloor Habitats',
+								metadata	: 	metadataURL + 'Biology/TNCBenthicHabitatModel',
+								serviceURL	: 	otherMarineLife
+							},
+							{
 								name		: 	'Alcyonacea',
 								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/Alcyonacea.htm',
-								serviceURL	: 	noaaCoral
+								serviceURL	: 	noaaCoral,
+								subGroup	:	'Corals'
 							},
 							{
 								name		: 	'Gorgonian Alcyonacea',
@@ -1232,14 +1242,10 @@ define([],
 								serviceURL	: 	noaaCoral
 							},
 							{
-								name		: 	'Coastal Wetlands',
-								metadata	: 	metadataURL + 'Biology/CoastalWetlands.pdf',
-								serviceURL	: 	otherMarineLife
-							},
-							{
 								name		: 	'Primary Production',
 								metadata	: 	metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
-								serviceURL	: 	otherMarineLife
+								serviceURL	: 	otherMarineLife,
+								subGroup	:	'Plankton'
 							},
 							{
 								name		: 	'Calanus Finmarchicus, Fall',
@@ -1288,11 +1294,6 @@ define([],
 								metadata	: 	metadataURL + 'Biology/ChlorophyllAfall.pdf',
 								serviceURL	: 	tncChlorophyll,
 								parent		:	'Chloropyll a'
-							},
-							{
-								name		: 	'Seafloor Habitats',
-								metadata	: 	metadataURL + 'Biology/TNCBenthicHabitatModel',
-								serviceURL	: 	otherMarineLife
 							}
 						]
 					},

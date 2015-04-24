@@ -768,6 +768,12 @@ img[src="img/ais-legend.png"] {
   white-space: normal !important;
 }
 
+.dijitTreeRow .subGroup {
+  font-weight   : bold;
+  margin-left   : -12px;
+  margin-bottom : 6px;
+}
+
 .dijitInline.dijitIcon.dijitTreeIcon.dijitIconFile {
   float       : right !important;
   cursor      : pointer !important;

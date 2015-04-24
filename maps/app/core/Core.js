@@ -630,7 +630,10 @@ define([
                     hasChildren : true
                 });
                 if (group.layers.length > 0) {
+                    var subGroup = group.title;
                     array.forEach(group.layers, function (layer, j) {
+                        if (layer.subGroup)
+                            subGroup = layer.subGroup;
                         app.myStore.data.push({
                             name        : layer.label ? layer.label : layer.name,
                             type        : 'layer',
@@ -643,7 +646,8 @@ define([
                             metadata    : layer.metadata,
                             realName    : layer.label ? layer.name : null,
                             external    : layer.external ? layer.external : null,
-                            keyword     : layer.label ? layer.label : layer.name + ' ' + group.title
+                            keyword     : layer.label ? layer.label : layer.name + ' ' + subGroup,
+                            subGroup    : layer.subGroup ? layer.subGroup : null
                         });
                     });
                 }
@@ -687,6 +691,7 @@ define([
                             array.forEach(query('.no-children', node.domNode), function (element, i) {
                                 var checkboxId = app.tree.model.store.data[dataIndex].id.substr(0, app.tree.model.store.data[dataIndex].id.length-1),
                                     tile = app.tree.model.store.data[dataIndex].tile,
+                                    subGroup = app.tree.model.store.data[dataIndex].subGroup,
                                     duplicate = false;
                                     dataIndex++;
 
@@ -694,6 +699,7 @@ define([
                                     checkboxId += 'duplicate';
                                     duplicate = true;
                                 }
+
                                 domConstruct.place('<input type="checkbox" id="' + checkboxId + '" />', element, 'first');
                                 var checkBox = new CheckBox({
                                     name: checkboxId,
@@ -712,6 +718,9 @@ define([
                                     }
                                 }, checkboxId).startup();
                                 domConstruct.place('<span role="presentation" class="dijitInline dijitIcon dijitTreeIcon dijitIconFile" data-dojo-attach-point="iconNode" title="Layer Information" data-service_layer="' + checkboxId + '"></span><div class="slider-container" data-service_layer="' + checkboxId + '"></div>', element, 'last');
+                                if (subGroup) {
+                                    domConstruct.place('<div class="subGroup">' + subGroup + '</div>', element, 'first');
+                                }
                             });
                         }
                         checkMinScale();
