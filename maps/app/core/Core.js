@@ -1028,20 +1028,38 @@ define([
                                             layer.minScale      = layerObj.minScale;
                                             app.layersLoaded++;
                                             if (app.layersLoaded === app.layersUnloaded) {
-                                                console.log('layers loaded');
                                                 createMap();
                                             }
                                         }
                                     });
                                 });
                                 if (app.mapservers === app.mapserverResponse) {
-                                    console.log('all mapservers responded');
+                                    var invalidLayers = [];
                                     configOptions.comp_viewer.groups.forEach(function(g){
                                         g.layers.forEach(function(l){
-                                            if (l.id === undefined)
-                                                console.log(l.name + ' ' + l.serviceURL);
+                                            if (l.id === undefined) {
+                                                invalidLayers.push(l);
+                                                console.log('***LAYER ERROR***');
+                                                console.log(l);
+                                            }
                                         });
                                     });
+                                    if (invalidLayers.length > 0) {
+                                        configOptions.comp_viewer.groups.forEach(function (g) {
+                                            var validLayers = [];
+                                            g.layers.forEach(function (groupLayer) {
+                                                var valid = true;
+                                                invalidLayers.forEach(function (invalidLayer) {
+                                                    if (groupLayer === invalidLayer)
+                                                        valid = false;
+                                                });
+                                            if (valid)
+                                                validLayers.push(groupLayer);
+                                            });
+                                            g.layers = validLayers;
+                                        });
+                                        createMap();
+                                    }
                                 }
                             }, function(error) {
                                 console.log("Error: ", error.message);
