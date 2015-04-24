@@ -860,6 +860,7 @@ define([
                     else
                         layerUrl = layerUrl.substr(0, layerUrl.length-1);
                     var row = dojo.query('div[widgetid="' + layerUrl + '"]').parent().parent()[0];
+                    domConstruct.place('<div id="' + domAttr.get(row, 'id') + '-placeholder"></div>', row, 'after');
                     domConstruct.place(row, dom.byId('search-results-container'));
                 });
                 showSearchResults();
@@ -1628,16 +1629,8 @@ define([
         returnSearchRows = function () {
             query('.dijitTreeNode', dom.byId('layer-info')).forEach(function (v, i) {
                 var treeNodeID = domAttr.get(v, 'id');
-                treeNodeID = parseInt(treeNodeID.substr(treeNodeID.lastIndexOf('_') + 1), 10);
-                var rowBefore = query('#dijit__TreeNode_' + (treeNodeID - 1), dom.byId('tree'))[0];
-                if (rowBefore) {
-                    if (!domClass.contains(rowBefore, 'dijitTreeIsLast'))
-                        domConstruct.place(v, rowBefore, 'after');
-                    else
-                        domConstruct.place(v, query('#dijit__TreeNode_' + (treeNodeID + 1), dom.byId('tree'))[0], 'before');
-                }
-                else
-                    domConstruct.place(v, query('#dijit__TreeNode_' + (treeNodeID + 1), dom.byId('tree'))[0], 'before');
+                domConstruct.place(v, dom.byId(treeNodeID + '-placeholder'), 'before');
+                domConstruct.destroy(dom.byId(treeNodeID + '-placeholder'));
             });
         }
 

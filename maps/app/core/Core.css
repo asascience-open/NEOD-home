@@ -1311,6 +1311,10 @@ span#legendAbout p {
   background-color: #fff;
 }
 
+  #search-results-container .subGroup {
+    display: none;
+  }
+
 .dijitTooltip {
   display: none !important;
 }
