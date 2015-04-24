@@ -4,17 +4,10 @@ app.timeSlider = [],
 app.lastSubTheme = 0,
 app.sidePanelVisible = true,
 app.legendVisible = true,
-app.fullServices = [],
 app.layerInfos = [],
 app.timeoutID,
-app.unOrderedGroups = [],
-app.groupCount = configOptions.comp_viewer.fullServices.length + configOptions.comp_viewer.groups.length,
 app.lv = false,
-app.firstLV_load = true,
-app.fullServiceUrls = [
-    'http://50.19.218.171/arcgis1/rest/services/Administrative/MapServer/',
-    'http://50.19.218.171/arcgis1/rest/services/SiteDev/MarineMammalsAndSeaTurtles/MapServer/'
-];
+app.firstLV_load = true;
 define([
     'esri/map',
     'esri/request',
@@ -422,9 +415,7 @@ define([
 
         function createMap()
         {
-            getFullServices();
-
-            //query(".collapse").collapse();
+            createTree();
 
             app.dataViewer = new Map('data-viewer',{
                     basemap                 : 'oceans',
@@ -583,44 +574,44 @@ define([
             });
         }
 
-        function getFullServices() {
-            var requestCount = 0;
-            array.forEach(app.fullServiceUrls, function (serviceUrl, mapIndex) {
-                var request = EsriRequest({
-                    url: serviceUrl,
-                    content: {
-                        f: "json"
-                    },
-                    handleAs: "json",
-                    callbackParamName: "callback"
-                });
+        // function getFullServices() {
+        //     var requestCount = 0;
+        //     array.forEach(app.fullServiceUrls, function (serviceUrl, mapIndex) {
+        //         var request = EsriRequest({
+        //             url: serviceUrl,
+        //             content: {
+        //                 f: "json"
+        //             },
+        //             handleAs: "json",
+        //             callbackParamName: "callback"
+        //         });
 
-                request.then(
-                    function(result) {
-                        result.url = app.fullServiceUrls[mapIndex];
-                        result.documentInfo.Title = configOptions.comp_viewer.fullServices[mapIndex].title;
-                        result.index = configOptions.comp_viewer.fullServices[mapIndex].index;
-                        array.forEach(configOptions.comp_viewer.fullServices[mapIndex].layers, function (configLayer) {
-                            array.forEach(result.layers, function (layer) {
-                                if (layer.name === configLayer.name) {
-                                    layer.metadata = configLayer.metadata;
-                                    if (configLayer.external)
-                                        layer.external = configLayer.external;
-                                    if (configLayer.noSource)
-                                        layer.noSource = configLayer.noSource;
-                                    layer.index = configOptions.comp_viewer.fullServices[mapIndex].index;
-                                }
-                            });
-                        });
-                        app.fullServices.push(result);
-                        requestCount++;
-                        if (requestCount == app.fullServiceUrls.length)
-                            createTree();
-                    }, function(error) {
-                        console.log("Error: ", error.message);
-                });
-            });
-        }
+        //         request.then(
+        //             function(result) {
+        //                 result.url = app.fullServiceUrls[mapIndex];
+        //                 result.documentInfo.Title = configOptions.comp_viewer.fullServices[mapIndex].title;
+        //                 result.index = configOptions.comp_viewer.fullServices[mapIndex].index;
+        //                 array.forEach(configOptions.comp_viewer.fullServices[mapIndex].layers, function (configLayer) {
+        //                     array.forEach(result.layers, function (layer) {
+        //                         if (layer.name === configLayer.name) {
+        //                             layer.metadata = configLayer.metadata;
+        //                             if (configLayer.external)
+        //                                 layer.external = configLayer.external;
+        //                             if (configLayer.noSource)
+        //                                 layer.noSource = configLayer.noSource;
+        //                             layer.index = configOptions.comp_viewer.fullServices[mapIndex].index;
+        //                         }
+        //                     });
+        //                 });
+        //                 app.fullServices.push(result);
+        //                 requestCount++;
+        //                 if (requestCount == app.fullServiceUrls.length)
+        //                     createTree();
+        //             }, function(error) {
+        //                 console.log("Error: ", error.message);
+        //         });
+        //     });
+        // }
 
         function createTree() {
             app.myStore = new Memory({getChildren: function (object) {
@@ -628,87 +619,36 @@ define([
                 }
             });
             app.myStore.data.push({id: 'server', name: 'MapServers', root: true});
-            array.forEach(app.fullServices, function (service, i) {
-                app.unOrderedGroups.push({
-                    id          : service.url,
-                    name        : service.documentInfo.Title,
-                    type        : 'mapserver',
-                    parent      : 'server',
-                    hasChildren : true,
-                    index       : service.index
-                });
-                if (service.layers.length > 0) {
-                    var subGroupName = '';
-                    array.forEach(service.layers, function (layer, j) {
-                        if (layer.subLayerIds == null)
-                            app.unOrderedGroups.push({
-                                name        : layer.label ? layer.label : layer.name,
-                                type        : 'layer',
-                                parent      : layer.parentLayerId == -1 ? service.url : service.url + '_subgroup-' + layer.parentLayerId,
-                                hasChildren : false,
-                                service     : service.documentInfo.Title,
-                                minScale    : layer.minScale == 0 ? null : layer.minScale,
-                                id          : service.url + layer.id + '-',
-                                metadata    : layer.metadata,
-                                external    : layer.external ? layer.external : null,
-                                noSource    : layer.noSource ? layer.noSource : null,
-                                index       : service.index,
-                                keyword     : layer.label ? layer.label : layer.name + ' '
-                                                + subGroupName !== '' ? subGroupName : service.documentInfo.Title
-                            });
-                        else {
-                            app.unOrderedGroups.push({
-                                id          : service.url + '_subgroup-' + layer.id,
-                                name        : layer.label ? layer.label : layer.name,
-                                type        : 'layer-group',
-                                parent      : service.url,
-                                hasChildren : true,
-                                index       : service.index
-                            });
-                            subGroupName = layer.name;
-                        }
-                    });
-                }
-            });
 
             // create layer group from config list
             array.forEach(configOptions.comp_viewer.groups, function (group, i) {
-                app.unOrderedGroups.push({
+                app.myStore.data.push({
                     id          : group.title,
                     name        : group.title,
                     type        : 'mapserver',
                     parent      : 'server',
-                    hasChildren : true,
-                    sameService : false,
-                    index       : group.index
+                    hasChildren : true
                 });
                 if (group.layers.length > 0) {
+                    console.log('creating datastore');
                     array.forEach(group.layers, function (layer, j) {
-                        app.unOrderedGroups.push({
+                        app.myStore.data.push({
                             name        : layer.label ? layer.label : layer.name,
                             type        : 'layer',
                             parent      : group.title,
                             hasChildren : false,
-                            service     : group.title,
+                            group       : group.title,
                             minScale    : (layer.minScale == 0) ? null : layer.minScale,
-                            id          : layer.url + layer.id + '-',
+                            id          : layer.serviceURL + layer.id + '-',
                             tile        : layer.tile,
                             metadata    : layer.metadata,
                             realName    : layer.label ? layer.name : null,
                             external    : layer.external ? layer.external : null,
-                            index       : layer.index,
                             keyword     : layer.label ? layer.label : layer.name + ' ' + group.title
                         });
                     });
                 }
             });
-
-            for (var i = 0; i < app.groupCount; i++) {
-                array.forEach(app.unOrderedGroups, function (item, j) {
-                    if (item.index === i)
-                        app.myStore.data.push(item);
-                });
-            }
 
             // create the model
             app.myModel = new ObjectStoreModel({
@@ -735,30 +675,23 @@ define([
                 onOpen: function (item, node) {
                     if (!item.root) {
                         if (query('input[type="checkbox"]', node.domNode).length == 0) {
-                            var subgroup = 0,
-                            service = item.id;
-                            if (service.match(/_/)) {
-                                subgroup = parseInt(service.substr(service.indexOf('-') + 1), 10) + 1;
-                                service = service.substr(0, service.indexOf('_'));
-                            }
-                            if (item.sameService != undefined) {
+                            var groupName = item.id;
+                            if (item.type === 'mapserver') {
                                 var dataIndex = 0;
                                 array.forEach(app.tree.model.store.data, function (v, i) {
-                                    if (v.name == service && v.hasChildren) {
+                                    if (v.name == groupName && v.hasChildren) {
                                         dataIndex = i + 1;
                                         return false;
                                     }
                                 });
                             }
+                            console.log('creating checkboxes');
                             array.forEach(query('.no-children', node.domNode), function (element, i) {
-                                var checkboxId = service + (subgroup + i);
-                                var tile;
-                                if (dataIndex != undefined) {
-                                    checkboxId = app.tree.model.store.data[dataIndex].id.substr(0, app.tree.model.store.data[dataIndex].id.length-1);
-                                    tile = app.tree.model.store.data[dataIndex].tile;
+                                var checkboxId = app.tree.model.store.data[dataIndex].id.substr(0, app.tree.model.store.data[dataIndex].id.length-1),
+                                    tile = app.tree.model.store.data[dataIndex].tile,
+                                    duplicate = false;
                                     dataIndex++;
-                                }
-                                var duplicate = false;
+
                                 if (registry.byId(checkboxId)) {
                                     checkboxId += 'duplicate';
                                     duplicate = true;
@@ -897,7 +830,6 @@ define([
                                 app.lastQueryResults.push(v);
                         });
                     }
-                    //app.lastQueryResults = r;
                 },
                 onKeyUp     : function (e) {
                     if (e.keyCode === 13)
@@ -1071,8 +1003,11 @@ define([
             else {
                 app.layersLoaded = 0,
                 app.layersUnloaded = 0;
+                app.mapservers = 0;
+                app.mapserverResponse = 0;
                 array.forEach(configOptions.comp_viewer.groups, function (group, groupIndex) {
                     app.layersUnloaded += group.layers.length;
+                    app.mapservers += group.serviceURLs.length;
                     array.forEach(group.serviceURLs, function (serviceURL, i) {
                         request = EsriRequest({
                             url: serviceURL + 'layers',
@@ -1085,21 +1020,31 @@ define([
 
                         request.then(
                             function(data) {
+                                app.mapserverResponse++;
                                 array.forEach(data.layers, function (layerObj, i) {
                                     array.forEach(group.layers, function (layer, j) {
-                                        if (layer.service === serviceURL && layer.name === layerObj.name && (layer.parent === undefined || layer.parent === layerObj.parentLayer.name))
+                                        if (layer.serviceURL === serviceURL && layer.name === layerObj.name.trim() && (layer.parent === undefined || layer.parent === layerObj.parentLayer.name))
                                         {
                                             layer.id            = layerObj.id,
                                             layer.description   = layerObj.description,
-                                            layer.minScale      = layerObj.minScale,
-                                            layer.url           = serviceURL,
-                                            layer.index         = group.index;
+                                            layer.minScale      = layerObj.minScale;
                                             app.layersLoaded++;
-                                            if (app.layersLoaded === app.layersUnloaded)
+                                            if (app.layersLoaded === app.layersUnloaded) {
+                                                console.log('layers loaded');
                                                 createMap();
+                                            }
                                         }
                                     });
                                 });
+                                if (app.mapservers === app.mapserverResponse) {
+                                    console.log('all mapservers responded');
+                                    configOptions.comp_viewer.groups.forEach(function(g){
+                                        g.layers.forEach(function(l){
+                                            if (l.id === undefined)
+                                                console.log(l.name + ' ' + l.serviceURL);
+                                        });
+                                    });
+                                }
                             }, function(error) {
                                 console.log("Error: ", error.message);
                         });

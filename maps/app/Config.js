@@ -16,6 +16,8 @@ define([],
 			energy				= serviceURL + 'SiteDev/Energy/MapServer/',
 			recAndCulture		= serviceURL + 'SiteDev/RecreationAndCulture/MapServer/',
 			securedLands		= serviceURL + 'SecuredLands2012/MapServer/',
+			administrative		= serviceURL + 'Administrative/MapServer/',
+			marineMammals		= serviceURL + 'SiteDev/MarineMammalsAndSeaTurtles/MapServer/',
 			noaaEFH				= 'http://egisws02.nos.noaa.gov/ArcGIS/rest/services/NMFS/EFHAreasProtectedFromFishing/MapServer/',
 			noaaHAPC			= 'http://egisws02.nos.noaa.gov/ArcGIS/rest/services/NMFS/HAPC/MapServer/',
 			tncDemersal			= 'http://50.18.215.52/arcgis/rest/services/NAMERA/EUSD_NAM_DEMERSAL/MapServer/',
@@ -62,45 +64,45 @@ define([],
 										layers: [
 											{
 												name: "Maintained Channels",
-												metadata: metadataURL + "OceanUses/MaintainedChannels.pdf",
+												metadata	: metadataURL + "OceanUses/MaintainedChannels.pdf",
 												outField: "location"
 											},
 											{
 												name: "Danger Zone and Restricted Areas",
-												metadata: metadataURL + "OceanUses/DangerZoneAndRestrictedAreas.pdf",
+												metadata	: metadataURL + "OceanUses/DangerZoneAndRestrictedAreas.pdf",
 												outField: "description"
 											},
 											{
 												name: "Safety, Security, and Regulated Zones",
-												metadata: metadataURL + "OceanUses/SafetySecurityRegulatedAreas.pdf",
+												metadata	: metadataURL + "OceanUses/SafetySecurityRegulatedAreas.pdf",
 												outField: "designation"
 											},
 											{
 												name: "WhalesNorth Mandatory Ship Reporting System",
-												metadata: metadataURL + "OceanUses/WhalesNorthMandatoryShipReportingSystem.pdf"
+												metadata	: metadataURL + "OceanUses/WhalesNorthMandatoryShipReportingSystem.pdf"
 											},
 											{
 												name: "Marine Mammal Seasonal Management Areas",
-												metadata: metadataURL + "OceanUses/MarineMammalSeasonalAreas.pdf"
+												metadata	: metadataURL + "OceanUses/MarineMammalSeasonalAreas.pdf"
 											},
 											{
 												name: "Marine Transportation",
-												metadata: metadataURL + "OceanUses/MarineTransportation.pdf",
+												metadata	: metadataURL + "OceanUses/MarineTransportation.pdf",
 												outField: "description"
 											},
 											{
 												name: "Pilot Boarding Areas",
-												metadata: metadataURL + "OceanUses/PilotBoardingAreas.pdf",
+												metadata	: metadataURL + "OceanUses/PilotBoardingAreas.pdf",
 												outField: "boardingArea"
 											},
 											{
 												name: "Anchorages",
-												metadata: metadataURL + "OceanUses/Anchorages.pdf",
+												metadata	: metadataURL + "OceanUses/Anchorages.pdf",
 												outField: "description"
 											},
 											{
 												name: "Aids to Navigation",
-												metadata: metadataURL + "OceanUses/AidsToNavigation.pdf",
+												metadata	: metadataURL + "OceanUses/AidsToNavigation.pdf",
 												outField: "aidName"
 											}
 										]
@@ -129,30 +131,30 @@ define([],
 										layers: [
 											{
 												name: "Unexploded Ordnance Locations",
-												metadata: metadataURL + "OceanUses/UnexplodedOrdnanceLocations.pdf",
+												metadata	: metadataURL + "OceanUses/UnexplodedOrdnanceLocations.pdf",
 												outField: "description"
 											},
 											{
 												name: "Unexploded Ordnance Areas",
-												metadata: metadataURL + "OceanUses/UnexplodedOrdnanceAreas.pdf",
+												metadata	: metadataURL + "OceanUses/UnexplodedOrdnanceAreas.pdf",
 												outField: "description"
 											},
 											{
 												name: "Ocean Disposal Sites",
-												metadata: metadataURL + "OceanUses/OceanDisposalSites.pdf",
+												metadata	: metadataURL + "OceanUses/OceanDisposalSites.pdf",
 												outField: "description"
 											},
 											{
 												name: "Submarine Cables",
-												metadata: metadataURL + "OceanUses/SubmarineCables"
+												metadata	: metadataURL + "OceanUses/SubmarineCables"
 											},
 											{
 												name: "Submarine Cable Areas",
-												metadata: metadataURL + "OceanUses/CableAreas"
+												metadata	: metadataURL + "OceanUses/CableAreas"
 											},
 											{
 												name: "Submarine Pipeline Areas",
-												metadata: metadataURL + "OceanUses/PipelineAreas"
+												metadata	: metadataURL + "OceanUses/PipelineAreas"
 											}
 										]
 									}
@@ -176,61 +178,61 @@ define([],
 										layers : [
 											{
 												name: "2011 All AIS Vessel Density",
-												metadata: metadataURL + "AIS/NorthAtlanticTotalAISVesselDensity2011.pdf",
+												metadata	: metadataURL + "AIS/NorthAtlanticTotalAISVesselDensity2011.pdf",
 												checked: true,
 												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,34;admin=9999;HereIsMyMap#"
 											},
 											{
 												name: "2011 Cargo AIS Vessel Density",
-												metadata: metadataURL + "AIS/NorthAtlanticCargoAISVesselDensity2011.pdf",
+												metadata	: metadataURL + "AIS/NorthAtlanticCargoAISVesselDensity2011.pdf",
 												checked: false,
 												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,35;admin=9999;HereIsMyMap#"
 											},
 											{
 												name: "2011 Passenger AIS Vessel Density",
-												metadata: metadataURL + "AIS/NorthAtlanticPassengerAISVesselDensity2011.pdf",
+												metadata	: metadataURL + "AIS/NorthAtlanticPassengerAISVesselDensity2011.pdf",
 												checked: false,
 												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,36;admin=9999;HereIsMyMap#"
 											},
 											{
 												name: "2011 Tug-Tow AIS Vessel Density",
-												metadata: metadataURL + "AIS/NorthAtlanticTugTowAISVesselDensity2011.pdf",
+												metadata	: metadataURL + "AIS/NorthAtlanticTugTowAISVesselDensity2011.pdf",
 												checked: false,
 												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,37;admin=9999;HereIsMyMap#"
 											},
 											{
 												name: "2011 Tanker AIS Vessel Density",
-												metadata: metadataURL + "AIS/NorthAtlanticTankerAISVesselDensity2011.pdf",
+												metadata	: metadataURL + "AIS/NorthAtlanticTankerAISVesselDensity2011.pdf",
 												checked: false,
 												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,38;admin=9999;HereIsMyMap#"
 											},
 											{
 												name: "2012 All AIS Vessel Density",
-												metadata: metadataURL + "AIS/NorthAtlanticTotalAISVesselDensity2012.pdf",
+												metadata	: metadataURL + "AIS/NorthAtlanticTotalAISVesselDensity2012.pdf",
 												checked: false,
 												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,39;admin=9999;HereIsMyMap#"
 											},
 											{
 												name: "2012 Cargo AIS Vessel Density",
-												metadata: metadataURL + "AIS/NorthAtlanticCargoAISVesselDensity2012.pdf",
+												metadata	: metadataURL + "AIS/NorthAtlanticCargoAISVesselDensity2012.pdf",
 												checked: false,
 												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,40;admin=9999;HereIsMyMap#"
 											},
 											{
 												name: "2012 Passenger AIS Vessel Density",
-												metadata: metadataURL + "AIS/NorthAtlanticPassengerAISVesselDensity2012.pdf",
+												metadata	: metadataURL + "AIS/NorthAtlanticPassengerAISVesselDensity2012.pdf",
 												checked: false,
 												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,41;admin=9999;HereIsMyMap#"
 											},
 											{
 												name: "2012 Tug-Tow AIS Vessel Density",
-												metadata: metadataURL + "AIS/NorthAtlanticTugTowAISVesselDensity2012.pdf",
+												metadata	: metadataURL + "AIS/NorthAtlanticTugTowAISVesselDensity2012.pdf",
 												checked: false,
 												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,42;admin=9999;HereIsMyMap#"
 											},
 											{
 												name: "2012 Tanker AIS Vessel Density",
-												metadata: metadataURL + "AIS/NorthAtlanticTankerAISVesselDensity2012.pdf",
+												metadata	: metadataURL + "AIS/NorthAtlanticTankerAISVesselDensity2012.pdf",
 												checked: false,
 												flexLink: "http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,43;admin=9999;HereIsMyMap#"
 											}
@@ -259,12 +261,12 @@ define([],
 				// 							{
 				// 								name: "MonthlyTugTow_Stdev",
 				// 								showtimeSlider:true,
-				// 								metadata: metadataURL + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf'
+				// 								metadata	: metadataURL + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf'
 				// 							}
 				// 							// ,
 				// 							// {
 				// 							// 	name: "Legend",
-				// 							// 	metadata: metadataURL + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf'
+				// 							// 	metadata	: metadataURL + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf'
 				// 							// }
 				// 						]
 				// 					}
@@ -286,12 +288,12 @@ define([],
 				// 							{
 				// 								name: "MonthlyCargo_Stdev",
 				// 								showtimeSlider:true,
-				// 								metadata: metadataURL + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf'
+				// 								metadata	: metadataURL + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf'
 				// 							}
 				// 							// ,
 				// 							// {
 				// 							// 	name: "Legend",
-				// 							// 	metadata: metadataURL + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf'
+				// 							// 	metadata	: metadataURL + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf'
 				// 							// }
 				// 						]
 				// 					}
@@ -341,317 +343,9 @@ define([],
 				}
 			],
 			comp_viewer: {
-				fullServices: [
-					{
-						title	: 'Administrative',
-						index	: 9,
-						layers	: [
-							{
-								name			: 'Marine Jurisdictions',
-								metadata		: metadataURL + 'Administrative/MarineJurisdictions.htm'
-							},
-							{
-								name			: 'Coastal Barrier Resource System',
-								metadata		: metadataURL + 'Administrative/CoastalBarrierResourceSystem.htm'
-							},
-							{
-								name			: 'National Marine Sanctuary',
-								metadata		: metadataURL + 'Administrative/NationalMarineSanctuary.htm'
-							},
-							{
-								name			: 'Outer Continental Lease Blocks',
-								metadata		: metadataURL + 'Administrative/OuterContinentalShelfLeaseBlocks.htm',
-								external		: 'http://www.boem.gov/Oil-and-Gas-Energy-Program/Mapping-and-Data/ATL_BLKCLIP(3).aspx'
-							},
-							{
-								name			: 'Counties',
-								metadata		: metadataURL + 'Administrative/CountyBoundaries.htm',
-								noSource		: true
-							},
-							{
-								name			: 'States',
-								metadata		: metadataURL + 'Administrative/States.htm'
-							}
-						]
-					},
-					{
-						title	: 'Marine Mammals & Sea Turtles',
-						index	: 6,
-						layers	: [
-							{
-								name			: 	'Marine Mammals Habitat',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Fin Whale Winter, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Fin Whale Spring, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Fin Whale Summer, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Fin Whale Fall, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Humpback Whale Winter, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Humpback Whale Spring, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Humpback Whale Summer, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Humpback Whale Fall, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Minke Whale Winter, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Minke Whale Spring, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Minke Whale Summer, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Minke Whale Fall, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'North Atlantic Right Whale Winter, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'North Atlantic Right Whale Spring, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'North Atlantic Right Whale Summer, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'North Atlantic Right Whale Fall, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Sei Whale Winter, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Sei Whale Spring, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Sei Whale Summer, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Sei Whale Fall, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Sperm Whale Winter, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Sperm Whale Spring, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Sperm Whale Summer, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Sperm Whale Fall, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Harbor Porpoise Winter, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Harbor Porpoise Spring, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Harbor Porpoise Summer, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Harbor Porpoise Fall, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Bottlenose Dolphin Winter, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Bottlenose Dolphin Spring, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Bottlenose Dolphin Summer, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Bottlenose Dolphin Fall, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Atlantic White-sided Dolphin Winter, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Atlantic White-sided Dolphin Spring, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Atlantic White-sided Dolphin Summer, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Atlantic White-sided Dolphin Fall, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Striped Dolphin Winter, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Striped Dolphin Spring, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Striped Dolphin Summer, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Striped Dolphin Fall, SPUE',
-								metadata		:	metadataURL + 'Biology/MarineMammals'
-							},
-							{
-								name			: 	'Leatherback Sea Turtle Winter, SPUE',
-								metadata		:	metadataURL + 'Biology/SeaTurtleSPUEwinter.pdf'
-							},
-							{
-								name			: 	'Leatherback Sea Turtle Spring, SPUE',
-								metadata		:	metadataURL + 'Biology/SeaTurtleSPUESpring.pdf'
-							},
-							{
-								name			: 	'Leatherback Sea Turtle Summer, SPUE',
-								metadata		:	metadataURL + 'Biology/SeaTurtleSPUESummer.pdf'
-							},
-							{
-								name			: 	'Leatherback Sea Turtle Fall, SPUE',
-								metadata		:	metadataURL + 'Biology/SeaTurtleSPUEFall.pdf'
-							},
-							{
-								name			: 	'Loggerhead Sea Turtle Winter, SPUE',
-								metadata		:	metadataURL + 'Biology/SeaTurtleSPUEwinter.pdf'
-							},
-							{
-								name			: 	'Loggerhead Sea Turtle Spring, SPUE',
-								metadata		:	metadataURL + 'Biology/SeaTurtleSPUESpring.pdf'
-							},
-							{
-								name			: 	'Loggerhead Sea Turtle Summer, SPUE',
-								metadata		:	metadataURL + 'Biology/SeaTurtleSPUESummer.pdf'
-							},
-							{
-								name			: 	'Loggerhead Sea Turtle Fall, SPUE',
-								metadata		:	metadataURL + 'Biology/SeaTurtleSPUEFall.pdf'
-							},
-							{
-								name			: 	'Green Sea Turtle Winter, SPUE',
-								metadata		:	metadataURL + 'Biology/SeaTurtleSPUEwinter.pdf'
-							},
-							{
-								name			: 	'Green Sea Turtle Spring, SPUE',
-								metadata		:	metadataURL + 'Biology/SeaTurtleSPUESpring.pdf'
-							},
-							{
-								name			: 	'Green Sea Turtle Summer, SPUE',
-								metadata		:	metadataURL + 'Biology/SeaTurtleSPUESummer.pdf'
-							},
-							{
-								name			: 	'Green Sea Turtle Fall, SPUE',
-								metadata		:	metadataURL + 'Biology/SeaTurtleSPUEFall.pdf'
-							},
-						]
-					}
-				],
 				groups: [
 					{
-						title: 'Aquaculture',
-						index: 4,
-						serviceURLs: [
-							aquaculture,
-							fedFish,
-							otherMarineLife
-							//,noaaNGDC
-						],
-						layers: [
-							{
-								name	: 	'Aquaculture',
-								metadata:	metadataURL + 'OceanUses/Aquaculture.pdf',
-								service	:	aquaculture
-							},
-							{
-								name	: 	'Shellfish Management Areas',
-								metadata:	metadataURL + 'OceanUses/ShellfishManagementAreas.pdf',
-								service	:	aquaculture
-							},
-							{
-								name	: 	'Environmental Degradation Closures',
-								metadata:	'http://www.greateratlantic.fisheries.noaa.gov/educational_resources/gis/data/shapefiles/Environmental_Degradation_Closures/Environmental_Degradation_Closures_METADATA.pdf',
-								service	:	fedFish
-							},
-							{
-								name	: 	'Food Safety Program Temporary PSP Closures',
-								metadata:	'http://www.greateratlantic.fisheries.noaa.gov/educational_resources/gis/data/shapefiles/Food_Safety_Program_PSP_Closures/Food_Safety_Program_Temporary_PSP_Closures_METADATA.pdf',
-								service	:	fedFish
-							},
-							{
-								name	: 	'Eelgrass Beds',
-								metadata:	metadataURL + 'Biology/EelgrassBeds.pdf',
-								service	:	otherMarineLife
-							},
-							{
-								name	: 	'Water Depth',
-								metadata:	metadataURL + 'PhysicalOceanography/Bathymetry',
-								service	:	aquaculture
-							},
-							{
-								name	: 	'Sediment Grain Size',
-								metadata:	metadataURL + 'PhysicalOceanography/SedimentGrainSize',
-								service	:	aquaculture
-							}
-							// ,
-							// {
-							// 	name	:	'DEM Hillshades',
-							// 	metadata:	'http://ngdc.noaa.gov/mgg/inundation/tsunami/general.html',
-							// 	label	:	'NGDC DEM Hillshades',
-							// 	service	:	noaaNGDC,
-							// 	tile	:	true
-							// }
-						]
-					},
-					{
-						index: 0,
-						title: 'Maritime Commerce',
+						title: 'Commerce',
 						serviceURLs: [
 							maritimeCommerce,
 							mmc,
@@ -663,494 +357,239 @@ define([],
 						],
 						layers: [
 							{
-								name	: 	'Wrecks and Obstructions',
-								metadata:	metadataURL + 'OceanUses/WrecksandObstructions',
-								service	:	maritimeCommerce
+								name		: 	'Wrecks and Obstructions',
+								metadata	:	metadataURL + 'OceanUses/WrecksandObstructions',
+								serviceURL	:	maritimeCommerce
 							},
 							{
-								name	: 	'Aids to Navigation',
-								metadata:	'http://coast.noaa.gov/htdata/CMSP/Metadata/AidstoNavigation.htm',
-								service	:	mmc,
-								external:	'ftp://ftp.coast.noaa.gov/pub/MSP/AidsToNavigation.zip'
+								name		: 	'Aids to Navigation',
+								metadata	:	'http://coast.noaa.gov/htdata/CMSP/Metadata/AidstoNavigation.htm',
+								serviceURL	:	mmc,
+								external	:	'ftp://ftp.coast.noaa.gov/pub/MSP/AidsToNavigation.zip'
 							},
 							{
-								name	: 	'Pilot Boarding Areas',
-								metadata:	metadataURL + 'OceanUses/PilotBoardingAreas.pdf',
-								service	:	maritimeCommerce
+								name		: 	'Pilot Boarding Areas',
+								metadata	:	metadataURL + 'OceanUses/PilotBoardingAreas.pdf',
+								serviceURL	:	maritimeCommerce
 							},
 							{
-								name	: 	'Anchorages',
-								metadata:	metadataURL + 'OceanUses/Anchorages.pdf',
-								service	:	maritimeCommerce
+								name		: 	'Anchorages',
+								metadata	:	metadataURL + 'OceanUses/Anchorages.pdf',
+								serviceURL	:	maritimeCommerce
 							},
 							{
-								name	: 	'Maintained Channels',
-								metadata:	metadataURL + 'OceanUses/MaintainedChannels.pdf',
-								service	:	maritimeCommerce
+								name		: 	'Maintained Channels',
+								metadata	:	metadataURL + 'OceanUses/MaintainedChannels.pdf',
+								serviceURL	:	maritimeCommerce
 							},
 							{
-								name	: 	'Marine Transportation',
-								metadata:	metadataURL + 'OceanUses/MarineTransportation.pdf',
-								service	:	maritimeCommerce
+								name		: 	'Marine Transportation',
+								metadata	:	metadataURL + 'OceanUses/MarineTransportation.pdf',
+								serviceURL	:	maritimeCommerce
 							},
 							{
-								name	: 	'Danger Zones and Restricted Areas',
-								metadata:	'http://coast.noaa.gov/htdata/CMSP/Metadata/DangerZonesAndRestrictedAreas.htm',
-								service	:	mmc
+								name		: 	'Danger Zones and Restricted Areas',
+								metadata	:	'http://coast.noaa.gov/htdata/CMSP/Metadata/DangerZonesAndRestrictedAreas.htm',
+								serviceURL	:	mmc
 							},
 							{
-								name	:	'Safety, Security, and Regulated Zones',
-								metadata:	metadataURL + 'OceanUses/SafetySecurityRegulatedAreas.pdf',
-								service	:	maritimeCommerce
+								name		:	'Safety, Security, and Regulated Zones',
+								metadata	:	metadataURL + 'OceanUses/SafetySecurityRegulatedAreas.pdf',
+								serviceURL	:	maritimeCommerce
 							},
 							{
-								name	:	'WhalesNorth Mandatory Ship Reporting System',
-								metadata:	metadataURL + 'OceanUses/WhalesNorthMandatoryShipReportingSystem.pdf',
-								service	:	maritimeCommerce
+								name		:	'WhalesNorth Mandatory Ship Reporting System',
+								metadata	:	metadataURL + 'OceanUses/WhalesNorthMandatoryShipReportingSystem.pdf',
+								serviceURL	:	maritimeCommerce
 							},
 							{
-								name	:	'Marine Mammal Seasonal Management Areas',
-								metadata:	metadataURL + 'OceanUses/MarineMammalSeasonalAreas.pdf',
-								service	:	maritimeCommerce
+								name		:	'Marine Mammal Seasonal Management Areas',
+								metadata	:	metadataURL + 'OceanUses/MarineMammalSeasonalAreas.pdf',
+								serviceURL	:	maritimeCommerce
 							},
 							{
-								name	:	'Unexploded Ordnances',
-								metadata:	'http://coast.noaa.gov/htdata/CMSP/Metadata/UnexplodedOrdnances.htm',
-								service	:	mmc
+								name		:	'Unexploded Ordnances',
+								metadata	:	'http://coast.noaa.gov/htdata/CMSP/Metadata/UnexplodedOrdnances.htm',
+								serviceURL	:	mmc
 							},
 							{
-								name	:	'Ocean Disposal Sites',
-								metadata:	metadataURL + 'OceanUses/OceanDisposalSites.pdf',
-								service	:	maritimeCommerce
+								name		:	'Ocean Disposal Sites',
+								metadata	:	metadataURL + 'OceanUses/OceanDisposalSites.pdf',
+								serviceURL	:	maritimeCommerce
 							},
 							{
-								name	:	'Submarine Cables',
-								metadata:	metadataURL + 'OceanUses/SubmarineCables',
-								service	:	maritimeCommerce
+								name		:	'Submarine Cables',
+								metadata	:	metadataURL + 'OceanUses/SubmarineCables',
+								serviceURL	:	maritimeCommerce
 							},
 							{
-								name	:	'Submarine Cable Areas',
-								metadata:	metadataURL + 'OceanUses/CableAndPipelineAreas',
-								service	:	maritimeCommerce
+								name		:	'Submarine Cable Areas',
+								metadata	:	metadataURL + 'OceanUses/CableAndPipelineAreas',
+								serviceURL	:	maritimeCommerce
 							},
 							{
-								name	:	'Submarine Pipeline Areas',
-								metadata:	metadataURL + 'OceanUses/CableAndPipelineAreas',
-								service	:	maritimeCommerce
+								name		:	'Submarine Pipeline Areas',
+								metadata	:	metadataURL + 'OceanUses/CableAndPipelineAreas',
+								serviceURL	:	maritimeCommerce
 							},
 							{
-								name	:	'2011 Vessel Density',
-								metadata:	'',
-								service	:	aisAll,
-								tile	:	true
+								name		:	'2011 Vessel Density',
+								metadata	:	'',
+								serviceURL	:	aisAll,
+								tile		:	true
 							},
 							{
-								name	:	'2011 Cargo Vessel Density',
-								metadata:	'',
-								service	:	aisCargo,
-								tile	:	true
+								name		:	'2011 Cargo Vessel Density',
+								metadata	:	'',
+								serviceURL	:	aisCargo,
+								tile		:	true
 							},
 							{
-								name	:	'2011 Passenger Vessel Density',
-								metadata:	'',
-								service	:	aisPassenger,
-								tile	:	true
+								name		:	'2011 Passenger Vessel Density',
+								metadata	:	'',
+								serviceURL	:	aisPassenger,
+								tile		:	true
 							},
 							{
-								name	:	'2011 Tug and Towing Vessel Density',
-								metadata:	'',
-								service	:	aisTugTow,
-								tile	:	true
+								name		:	'2011 Tug and Towing Vessel Density',
+								metadata	:	'',
+								serviceURL	:	aisTugTow,
+								tile		:	true
 							},
 							{
-								name	:	'2011 Tanker Vessel Density',
-								metadata:	'',
-								service	:	aisTanker,
-								tile	:	true
+								name		:	'2011 Tanker Vessel Density',
+								metadata	:	'',
+								serviceURL	:	aisTanker,
+								tile		:	true
 							},
 							{
-								name	:	'2012 All AIS Vessel Density',
-								metadata:	metadataURL + 'AIS/NorthAtlanticTotalAISVesselDensity2012.pdf',
-								service	:	maritimeCommerce
+								name		:	'2012 All AIS Vessel Density',
+								metadata	:	metadataURL + 'AIS/NorthAtlanticTotalAISVesselDensity2012.pdf',
+								serviceURL	:	maritimeCommerce
 							},
 							{
-								name	:	'2012 Cargo AIS Vessel Density',
-								metadata:	metadataURL + 'AIS/NorthAtlanticCargoAISVesselDensity2012.pdf',
-								service	:	maritimeCommerce
+								name		:	'2012 Cargo AIS Vessel Density',
+								metadata	:	metadataURL + 'AIS/NorthAtlanticCargoAISVesselDensity2012.pdf',
+								serviceURL	:	maritimeCommerce
 							},
 							{
-								name	:	'2012 Passenger AIS Vessel Density',
-								metadata:	metadataURL + 'AIS/NorthAtlanticPassengerAISVesselDensity2012.pdf',
-								service	:	maritimeCommerce
+								name		:	'2012 Passenger AIS Vessel Density',
+								metadata	:	metadataURL + 'AIS/NorthAtlanticPassengerAISVesselDensity2012.pdf',
+								serviceURL	:	maritimeCommerce
 							},
 							{
-								name	:	'2012 Tug-Tow AIS Vessel Density',
-								metadata:	metadataURL + 'AIS/NorthAtlanticTugTowAISVesselDensity2012.pdf',
-								service	:	maritimeCommerce
+								name		:	'2012 Tug-Tow AIS Vessel Density',
+								metadata	:	metadataURL + 'AIS/NorthAtlanticTugTowAISVesselDensity2012.pdf',
+								serviceURL	:	maritimeCommerce
 							},
 							{
-								name	:	'2012 Tanker AIS Vessel Density',
-								metadata:	metadataURL + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf',
-								service	:	maritimeCommerce
-							}
-						]
-					},
-					{
-						title	: 'Other Marine Life',
-						index	: 7,
-						serviceURLs: [
-							otherMarineLife,
-							noaaPhysOcean,
-							noaaCoral,
-							tncChlorophyll
-						],
-						layers	: [
-							{
-								name			: 'Artificial Reefs',
-								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/ArtificialReefs.htm',
-								service			: noaaPhysOcean
-							},
-							{
-								name			: 'Critical Habitat Designations',
-								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/CriticalHabitatDesignations.htm',
-								service			: noaaPhysOcean
-							},
-							{
-								name			: 'Eelgrass Beds',
-								metadata		: metadataURL + 'Biology/EelgrassBeds.pdf',
-								service			: otherMarineLife
-							},
-							{
-								name			: 'Alcyonacea',
-								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/Alcyonacea.htm',
-								service			: noaaCoral
-							},
-							{
-								name			: 'Gorgonian Alcyonacea',
-								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/GorgonianAlcyonacea.htm',
-								service			: noaaCoral
-							},
-							{
-								name			: 'Non-Gorgonian Alcyonacea',
-								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/NonGorgonianAlcyonacea.htm',
-								service			: noaaCoral
-							},
-							{
-								name			: 'Pennatulacea',
-								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/Pennatulacea.htm',
-								service			: noaaCoral
-							},
-							{
-								name			: 'Pennatulacea Sessiliflorae',
-								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/PennatulaceaSessiliflorae.htm',
-								service			: noaaCoral
-							},
-							{
-								name			: 'Pennatulacea Subsessiliflorae',
-								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/PennatulaceaSubsessiliflorae.htm',
-								service			: noaaCoral
-							},
-							{
-								name			: 'Scleractinia Caryophylliidae',
-								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/ScleractiniaCaryophylliidae.htm',
-								service			: noaaCoral
-							},
-							{
-								name			: 'Scleractinia Flabellidae',
-								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/ScleractiniaFlabellidae.htm',
-								service			: noaaCoral
-							},
-							{
-								name			: 'Coastal Wetlands',
-								metadata		: metadataURL + 'Biology/CoastalWetlands.pdf',
-								service			: otherMarineLife
-							},
-							{
-								name			: 'Primary Production',
-								metadata		: metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
-								service			: otherMarineLife
-							},
-							{
-								name			: 'Calanus Finmarchicus Fall',
-								metadata		: metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
-								service			: otherMarineLife
-							},
-							{
-								name			: 'Euphausiids Fall',
-								metadata		: metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
-								service			: otherMarineLife
-							},
-							{
-								name			: 'Gammarid Amphipods Fall',
-								metadata		: metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
-								service			: otherMarineLife
-							},
-							{
-								name			: 'Mysid Shrimp Fall',
-								metadata		: metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
-								service			: otherMarineLife
-							},
-							{
-								name			: 'Winter',
-								label			: 'Chlorophyll A Winter',
-								metadata		: metadataURL + 'Biology/ChlorophyllAfall.pdf',
-								service			: tncChlorophyll
-							},
-							{
-								name			: 'Spring',
-								label			: 'Chlorophyll A Spring',
-								metadata		: metadataURL + 'Biology/ChlorophyllAspring.pdf',
-								service			: tncChlorophyll
-							},
-							{
-								name			: 'Summer',
-								label			: 'Chlorophyll A Summer',
-								metadata		: metadataURL + 'Biology/ChlorophyllAsummer.pdf',
-								service			: tncChlorophyll
-							},
-							{
-								name			: 'Fall',
-								label			: 'Chlorophyll A Fall',
-								metadata		: metadataURL + 'Biology/ChlorophyllAfall.pdf',
-								service			: tncChlorophyll
-							},
-							{
-								name			: 'Seafloor Habitats',
-								metadata		: metadataURL + 'Biology/TNCBenthicHabitatModel',
-								service			: otherMarineLife
-							}
-						]
-					},
-					{
-						title: 'Fish and Shellfish',
-						index: 5,
-						serviceURLs: [
-							fishAndShellfish,
-							noaaEFH,
-							noaaHAPC,
-							tncDemersal
-						],
-						layers: [
-							{
-								name	: 	'Shellfish Habitat',
-								metadata:	metadataURL + 'Biology/ShellfishHabitat.pdf',
-								service	:	fishAndShellfish
-							},
-							{
-								name	: 	'Essential Fish Habitat - Areas Protected from Fishing',
-								label	:	'Essential Fish',
-								metadata:	'http://catalog.data.gov/harvest/object/4164cd2e-d7a8-46ef-8021-ae6fe934204f/html',
-								service	:	noaaEFH
-							},
-							{
-								name	: 	'Habitat Areas of Particular Concern (HAPC)',
-								metadata:	'http://catalog.data.gov/harvest/object/6bbaf4a3-44c1-4d3e-91c4-19f8d8608b63/html/original',
-								service	:	noaaHAPC
-							},
-							{
-								name	: 	'Highly Migratory Species EFH Overlay',
-								metadata:	metadataURL + 'Biology/HighlyMigratorySpeciesEFHOverlay.pdf',
-								service	:	fishAndShellfish
-							},
-							{
-								name	: 	'Groundfish and Shellfish EFH Overlay',
-								metadata:	'https://s3.amazonaws.com/marco-public-2d/Metadata_files/html/efh_overlay.html',
-								service	:	fishAndShellfish
-							},
-							{
-								name	: 	'Fall weighted persistence',
-								label	:	'Atlantic Cod Fall, Weighted Persistence',
-								metadata:	metadataURL + 'Biology/MarineFishWeightedPersistenceFall',
-								service	:	tncDemersal,
-								parent	:	'Atlantic Cod'
-							},
-							{
-								name	: 	'Spring weighted persistence',
-								label	:	'Atlantic Cod Spring, Weighted Persistence',
-								metadata:	metadataURL + 'Biology/MarineFishWeightedPersistenceSpring',
-								service	:	tncDemersal,
-								parent	:	'Atlantic Cod'
-							},
-							{
-								name	:	'Atlantic Herring Fall, Fish Weighted Persistence',
-								metadata:	metadataURL + 'Biology/MarineFishWeightedPersistenceFall',
-								service	:	fishAndShellfish
-							},
-							{
-								name	:	'Atlantic Herring Spring, Fish Weighted Persistence',
-								metadata:	metadataURL + 'Biology/MarineFishWeightedPersistenceSpring',
-								service	:	fishAndShellfish
-							},
-							{
-								name	:	'Atlantic Herring Abundance',
-								metadata:	metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
-								service	:	fishAndShellfish
-							}
-							,
-							{
-								name	:	'Atlantic Mackerel Abundance',
-								metadata:	metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
-								service	:	fishAndShellfish
-							}
-							,
-							{
-								name	:	'Sand Lance Abundance',
-								metadata:	metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
-								service	:	fishAndShellfish
-							}
-							,
-							{
-								name	:	'Species Richness',
-								metadata:	metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
-								service	:	fishAndShellfish
-							}
-							,
-							{
-								name	:	'Total Biomass kg',
-								metadata:	metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
-								service	:	fishAndShellfish
-							}
-						]
-					},
-					{
-						title: 'Commercial Fishing',
-						index: 3,
-						serviceURLs: [
-							monkfish,
-							multispecies,
-							scallop,
-							quahog
-						],
-						layers: [
-							{
-								name	: 	'VMS Monkfish Fishery Density 2006-2011',
-								metadata:	metadataURL + 'CommercialFishing/VMSMultispeciesFishery2006-2010.pdf',
-								service	:	monkfish,
-								tile	:	true
-							},
-							{
-								name	: 	'VMS Multispecies Fishery Density 2006-2010',
-								metadata:	metadataURL + 'CommercialFishing/VMSMonkfishFishery2006-2010.pdf',
-								service	:	multispecies,
-								tile	:	true
-							},
-							{
-								name	: 	'VMS Scallop Fishery Density 2006-2010',
-								metadata:	metadataURL + 'CommercialFishing/VMSScallopFishery2006-2010.pdf',
-								service	:	scallop,
-								tile	:	true
-							},
-							{
-								name	: 	'VMS Surf clam/Quahog Fishery Density 2006-2010',
-								metadata:	metadataURL + 'CommercialFishing/VMSSurfClamQuahogFishery2006-2010.pdf',
-								service	:	quahog,
-								tile	:	true
+								name		:	'2012 Tanker AIS Vessel Density',
+								metadata	:	metadataURL + 'AIS/NorthAtlanticTankerAISVesselDensity2012.pdf',
+								serviceURL	:	maritimeCommerce
 							}
 						]
 					},
 					{
 						title	: 'Energy',
-						index	: 1,
 						serviceURLs: [
 							energy,
 							mmc
 						],
 						layers	: [
 							{
-								name			: 	'Maximum Tidal Currents Speed m/s, January 2009',
-								metadata		:	metadataURL + 'PhysicalOceanography/MaxTidalCurrentsSpeed.pdf',
-								service			:	energy
+								name		: 	'Maximum Tidal Currents Speed m/s, January 2009',
+								metadata	:	metadataURL + 'PhysicalOceanography/MaxTidalCurrentsSpeed.pdf',
+								serviceURL	:	energy
 							},
 							{
-								name			: 	'Annual Mean Offshore Wind Speed m/s',
-								metadata		:	metadataURL + 'PhysicalOceanography/OffshoreWindEnergyPotential',
-								service			:	energy
+								name		: 	'Annual Mean Offshore Wind Speed m/s',
+								metadata	:	metadataURL + 'PhysicalOceanography/OffshoreWindEnergyPotential',
+								serviceURL	:	energy
 							},
 							{
-								name			: 	'Offshore Tidal Hydrokinetic Projects',
-								metadata		:	metadataURL + 'OceanUses/OffshoreTidalHydrokineticProjects',
-								service			:	energy
+								name		: 	'Offshore Tidal Hydrokinetic Projects',
+								metadata	:	metadataURL + 'OceanUses/OffshoreTidalHydrokineticProjects',
+								serviceURL	:	energy
 							},
 							{
-								name			: 	'UMaine Wind Turbine Test Project',
-								metadata		:	metadataURL + 'OceanUses/UMaineTestDemonstrationProject.pdf',
-								service			:	energy
+								name		: 	'UMaine Wind Turbine Test Project',
+								metadata	:	metadataURL + 'OceanUses/UMaineTestDemonstrationProject.pdf',
+								serviceURL	:	energy
 							},
 							{
-								name			: 	'Block Island Proposed Turbine Locations',
-								metadata		:	metadataURL + 'OceanUses/BlockIslandProposedTurbineLocations.pdf',
-								service			:	energy
+								name		: 	'Block Island Proposed Turbine Locations',
+								metadata	:	metadataURL + 'OceanUses/BlockIslandProposedTurbineLocations.pdf',
+								serviceURL	:	energy
 							},
 							{
-								name			: 	'Block Island Transmission Cables',
-								metadata		:	metadataURL + 'OceanUses/BlockIslandTransmissionCables.pdf',
-								service			:	energy
+								name		: 	'Block Island Transmission Cables',
+								metadata	:	metadataURL + 'OceanUses/BlockIslandTransmissionCables.pdf',
+								serviceURL	:	energy
 							},
 							{
-								name			: 	'Block Island Renewable Energy Zone',
-								metadata		:	metadataURL + 'OceanUses/RenewableEnergyZone',
-								service			:	energy
+								name		: 	'Block Island Renewable Energy Zone',
+								metadata	:	metadataURL + 'OceanUses/RenewableEnergyZone',
+								serviceURL	:	energy
 							},
 							{
-								name			:	'Massachusetts Wind Energy Areas - State Designated',
-								metadata		:	metadataURL + 'OceanUses/moris_om_wind_energy_areas_poly',
-								service			:	energy
+								name		:	'Massachusetts Wind Energy Areas - State Designated',
+								metadata	:	metadataURL + 'OceanUses/moris_om_wind_energy_areas_poly',
+								serviceURL	:	energy
 							},
 							{
-								name			:	'Ocean Energy Demonstration Sites',
-								metadata		:	metadataURL + 'OceanUses/OceanEnergyDemonstrationSites.pdf',
-								service			:	energy
+								name		:	'Ocean Energy Demonstration Sites',
+								metadata	:	metadataURL + 'OceanUses/OceanEnergyDemonstrationSites.pdf',
+								serviceURL	:	energy
 							},
 							{
-								name			:	'Active Renewable Energy Leases',
-								metadata		:	'http://www.boem.gov/BOEM-Lease-Areas-Metadata/',
-								service			:	mmc
+								name		:	'Active Renewable Energy Leases',
+								metadata	:	'http://www.boem.gov/BOEM-Lease-Areas-Metadata/',
+								serviceURL	:	mmc
 							},
 							{
-								name			:	'BOEM Wind Planning Areas',
-								metadata		:	'http://metadata.boem.gov/geospatial/BOEM_Wind_Planning_Areas.xml',
-								service			:	mmc
+								name		:	'BOEM Wind Planning Areas',
+								metadata	:	'http://metadata.boem.gov/geospatial/BOEM_Wind_Planning_Areas.xml',
+								serviceURL	:	mmc
 							},
 							{
-								name			:	'LNG Sites',
-								metadata		:	metadataURL + 'OceanUses/LNGsites',
-								service			:	energy
+								name		:	'LNG Sites',
+								metadata	:	metadataURL + 'OceanUses/LNGsites',
+								serviceURL	:	energy
 							},
 							{
-								name			:	'Coastal Energy Facilities',
-								metadata		:	metadataURL + 'OceanUses/CoastalEnergyFacilities',
-								service			:	energy
+								name		:	'Coastal Energy Facilities',
+								metadata	:	metadataURL + 'OceanUses/CoastalEnergyFacilities',
+								serviceURL	:	energy
 							},
 							{
-								name			:	'New England Electrical Transmission Substations',
-								metadata		:	metadataURL + 'OceanUses/NewEnglandElectricalTransmissionSubstations.pdf',
-								service			:	energy
+								name		:	'New England Electrical Transmission Substations',
+								metadata	:	metadataURL + 'OceanUses/NewEnglandElectricalTransmissionSubstations.pdf',
+								serviceURL	:	energy
 							},
 							{
-								name			:	'New England Electrical Transmission Lines',
-								metadata		:	metadataURL + 'OceanUses/NewEnglandElectricalTransmissionLines.pdf',
-								service			:	energy
+								name		:	'New England Electrical Transmission Lines',
+								metadata	:	metadataURL + 'OceanUses/NewEnglandElectricalTransmissionLines.pdf',
+								serviceURL	:	energy
 							},
 							{
-								name			:	'Submarine Cables',
-								metadata		:	metadataURL + 'OceanUses/SubmarineCables',
-								service			:	energy
+								name		:	'Submarine Cables',
+								metadata	:	metadataURL + 'OceanUses/SubmarineCables',
+								serviceURL	:	energy
 							},
 							{
-								name			:	'Submarine Cable Areas',
-								metadata		:	metadataURL + 'OceanUses/CableAndPipelineAreas',
-								service			:	energy
+								name		:	'Submarine Cable Areas',
+								metadata	:	metadataURL + 'OceanUses/CableAndPipelineAreas',
+								serviceURL	:	energy
 							},
 							{
-								name			:	'Submarine Pipeline Areas',
-								metadata		:	metadataURL + 'OceanUses/CableAndPipelineAreas',
-								service			:	energy
+								name		:	'Submarine Pipeline Areas',
+								metadata	:	metadataURL + 'OceanUses/CableAndPipelineAreas',
+								serviceURL	:	energy
 							}
 						]
 					},
 					{
 						title	: 'Recreation & Culture',
-						index	: 2,
 						serviceURLs: [
 							recAndCulture,
 							epaBeaches,
@@ -1160,112 +599,705 @@ define([],
 						],
 						layers	: [
 							{
-								name			: 'Wrecks and Obstructions',
-								metadata		: metadataURL + 'OceanUses/WrecksandObstructions',
-								service			: recAndCulture
+								name		: 	'Wrecks and Obstructions',
+								metadata	:	metadataURL + 'OceanUses/WrecksandObstructions',
+								serviceURL	: 	recAndCulture
 							},
 							{
-								name			: 'Water Trails',
-								metadata		: metadataURL + 'OceanUses/WaterTrails.pdf',
-								service			: recAndCulture
+								name		: 	'Water Trails',
+								metadata	: 	metadataURL + 'OceanUses/WaterTrails.pdf',
+								serviceURL	: 	recAndCulture
 							},
 							{
-								name			: 'Boat Launches',
-								metadata		: metadataURL + 'OceanUses/BoatLaunches.pdf',
-								service			: recAndCulture
+								name		: 	'Boat Launches',
+								metadata	: 	metadataURL + 'OceanUses/BoatLaunches.pdf',
+								serviceURL	: 	recAndCulture
 							},
 							{
-								name			: 'National Marine Sanctuary',
-								metadata		: metadataURL + 'Administrative/NationalMarineSanctuary',
-								service			: recAndCulture
+								name		: 	'National Marine Sanctuary',
+								metadata	: 	metadataURL + 'Administrative/NationalMarineSanctuary',
+								serviceURL	: recAndCulture
 							},
 							{
-								name			: 'Beaches_Line_View',
-								label			: 'Beaches',
-								metadata		: 'https://edg.epa.gov/metadata/rest/document?id={4A2F897E-E1E4-453E-9A29-674A520E4B92}&xsl=metadata_to_html_full',
-								service			: epaBeaches
+								name		:	'Beaches_Line_View',
+								label		:	 'Beaches',
+								metadata	: 'https://edg.epa.gov/metadata/rest/document?id={4A2F897E-E1E4-453E-9A29-674A520E4B92}&xsl=metadata_to_html_full',
+								serviceURL	: epaBeaches
 							},
 							{
-								name			: 'National Park Service Boundaries',
-								label			: 'National Parks',
-								metadata		: 'https://irma.nps.gov/App/Reference/Profile/2218503',
-								service			: nps
+								name		:	'National Park Service Boundaries',
+								label		:	'National Parks',
+								metadata	:	'https://irma.nps.gov/App/Reference/Profile/2218503',
+								serviceURL	:	nps
 							},
 							{
-								name			: 'Coastal Tribal Lands',
-								metadata		: 'http://coast.noaa.gov/htdata/CMSP/Metadata/CoastalTribalLands.htm',
-								service			: mmc
+								name		:	'Coastal Tribal Lands',
+								metadata	:	'http://coast.noaa.gov/htdata/CMSP/Metadata/CoastalTribalLands.htm',
+								serviceURL	:	mmc
 							},
 							{
-								name			: 'Recreational Boater Activities',
-								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
-								service			: recAndCulture
+								name		: 	'Recreational Boater Activities',
+								metadata	: 	metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
+								serviceURL	: 	recAndCulture
 							},
 							{
-								name			: 'Recreational Diving',
-								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
-								service			: recAndCulture
+								name		:	'Recreational Diving',
+								metadata	:	metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
+								serviceURL	:	recAndCulture
 							},
 							{
-								name			: 'Recreational Fishing',
-								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
-								service			: recAndCulture
+								name		:	'Recreational Fishing',
+								metadata	:	metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
+								serviceURL	:	recAndCulture
 							},
 							{
-								name			: 'Recreational Relaxing',
-								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
-								service			: recAndCulture
+								name		:	'Recreational Relaxing',
+								metadata	:	metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
+								serviceURL	:	recAndCulture
 							},
 							{
-								name			: 'Recreational Swimming',
-								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
-								service			: recAndCulture
+								name		:	'Recreational Swimming',
+								metadata	:	metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
+								serviceURL	:	recAndCulture
 							},
 							{
-								name			: 'Recreational Wildlife Viewing',
-								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
-								service			: recAndCulture
+								name		:	'Recreational Wildlife Viewing',
+								metadata	:	metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
+								serviceURL	:	recAndCulture
 							},
 							{
-								name			: 'Recreational Target Fish Species',
-								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
-								service			: recAndCulture
+								name		: 	'Recreational Target Fish Species',
+								metadata	: 	metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
+								serviceURL	: 	recAndCulture
 							},
 							{
-								name			: 'Recreational Target Wildlife Viewing',
-								metadata		: metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
-								service			: recAndCulture
+								name		: 	'Recreational Target Wildlife Viewing',
+								metadata	: 	metadataURL + 'OceanUses/RecreationalBoaterActivities.pdf',
+								serviceURL	: 	recAndCulture
 							},
 							{
-								name			: 'Recreational Boater Routes',
-								metadata		: metadataURL + 'OceanUses/RecreationalBoaterRoutes.pdf',
-								service			: recAndCulture
+								name		: 	'Recreational Boater Routes',
+								metadata	: 	metadataURL + 'OceanUses/RecreationalBoaterRoutes.pdf',
+								serviceURL	: 	recAndCulture
 							},
 							{
-								name			: 'Recreational Boating Density',
-								metadata		: metadataURL + 'OceanUses/RecreationalBoaterRouteDensity.pdf',
-								service			: recAndCulture
+								name		: 	'Recreational Boating Density',
+								metadata	: 	metadataURL + 'OceanUses/RecreationalBoaterRouteDensity.pdf',
+								serviceURL	: 	recAndCulture
 							},
 							{
-								name			: 'National Register of Historic Places: Sites and Landmarks',
-								metadata		: metadataURL + 'OceanUses/NationalRegisterHistoricPlacesPoints.pdf',
-								service			: recAndCulture
+								name		: 	'National Register of Historic Places: Sites and Landmarks',
+								metadata	: 	metadataURL + 'OceanUses/NationalRegisterHistoricPlacesPoints.pdf',
+								serviceURL	: 	recAndCulture
 							},
 							{
-								name			: 'National Register of Historic Places: Districts and Properties',
-								metadata		: metadataURL + 'OceanUses/NationalRegisterHistoricPlacesPolygons.pdf',
-								service			: recAndCulture
+								name		: 	'National Register of Historic Places: Districts and Properties',
+								metadata	: 	metadataURL + 'OceanUses/NationalRegisterHistoricPlacesPolygons.pdf',
+								serviceURL	: 	recAndCulture
 							},
 							{
-								name			: 'Secured Lands',
-								metadata		: metadataURL + 'SecuredLands/SecuredLands2012.pdf',
-								service			: securedLands
+								name		: 	'Secured Lands',
+								metadata	: 	metadataURL + 'SecuredLands/SecuredLands2012.pdf',
+								serviceURL	: 	securedLands
+							}
+						]
+					},
+					{
+						title: 'Commercial Fishing',
+						serviceURLs: [
+							monkfish,
+							multispecies,
+							scallop,
+							quahog
+						],
+						layers: [
+							{
+								name		: 	'VMS Monkfish Fishery Density 2006-2011',
+								metadata	:	metadataURL + 'CommercialFishing/VMSMultispeciesFishery2006-2010.pdf',
+								serviceURL	:	monkfish,
+								tile		:	true
+							},
+							{
+								name		: 	'VMS Multispecies Fishery Density 2006-2010',
+								metadata	:	metadataURL + 'CommercialFishing/VMSMonkfishFishery2006-2010.pdf',
+								serviceURL	:	multispecies,
+								tile		:	true
+							},
+							{
+								name		: 	'VMS Scallop Fishery Density 2006-2010',
+								metadata	:	metadataURL + 'CommercialFishing/VMSScallopFishery2006-2010.pdf',
+								serviceURL	:	scallop,
+								tile		:	true
+							},
+							{
+								name		: 	'VMS Surf clam/Quahog Fishery Density 2006-2010',
+								metadata	:	metadataURL + 'CommercialFishing/VMSSurfClamQuahogFishery2006-2010.pdf',
+								serviceURL	:	quahog,
+								tile		:	true
+							}
+						]
+					},
+					{
+						title: 'Aquaculture',
+						serviceURLs: [
+							aquaculture,
+							fedFish,
+							otherMarineLife
+							//,noaaNGDC
+						],
+						layers: [
+							{
+								name		: 	'Aquaculture',
+								metadata	:	metadataURL + 'OceanUses/Aquaculture.pdf',
+								serviceURL	:	aquaculture
+							},
+							{
+								name		: 	'Shellfish Management Areas',
+								metadata	:	metadataURL + 'OceanUses/ShellfishManagementAreas.pdf',
+								serviceURL	:	aquaculture
+							},
+							{
+								name		: 	'Environmental Degradation Closures',
+								metadata	:	'http://www.greateratlantic.fisheries.noaa.gov/educational_resources/gis/data/shapefiles/Environmental_Degradation_Closures/Environmental_Degradation_Closures_METADATA.pdf',
+								serviceURL	:	fedFish
+							},
+							{
+								name		: 	'Food Safety Program Temporary PSP Closures',
+								metadata	:	'http://www.greateratlantic.fisheries.noaa.gov/educational_resources/gis/data/shapefiles/Food_Safety_Program_PSP_Closures/Food_Safety_Program_Temporary_PSP_Closures_METADATA.pdf',
+								serviceURL	:	fedFish
+							},
+							{
+								name		: 	'Eelgrass Beds',
+								metadata	:	metadataURL + 'Biology/EelgrassBeds.pdf',
+								serviceURL	:	otherMarineLife
+							},
+							{
+								name		: 	'Water Depth',
+								metadata	:	metadataURL + 'PhysicalOceanography/Bathymetry',
+								serviceURL	:	aquaculture
+							},
+							{
+								name		: 	'Sediment Grain Size',
+								metadata	:	metadataURL + 'PhysicalOceanography/SedimentGrainSize',
+								serviceURL	:	aquaculture
+							}
+							// ,
+							// {
+							// 	name		:	'DEM Hillshades',
+							// 	metadata	:	'http://ngdc.noaa.gov/mgg/inundation/tsunami/general.html',
+							// 	label		:	'NGDC DEM Hillshades',
+							// 	serviceURL	:	noaaNGDC,
+							// 	tile		:	true
+							// }
+						]
+					},
+					{
+						title: 'Fish and Shellfish',
+						serviceURLs: [
+							fishAndShellfish,
+							noaaEFH,
+							noaaHAPC,
+							tncDemersal
+						],
+						layers: [
+							{
+								name		: 	'Shellfish Habitat',
+								metadata	:	metadataURL + 'Biology/ShellfishHabitat.pdf',
+								serviceURL	:	fishAndShellfish
+							},
+							{
+								name		: 	'Essential Fish Habitat - Areas Protected from Fishing',
+								label		:	'Essential Fish',
+								metadata	:	'http://catalog.data.gov/harvest/object/4164cd2e-d7a8-46ef-8021-ae6fe934204f/html',
+								serviceURL	:	noaaEFH
+							},
+							{
+								name		: 	'Habitat Areas of Particular Concern (HAPC)',
+								metadata	:	'http://catalog.data.gov/harvest/object/6bbaf4a3-44c1-4d3e-91c4-19f8d8608b63/html/original',
+								serviceURL	:	noaaHAPC
+							},
+							{
+								name		: 	'Highly Migratory Species EFH Overlay',
+								metadata	:	metadataURL + 'Biology/HighlyMigratorySpeciesEFHOverlay.pdf',
+								serviceURL	:	fishAndShellfish
+							},
+							{
+								name		: 	'Groundfish and Shellfish EFH Overlay',
+								metadata	:	'https://s3.amazonaws.com/marco-public-2d/Metadata_files/html/efh_overlay.html',
+								serviceURL	:	fishAndShellfish
+							},
+							{
+								name		: 	'Fall weighted persistence',
+								label		:	'Atlantic Cod Fall, Weighted Persistence',
+								metadata	:	metadataURL + 'Biology/MarineFishWeightedPersistenceFall',
+								serviceURL	:	tncDemersal,
+								parent		:	'Atlantic Cod'
+							},
+							{
+								name		: 	'Spring weighted persistence',
+								label		:	'Atlantic Cod Spring, Weighted Persistence',
+								metadata	:	metadataURL + 'Biology/MarineFishWeightedPersistenceSpring',
+								serviceURL	:	tncDemersal,
+								parent		:	'Atlantic Cod'
+							},
+							{
+								name		:	'Atlantic Herring Fall, Fish Weighted Persistence',
+								metadata	:	metadataURL + 'Biology/MarineFishWeightedPersistenceFall',
+								serviceURL	:	fishAndShellfish
+							},
+							{
+								name		:	'Atlantic Herring Spring, Fish Weighted Persistence',
+								metadata	:	metadataURL + 'Biology/MarineFishWeightedPersistenceSpring',
+								serviceURL	:	fishAndShellfish
+							},
+							{
+								name		:	'Atlantic Herring Abundance',
+								metadata	:	metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
+								serviceURL	:	fishAndShellfish
+							}
+							,
+							{
+								name		:	'Atlantic Mackerel Abundance',
+								metadata	:	metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
+								serviceURL	:	fishAndShellfish
+							}
+							,
+							{
+								name		:	'Sand Lance Abundance',
+								metadata	:	metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
+								serviceURL	:	fishAndShellfish
+							}
+							,
+							{
+								name		:	'Species Richness',
+								metadata	:	metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
+								serviceURL	:	fishAndShellfish
+							}
+							,
+							{
+								name		:	'Total Biomass kg',
+								metadata	:	metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
+								serviceURL	:	fishAndShellfish
+							}
+						]
+					},
+					{
+						title	: 'Marine Mammals & Sea Turtles',
+						serviceURLs: [
+							marineMammals
+						],
+						layers	: [
+							{
+								name		: 	'Marine Mammals Habitat',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Fin Whale Winter, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Fin Whale Spring, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Fin Whale Summer, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Fin Whale Fall, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Humpback Whale Winter, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Humpback Whale Spring, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Humpback Whale Summer, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Humpback Whale Fall, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Minke  Whale Winter, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Minke Whale Spring, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Minke Whale Summer, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Minke Whale Fall, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'North Atlantic Right Whale Winter, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'North Atlantic Right Whale Spring, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'North Atlantic Right Whale Summer, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'North Atlantic Right Whale Fall, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Sei Whale Winter, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Sei Whale Spring, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Sei Whale Summer, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Sei Whale Fall, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Sperm Whale Winter, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Sperm Whale Spring, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Sperm Whale Summer, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Sperm Whale Fall, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Harbor Porpoise Winter, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Harbor Porpoise Spring, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Harbor Porpoise Summer, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Harbor Porpoise Fall, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Bottlenose Dolphin Winter, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Bottlenose Dolphin Spring, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Bottlenose Dolphin Summer, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Bottlenose Dolphin Fall, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Atlantic White-sided Dolphin Winter, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Atlantic White-sided Dolphin Spring, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Atlantic White-sided Dolphin Summer, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Atlantic White-sided Dolphin Fall, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Striped Dolphin Winter, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Striped Dolphin Spring, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Striped Dolphin Summer, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Striped Dolphin Fall, SPUE',
+								metadata	:	metadataURL + 'Biology/MarineMammals',
+								serviceURL	:	marineMammals
+							},
+							{
+								name		: 	'Leatherback Sea Turtle Winter, SPUE',
+								metadata	:	metadataURL + 'Biology/SeaTurtleSPUEwinter.pdf',
+								serviceURL	:	marineMammals,
+								parent		:	'Sea Turtles'
+							},
+							{
+								name		: 	'Leatherback Sea Turtle Spring, SPUE',
+								metadata	:	metadataURL + 'Biology/SeaTurtleSPUESpring.pdf',
+								serviceURL	:	marineMammals,
+								parent		:	'Sea Turtles'
+							},
+							{
+								name		: 	'Leatherback Sea Turtle Summer, SPUE',
+								metadata	:	metadataURL + 'Biology/SeaTurtleSPUESummer.pdf',
+								serviceURL	:	marineMammals,
+								parent		:	'Sea Turtles'
+							},
+							{
+								name		: 	'Leatherback Sea Turtle Fall, SPUE',
+								metadata	:	metadataURL + 'Biology/SeaTurtleSPUEFall.pdf',
+								serviceURL	:	marineMammals,
+								parent		:	'Sea Turtles'
+							},
+							{
+								name		: 	'Loggerhead Sea Turtle Winter, SPUE',
+								metadata	:	metadataURL + 'Biology/SeaTurtleSPUEwinter.pdf',
+								serviceURL	:	marineMammals,
+								parent		:	'Sea Turtles'
+							},
+							{
+								name		: 	'Loggerhead Sea Turtle Spring, SPUE',
+								metadata	:	metadataURL + 'Biology/SeaTurtleSPUESpring.pdf',
+								serviceURL	:	marineMammals,
+								parent		:	'Sea Turtles'
+							},
+							{
+								name		: 	'Loggerhead Sea Turtle Summer, SPUE',
+								metadata	:	metadataURL + 'Biology/SeaTurtleSPUESummer.pdf',
+								serviceURL	:	marineMammals,
+								parent		:	'Sea Turtles'
+							},
+							{
+								name		: 	'Loggerhead Sea Turtle Fall, SPUE',
+								metadata	:	metadataURL + 'Biology/SeaTurtleSPUEFall.pdf',
+								serviceURL	:	marineMammals,
+								parent		:	'Sea Turtles'
+							},
+							{
+								name		: 	'Green Sea Turtle Winter, SPUE',
+								metadata	:	metadataURL + 'Biology/SeaTurtleSPUEwinter.pdf',
+								serviceURL	:	marineMammals,
+								parent		:	'Sea Turtles'
+							},
+							{
+								name		: 	'Green Sea Turtle Spring, SPUE',
+								metadata	:	metadataURL + 'Biology/SeaTurtleSPUESpring.pdf',
+								serviceURL	:	marineMammals,
+								parent		:	'Sea Turtles'
+							},
+							{
+								name		: 	'Green Sea Turtle Summer, SPUE',
+								metadata	:	metadataURL + 'Biology/SeaTurtleSPUESummer.pdf',
+								serviceURL	:	marineMammals,
+								parent		:	'Sea Turtles'
+							},
+							{
+								name		: 	'Green Sea Turtle Fall, SPUE',
+								metadata	:	metadataURL + 'Biology/SeaTurtleSPUEFall.pdf',
+								serviceURL	:	marineMammals,
+								parent		:	'Sea Turtles'
+							}
+						]
+					}
+					,
+					{
+						title	: 'Other Marine Life',
+						serviceURLs: [
+							otherMarineLife,
+							noaaPhysOcean,
+							noaaCoral,
+							tncChlorophyll
+						],
+						layers	: [
+							{
+								name		: 	'Artificial Reefs',
+								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/ArtificialReefs.htm',
+								serviceURL	: 	noaaPhysOcean
+							},
+							{
+								name		: 	'Critical Habitat Designations',
+								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/CriticalHabitatDesignations.htm',
+								serviceURL	: 	noaaPhysOcean
+							},
+							{
+								name		: 	'Eelgrass Beds',
+								metadata	: 	metadataURL + 'Biology/EelgrassBeds.pdf',
+								serviceURL	:	otherMarineLife
+							},
+							{
+								name		: 	'Alcyonacea',
+								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/Alcyonacea.htm',
+								serviceURL	: 	noaaCoral
+							},
+							{
+								name		: 	'Gorgonian Alcyonacea',
+								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/GorgonianAlcyonacea.htm',
+								serviceURL	: 	noaaCoral
+							},
+							{
+								name		: 	'Non-Gorgonian Alcyonacea',
+								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/NonGorgonianAlcyonacea.htm',
+								serviceURL	: 	noaaCoral
+							},
+							{
+								name		: 	'Pennatulacea',
+								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/Pennatulacea.htm',
+								serviceURL	: 	noaaCoral
+							},
+							{
+								name		: 	'Pennatulacea Sessiliflorae',
+								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/PennatulaceaSessiliflorae.htm',
+								serviceURL	: 	noaaCoral
+							},
+							{
+								name		: 	'Pennatulacea Subsessiliflorae',
+								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/PennatulaceaSubsessiliflorae.htm',
+								serviceURL	: 	noaaCoral
+							},
+							{
+								name		: 	'Scleractinia Caryophylliidae',
+								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/ScleractiniaCaryophylliidae.htm',
+								serviceURL	: 	noaaCoral
+							},
+							{
+								name		: 	'Scleractinia Flabellidae',
+								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/ScleractiniaFlabellidae.htm',
+								serviceURL	: 	noaaCoral
+							},
+							{
+								name		: 	'Coastal Wetlands',
+								metadata	: 	metadataURL + 'Biology/CoastalWetlands.pdf',
+								serviceURL	: 	otherMarineLife
+							},
+							{
+								name		: 	'Primary Production',
+								metadata	: 	metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
+								serviceURL	: 	otherMarineLife
+							},
+							{
+								name		: 	'Calanus Finmarchicus, Fall',
+								metadata	: 	metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
+								serviceURL	: 	otherMarineLife
+							},
+							{
+								name		: 	'Euphausiids, Fall',
+								metadata	: 	metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
+								serviceURL	: 	otherMarineLife
+							},
+							{
+								name		: 	'Gammarid Amphipods, Fall',
+								metadata	: 	metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
+								serviceURL	: 	otherMarineLife
+							},
+							{
+								name		: 	'Mysid Shrimp, Fall',
+								metadata	: 	metadataURL + 'Biology/NEFSC_spatial_metadata.pdf',
+								serviceURL	: 	otherMarineLife
+							},
+							{
+								name		: 	'Winter',
+								label		: 	'Chlorophyll A Winter',
+								metadata	: 	metadataURL + 'Biology/ChlorophyllAfall.pdf',
+								serviceURL	: 	tncChlorophyll,
+								parent		:	'Chloropyll a'
+							},
+							{
+								name		: 	'Spring',
+								label		: 	'Chlorophyll A Spring',
+								metadata	: 	metadataURL + 'Biology/ChlorophyllAspring.pdf',
+								serviceURL	: 	tncChlorophyll,
+								parent		:	'Chloropyll a'
+							},
+							{
+								name		: 	'Summer',
+								label		: 	'Chlorophyll A Summer',
+								metadata	: 	metadataURL + 'Biology/ChlorophyllAsummer.pdf',
+								serviceURL	: 	tncChlorophyll,
+								parent		:	'Chloropyll a'
+							},
+							{
+								name		: 	'Fall',
+								label		: 	'Chlorophyll A Fall',
+								metadata	: 	metadataURL + 'Biology/ChlorophyllAfall.pdf',
+								serviceURL	: 	tncChlorophyll,
+								parent		:	'Chloropyll a'
+							},
+							{
+								name		: 	'Seafloor Habitats',
+								metadata	: 	metadataURL + 'Biology/TNCBenthicHabitatModel',
+								serviceURL	: 	otherMarineLife
 							}
 						]
 					},
 					{
 						title: 'Water Quality',
-						index: 8,
 						serviceURLs: [
 							maritimeCommerce,
 							watersGeo_303d,
@@ -1275,76 +1307,104 @@ define([],
 						],
 						layers: [
 							{
-								name	: 	'No Discharge Zones',
-								metadata:	metadataURL + 'OceanUses/NoDischargeZones.pdf',
-								service	:	maritimeCommerce
+								name		: 	'No Discharge Zones',
+								metadata	:	metadataURL + 'OceanUses/NoDischargeZones.pdf',
+								serviceURL	:	maritimeCommerce
 							},
 							{
-								name	: 	'Impaired Waters Line',
-								label	:	'Impaired Rivers or Coastline',
-								metadata:	'https://edg.epa.gov/metadata/rest/document?id={66F27299-6B1B-42BF-8AA0-1127D7646631}&xsl=metadata_to_html_full',
-								service	:	watersGeo_303d
+								name		: 	'Impaired Waters Line',
+								label		:	'Impaired Rivers or Coastline',
+								metadata	:	'https://edg.epa.gov/metadata/rest/document?id={66F27299-6B1B-42BF-8AA0-1127D7646631}&xsl=metadata_to_html_full',
+								serviceURL	:	watersGeo_303d
 							},
 							{
-								name	: 	'Impaired Waters Area',
-								label	:	'Impaired Water Bodies',
-								metadata:	'https://edg.epa.gov/metadata/rest/document?id={66F27299-6B1B-42BF-8AA0-1127D7646631}&xsl=metadata_to_html_full',
-								service	:	watersGeo_303d
+								name		: 	'Impaired Waters Area',
+								label		:	'Impaired Water Bodies',
+								metadata	:	'https://edg.epa.gov/metadata/rest/document?id={66F27299-6B1B-42BF-8AA0-1127D7646631}&xsl=metadata_to_html_full',
+								serviceURL	:	watersGeo_303d
 							},
 							{
-								name	: 	'Total Max Daily Loads Line',
-								label	:	'TMDL Rivers or Coastline',
-								metadata:	'https://edg.epa.gov/metadata/rest/document?id={88E53742-CF0D-443C-94AF-8139C09471F9}&xsl=metadata_to_html_full',
-								service	:	watersGeo_tmdl
+								name		: 	'Total Max Daily Loads Line',
+								label		:	'TMDL Rivers or Coastline',
+								metadata	:	'https://edg.epa.gov/metadata/rest/document?id={88E53742-CF0D-443C-94AF-8139C09471F9}&xsl=metadata_to_html_full',
+								serviceURL	:	watersGeo_tmdl
 							},
 							{
-								name	: 	'Total Max Daily Loads Area',
-								label	:	'TMDL Water Bodies',
-								metadata:	'https://edg.epa.gov/metadata/rest/document?id={88E53742-CF0D-443C-94AF-8139C09471F9}&xsl=metadata_to_html_full',
-								service	:	watersGeo_tmdl
+								name		: 	'Total Max Daily Loads Area',
+								label		:	'TMDL Water Bodies',
+								metadata	:	'https://edg.epa.gov/metadata/rest/document?id={88E53742-CF0D-443C-94AF-8139C09471F9}&xsl=metadata_to_html_full',
+								serviceURL	:	watersGeo_tmdl
 							},
 							{
-								name	: 	'PCS_NPDES',
-								label	:	'Wastewater Discharges',
-								metadata:	'https://edg.epa.gov/metadata/rest/document?id={6C7CBE2A-6547-4211-A328-6759D11DC117}&xsl=metadata_to_html_full',
-								service	:	pcs
+								name		: 	'PCS_NPDES',
+								label		:	'Wastewater Discharges',
+								metadata	:	'https://edg.epa.gov/metadata/rest/document?id={6C7CBE2A-6547-4211-A328-6759D11DC117}&xsl=metadata_to_html_full',
+								serviceURL	:	pcs
 							},
 							{
-								name	: 	'6-digit HUC',
-								metadata:	metadataURL + 'PhysicalOceanography/WBDHU6.htm',
-								service	:	hucs
+								name		: 	'6-digit HUC',
+								metadata	:	metadataURL + 'PhysicalOceanography/WBDHU6.htm',
+								serviceURL	:	hucs
 							},
 							{
-								name	: 	'8-digit HUC',
-								metadata:	metadataURL + 'PhysicalOceanography/WBDHU8.htm',
-								service	:	hucs
+								name		: 	'8-digit HUC',
+								metadata	:	metadataURL + 'PhysicalOceanography/WBDHU8.htm',
+								serviceURL	:	hucs
 							},
 							{
-								name	: 	'10-digit HUC',
-								metadata:	metadataURL + 'PhysicalOceanography/WBDHU10.htm',
-								service	:	hucs
+								name		: 	'10-digit HUC',
+								metadata	:	metadataURL + 'PhysicalOceanography/WBDHU10.htm',
+								serviceURL	:	hucs
 							},
 							{
-								name	: 	'12-digit HUC',
-								metadata:	metadataURL + 'PhysicalOceanography/WBDHU12.htm',
-								service	:	hucs
+								name		: 	'12-digit HUC',
+								metadata	:	metadataURL + 'PhysicalOceanography/WBDHU12.htm',
+								serviceURL	:	hucs
+							}
+						]
+					},
+					{
+						title	: 'Administrative',
+						serviceURLs: [
+							administrative
+						],
+						layers	: [
+							{
+								name		: 'Marine Jurisdictions',
+								metadata	: metadataURL + 'Administrative/MarineJurisdictions.htm',
+								serviceURL	: administrative
+							},
+							{
+								name		: 'Coastal Barrier Resource System',
+								metadata	: metadataURL + 'Administrative/CoastalBarrierResourceSystem.htm',
+								serviceURL	: administrative
+							},
+							{
+								name		: 'National Marine Sanctuary',
+								metadata	: metadataURL + 'Administrative/NationalMarineSanctuary.htm',
+								serviceURL	: administrative
+							},
+							{
+								name		: 'Outer Continental Lease Blocks',
+								metadata	: metadataURL + 'Administrative/OuterContinentalShelfLeaseBlocks.htm',
+								serviceURL	: administrative,
+								external	: 'http://www.boem.gov/Oil-and-Gas-Energy-Program/Mapping-and-Data/ATL_BLKCLIP(3).aspx'
+							},
+							{
+								name		: 'Counties',
+								metadata	: metadataURL + 'Administrative/CountyBoundaries.htm',
+								serviceURL	: administrative,
+								noSource	: true
+							},
+							{
+								name		: 'States',
+								metadata	: metadataURL + 'Administrative/States.htm',
+								serviceURL	: administrative
 							}
 						]
 					}
 				]
-			},
-			//Sync maps scale and location
-			syncMaps: true,
-			//Display geocoder search widget
-			geocoderWidget: false,
-			// Specify a proxy for custom deployment
-			proxyurl: "",
-			//specify the url to a geometry service
-			geometryserviceurl: "http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer",
-			//If the webmap uses Bing Maps data, you will need to provided your Bing Maps Key
-			bingmapskey : "",
-			//Modify this to point to your sharing service URL if you are using the portal
-			sharingurl: "http://www.arcgis.com/sharing/rest/content/items"
+			}
 		}
 	}
 );
