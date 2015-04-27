@@ -346,6 +346,7 @@ define([],
 				groups: [
 					{
 						title: 'Commerce',
+						searchOnTitle : true,
 						serviceURLs: [
 							maritimeCommerce,
 							mmc,
@@ -494,6 +495,7 @@ define([],
 					},
 					{
 						title	: 'Energy',
+						searchOnTitle : true,
 						serviceURLs: [
 							energy,
 							mmc

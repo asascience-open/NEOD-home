@@ -646,7 +646,7 @@ define([
                             metadata    : layer.metadata,
                             realName    : layer.label ? layer.name : null,
                             external    : layer.external ? layer.external : null,
-                            keyword     : layer.label ? layer.label : layer.name + ' ' + subGroup,
+                            keyword     : (layer.label ? layer.label : layer.name) + ' ' + subGroup + (group.searchOnTitle ? ' ' + group.title : ''),
                             subGroup    : layer.subGroup ? layer.subGroup : null
                         });
                     });
