@@ -845,7 +845,9 @@ define([
                 onChange    : function (newValue) {
                     if (newValue !== '') {
                         var checkboxId = newValue.substr(0, newValue.length-1);
-                        domConstruct.place(dojo.query('input[name="' + checkboxId + '"]').parent().parent().parent()[0], dom.byId('search-results-header'), 'after');
+                        var row = dojo.query('input[name="' + checkboxId + '"]').parent().parent().parent()[0];
+                        domConstruct.place('<div id="' + domAttr.get(row, 'id') + '-placeholder"></div>', row, 'after');
+                        domConstruct.place(row, dom.byId('search-results-container'));
                         showSearchResults();
                     }
                 }
