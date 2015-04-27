@@ -873,7 +873,7 @@ define([
             var scale = app.currentMap.getScale();
             if (!level) {
                 array.forEach(registry.toArray(), function (widget, i) {
-                    if (widget.hasOwnProperty('item')) {
+                    if (widget.hasOwnProperty('item') && widget.item != null) {
                         if (widget.item.hasOwnProperty('minScale')) {
                             if (widget.item.minScale != null) {
                                 var checkboxWidget = registry.byId(widget.item.id.substr(0, widget.item.id.indexOf('-')));
