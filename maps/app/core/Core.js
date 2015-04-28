@@ -134,6 +134,7 @@ define([
                     domStyle.set(query('#legendModal')[0], 'display', 'none');
                     domClass.add(query('#data-viewer')[0], 'active');
                     app.currentMap = app.dataViewer;
+                    app.lv = false;
                 }
             });
 
@@ -196,22 +197,32 @@ define([
 
         function print() 
         {
+            dom.byId('loading').style.display ='block';
             var params = new PrintParameters();
             var template = new PrintTemplate();
 
             var legendLayers = [];
-            for (var i = 1; i < app.currentMap.layerIds.length; i++){
-                var legendLayer = new LegendLayer();
-                legendLayer.layerId = app.currentMap.layerIds[i];
-                legendLayers.push(legendLayer);
-            }   
+            app.currentMap.layerIds.forEach(function (layerId) {
+                if (app.currentMap._layers[layerId].url !== 'http://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer' &&
+                    app.currentMap._layers[layerId].url !== 'http://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Reference/MapServer' &&
+                    app.currentMap._layers[layerId].url !== 'http://seamlessrnc.nauticalcharts.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer' &&
+                    app.currentMap._layers[layerId].url !== 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer') {
+                    var legendLayer = new LegendLayer();
+                    legendLayer.layerId = layerId;
+                    legendLayers.push(legendLayer);
+                }
+            });
             
             template.format = "png32";          
             template.layout = "A3 Landscape";           
             template.preserveScale = false;
             template.layoutOptions = {};
             
+            if (app.lv)
             template.layoutOptions.titleText = configOptions.themes[app.themeIndex].title + ' | ' + configOptions.themes[app.themeIndex].maps[app.subthemeIndex].title;
+            else
+                template.layoutOptions.titleText = 'Data Viewer';
+
             template.layoutOptions.authorText = 'Northeast Ocean Data Portal';
             template.layoutOptions.legendLayers = legendLayers;
 
@@ -222,7 +233,8 @@ define([
 
             printTask.execute(params, function printTaskCallback(result) {
                 window.open(result.url);
-                query('#printButton').button('reset');
+                dom.byId('loading').style.display ='none';
+                dijit.byId('printButton').set('disabled', false);
             });
         }
 
@@ -364,8 +376,8 @@ define([
             var printButton = new Button({
                 label: 'Print',
                 onClick: function() {
-                    //print();
-                    alert('print button clicked');
+                    this.set('disabled', true);
+                    print();
                 }
             }, "printButton").startup();
         }
@@ -444,7 +456,7 @@ define([
                     app.legend.refresh();
             });
 
-            app.currentMap.chart = new ArcGISImageServiceLayer('http://egisws02.nos.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer', 'chart');
+            app.currentMap.chart = new ArcGISImageServiceLayer('http://seamlessrnc.nauticalcharts.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer', 'chart');
 
             app.currentMap.addLayer(app.currentMap.chart, 1);
             app.currentMap.chart.hide();
@@ -485,17 +497,6 @@ define([
 
             // query('.btn').on('click', function (e){
             //     focusUtil.curNode && focusUtil.curNode.blur();
-            // });
-
-            // on(dom.byId('printButton'), 'click', function (e){
-            //     query(e.target).button('loading');
-            //     print();
-            // });
-
-            //get print templates from the export web map task
-            // var printInfo = EsriRequest({
-            //     url: "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task",
-            //     content: { f: "json" }
             // });
 
             on(dom.byId('show-hide-btn'), 'click', function (e){
@@ -1225,21 +1226,7 @@ define([
                             fadeOutLegend.play();
                         }
                     });
-
-                    // query('.btn').on('click', function (e){
-                    //     focusUtil.curNode && focusUtil.curNode.blur();
-                    // });
-
-                    // on(query('#themeButtonGroup button'), 'click', function (e){
-                    //     query('#loading').style("display", "block");
-                    //     app.themeIndex = parseInt(e.currentTarget.id.substring(e.currentTarget.id.length - 1), 10);
-                    //     getLayerIds(app.lv);
-                    // });
-
-                    on(query('#printButton'), 'click', function (e){
-                        query(e.target).button('loading');
-                        print();
-                    });
+;
                     app.firstLV_load = false;
                 }
 
