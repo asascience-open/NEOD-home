@@ -460,16 +460,11 @@ define([
                 domStyle.set(dom.byId('side-panel'), 'visibility', 'visible');
                 domStyle.set(dom.byId('loading'), 'visibility', 'visible');
                 resizeSidePanel();
+                app.legend = new Legend({map: app.currentMap}, 'legend-dv');
+                app.legend.startup();
             });
 
             dojo.byId()
-
-            app.currentMap.on('layers-add-result', function () {
-                app.legend = new Legend({
-                    map         : app.currentMap
-                }, 'legend-dv');
-                app.legend.startup();
-            });
 
             app.currentMap.on('layer-remove', share);
 
