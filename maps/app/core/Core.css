@@ -553,6 +553,7 @@ table.esriLegendLayer tr td {
   font-weight: bold;
 }
 
+#legend-dv div[id^="legend-dv_layer"],
 #legend-dv div[id*="_group"] > table:first-child,
 #legend-dv_http\:\/\/maps\.ngdc\.noaa\.gov\/arcgis\/rest\/services\/web_mercator\/dem_hillshades_mosaic\/MapServer\/ {
   display: none !important;
