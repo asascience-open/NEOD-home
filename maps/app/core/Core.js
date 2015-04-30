@@ -486,7 +486,7 @@ define([
             });
 
             app.currentMap.on('zoom-end', function (e) {
-                checkMinScale();
+                checkScale();
                 updateScale();
             })
 
@@ -642,6 +642,7 @@ define([
                             hasChildren : false,
                             group       : group.title,
                             minScale    : (layer.minScale == 0) ? null : layer.minScale,
+                            maxScale    : (layer.maxScale == 0) ? null : layer.maxScale,
                             id          : layer.serviceURL + layer.id + '-',
                             tile        : layer.tile,
                             metadata    : layer.metadata,
@@ -724,7 +725,7 @@ define([
                                 }
                             });
                         }
-                        checkMinScale();
+                        checkScale();
 
                         treeItemCount++;
                         if (treeItemCount === app.myStore.data.length - 1 && firstCompLoad) {
@@ -870,18 +871,21 @@ define([
             });
         }
 
-        function checkMinScale (level, minLevel) {
+        function checkScale (level, minLevel) {
             var scale = app.currentMap.getScale();
             if (!level) {
                 array.forEach(registry.toArray(), function (widget, i) {
                     if (widget.hasOwnProperty('item') && widget.item != null) {
-                        if (widget.item.hasOwnProperty('minScale')) {
-                            if (widget.item.minScale != null) {
+                        if ((widget.item.hasOwnProperty('minScale') && widget.item.minScale !== null) || (widget.item.hasOwnProperty('maxScale') && widget.item.maxnScale != null)) {
+                                var zoomIn = false;
+                                if (widget.item.hasOwnProperty('minScale'))
+                                    if (widget.item.minScale < scale)
+                                        zoomIn = true;
                                 var checkboxWidget = registry.byId(widget.item.id.substr(0, widget.item.id.indexOf('-')));
-                                if (widget.item.minScale < scale) {
+                                if ((widget.item.minScale && widget.item.minScale < scale) || (widget.item.maxScale && widget.item.maxScale > scale)) {
                                     if (!checkboxWidget.get('disabled')) {
                                         checkboxWidget.set('disabled', true);
-                                        domConstruct.place('<span class="zoom-notice" id="' + widget.item.id + 'zoom">zoom to view</span>', widget.domNode.childNodes[0]);
+                                        domConstruct.place('<span class="zoom-notice" id="' + widget.item.id + 'zoom">zoom ' + (widget.item.minScale < scale ? 'in' : 'out') + ' to view</span>', widget.domNode.childNodes[0]);
                                         dojo.setStyle(query('.slider-container[data-service_layer="' + widget.item.id.substr(0, widget.item.id.length-1) + '"]')[0], 'display', 'none');
                                     }
                                 }
@@ -891,7 +895,6 @@ define([
                                         domConstruct.destroy(widget.item.id + 'zoom');
                                         dojo.setStyle(query('.slider-container[data-service_layer="' + widget.item.id.substr(0, widget.item.id.length-1) + '"]')[0], 'display', 'inline-block');
                                     }
-                            }
                         }
                     }
 
@@ -1038,7 +1041,8 @@ define([
                                         {
                                             layer.id            = layerObj.id,
                                             layer.description   = layerObj.description,
-                                            layer.minScale      = layerObj.minScale;
+                                            layer.minScale      = layerObj.minScale,
+                                            layer.maxScale      = layerObj.maxScale;
                                             app.layersLoaded++;
                                             if (app.layersLoaded === app.layersUnloaded) {
                                                 createMap();
@@ -1373,7 +1377,7 @@ define([
                         if (configOptions.themes[app.themeIndex].maps[app.subthemeIndex].scaleRestriction) {
                             var minLevel = configOptions.themes[app.themeIndex].maps[app.subthemeIndex].scaleRestriction.minLevel;
                             if ((e.level >= minLevel && app.oldZoomLevel < minLevel) || (e.level < minLevel && app.oldZoomLevel >= minLevel)) {
-                                checkMinScale(e.level, minLevel);
+                                checkScale(e.level, minLevel);
                                 app.currentMap.legend.refresh();
                                 behavior.apply();
                             }
@@ -1552,7 +1556,7 @@ define([
             app.currentMap.legend.refresh();
             behavior.apply();
             if (configOptions.themes[app.themeIndex].maps[app.subthemeIndex].scaleRestriction)
-                checkMinScale(app.currentMap.getLevel(), configOptions.themes[app.themeIndex].maps[app.subthemeIndex].scaleRestriction.minLevel)
+                checkScale(app.currentMap.getLevel(), configOptions.themes[app.themeIndex].maps[app.subthemeIndex].scaleRestriction.minLevel)
 
             if (configOptions.themes[app.themeIndex].maps[mapIndex].flexLink)
                 query('#flex-link')[0].href = configOptions.themes[app.themeIndex].maps[mapIndex].flexLink;
