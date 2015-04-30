@@ -443,6 +443,18 @@ table.esriLegendLayer tr td {
   display: none;
 }
 
+#shareModal .modal-dialog {
+  width: 490px !important;
+}
+
+#source-data-modal,
+#shareModal {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  background-color: transparent;
+}
+
 #shareModal a {
   text-decoration: none;
 }
@@ -885,7 +897,8 @@ td.dijitMenuItemIconCell span{
 }
 
 #side-panel a,
-#legendWrapper a {
+#legendWrapper a,
+#shareModal a{
   color: #006633;
 }
 

@@ -7,7 +7,9 @@ app.legendVisible = true,
 app.layerInfos = [],
 app.timeoutID,
 app.lv = false,
-app.firstLV_load = true;
+app.firstLV_load = true,
+app.url = window.location.href,
+app.shareUrl = '';
 define([
     'esri/map',
     'esri/request',
@@ -28,6 +30,7 @@ define([
     'dojo/dom-construct',
     'dojo/dnd/move',
     'dojo/dom-class',
+    'dojo/request',
     'dojo/request/notify',
     'dojo/fx',
     'dojo/_base/fx',
@@ -72,6 +75,7 @@ define([
         domConstruct,
         move,
         domClass,
+        dojoRequest,
         notify,
         coreFx,
         fx,
@@ -368,8 +372,12 @@ define([
             var shareButton = new Button({
                 label: 'Share',
                 onClick: function() {
-                    //dijit.byId('share-dialog').show();
-                    alert('share button clicked');
+                    var longUrl = window.location.origin + window.location.pathname + '?' + app.shareUrl;
+                    dojoRequest.get('http://api.bit.ly/v3/shorten?apiKey=R_3802a64a9ae967439f44d5aebe7eabb8&login=ssontag&format=json&longUrl=' + longUrl).then(function (data) {
+                            var url = JSON.parse(data).data.url;
+                            dojo.query('#shareModal').modal('show');
+                            dojo.query('#url').html('<a href="' + url + '">' + url + '</a>');
+                    });
                 }
             }, "shareButton").startup();
 
@@ -382,48 +390,25 @@ define([
             }, "printButton").startup();
         }
 
-        // function share()
-        // {
-        //     var longUrl = '';
-        //     var point = new esri.geometry.Point(app.currentMap.extent.getCenter());
-        //     var baseUrl = mapUrl;
-        //     if (baseUrl.indexOf("#") > 0)
-        //         baseUrl = baseUrl.substring(0, mapUrl.indexOf('#'));
-        //     if (baseUrl.indexOf("&z=") > 0)
-        //         baseUrl = baseUrl.substring(0, mapUrl.indexOf('z') - 1);
-            
-        //     var wlf = window.location.href; 
-        //     var pil = '#?page_id='; 
-        //     if (wlf.search("maps/maritime-commerce") != -1) pil += "1118"; 
-        //     else if (wlf.search("maps/energy") != -1) pil += "1120"; 
-        //     else if (wlf.search("maps/recreation") != -1) pil += "1650"; 
-        //     else if (wlf.search("maps/commercial-fishing") != -1) pil += "1779"; 
-        //     else if (wlf.search("maps/aquaculture") != -1) pil += "1122"; 
-        //     else if (wlf.search("maps/fish-and-shellfish") != -1) pil += "1652"; 
-        //     else if (wlf.search("maps/marine-life-mammals") != -1) pil += "1380"; 
-        //     else if (wlf.search("maps/other-marine-life") != -1) pil += "1654"; 
-            
-        //     longUrl += baseUrl.replace('#', '') + pil +'&z=' + app.currentMap.getZoom() + '&b=' + app.currentMap._basemap + '&m=' + cm + '&r=' + radioSelection + '&x=' + point.x + '&y=' + point.y;
+        function share()
+        {
+            var share = {
+                point       :   new esri.geometry.Point(app.currentMap.extent.getCenter()),
+                zoom        :   app.currentMap.getLevel(),
+                basemap     :   app.currentMap._basemap,
+                layerIds    :   []
+            };
 
-        //     if (mapUrl.indexOf(energy) > 0)
-        //         longUrl += '&sl=' + sliderValue;
-        //     // $j.ajax({
-        //     //     type: 'GET',
-        //     //     url: 'http://api.bit.ly/v3/shorten',
-        //     //     dataType: "jsonp",
-        //     //     data: {
-        //     //         login: 'ssontag',
-        //     //         apiKey: 'R_3802a64a9ae967439f44d5aebe7eabb8',
-        //     //         format: 'json',
-        //     //         longUrl: longUrl
-        //     //     },
-        //     //     success: function(data){
-        //     //         $j('div#share-me').text(data.data.url);
-        //     //         $j('div#share-dialog p#url').html('<a href="' + data.data.url + '" target="_blank">' + data.data.url + '</a>');
-        //     //     }
-                
-        //     // });
-        // }
+            app.currentMap.layerIds.forEach(function (layerId) {
+                if (app.currentMap._layers[layerId].url !== 'http://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer' &&
+                    app.currentMap._layers[layerId].url !== 'http://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Reference/MapServer' &&
+                    app.currentMap._layers[layerId].url !== 'http://seamlessrnc.nauticalcharts.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer' &&
+                    app.currentMap._layers[layerId].url !== 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer')
+                    share.layerIds.push(layerId);
+            });
+
+            app.shareUrl = JSON.stringify(share);
+        }
 
         function createMap()
         {
@@ -454,6 +439,7 @@ define([
                 dom.byId('loading').style.display ='none';
                 if (app.legend)
                     app.legend.refresh();
+                share();
             });
 
             app.currentMap.chart = new ArcGISImageServiceLayer('http://seamlessrnc.nauticalcharts.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer', 'chart');
@@ -484,6 +470,8 @@ define([
                 }, 'legend-dv');
                 app.legend.startup();
             });
+
+            app.currentMap.on('layer-remove', share);
 
             app.currentMap.on('zoom-end', function (e) {
                 checkScale();
@@ -729,6 +717,8 @@ define([
 
                         treeItemCount++;
                         if (treeItemCount === app.myStore.data.length - 1 && firstCompLoad) {
+                            if (app.url.match(/\?/))
+                                setMap();
                             app.tree.collapseAll();
                             dojo.query('#tree').show();
                             firstCompLoad = false;
@@ -1637,6 +1627,28 @@ define([
             app.treeHeight += app.searchContainerHeight;
             resizeSidePanel();
             dojo.byId('layer-select').value = '';
+        }
+
+        setMap = function () {
+            var shareString = decodeURI(app.url.substr(app.url.indexOf('?') + 1));
+            var share = JSON.parse(shareString);
+
+            if (share.basemap === 'satellite')
+                on.emit(dom.byId('dijit_MenuItem_1'), 'click', {bubbles: true, cancelable: true});
+            else if (share.basemap === 'chart')
+                on.emit(dom.byId('dijit_MenuItem_2'), 'click', {bubbles: true, cancelable: true});
+
+            app.currentMap.centerAndZoom(share.point, share.zoom);
+
+            if (share.layerIds.length > 0) {
+                share.layerIds.forEach(function (layerId) {
+                    registry.toArray().forEach(function (widget, i) {
+                        if (widget.type === 'checkbox')
+                            if (widget.id === layerId)
+                                widget.set('checked', true);
+                    });
+                });
+            }
         }
 
         return {
