@@ -204,17 +204,14 @@ define([
             var template = new PrintTemplate();
 
             var legendLayers = [];
-            app.currentMap.layerIds.forEach(function (layerId) {
-                if (app.currentMap._layers[layerId].url !== 'http://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer' &&
-                    app.currentMap._layers[layerId].url !== 'http://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Reference/MapServer' &&
-                    app.currentMap._layers[layerId].url !== 'http://seamlessrnc.nauticalcharts.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer' &&
-                    app.currentMap._layers[layerId].url !== 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer') {
-                    var legendLayer = new LegendLayer();
-                    legendLayer.layerId = layerId;
-                    legendLayers.push(legendLayer);
-                }
-            });
+            var activeLayerIds = getActiveLayerIds();
             
+            activeLayerIds.forEach(function (layerId) {
+                var legendLayer = new LegendLayer();
+                legendLayer.layerId = layerId;
+                legendLayers.push(legendLayer);
+            });
+
             template.format = "png32";          
             template.layout = "A3 Landscape";           
             template.preserveScale = false;
@@ -398,17 +395,8 @@ define([
                 point       :   new esri.geometry.Point(app.currentMap.extent.getCenter()),
                 zoom        :   app.currentMap.getLevel(),
                 basemap     :   app.currentMap._basemap,
-                layerIds    :   []
+                layerIds    :   getActiveLayerIds()
             };
-
-            app.currentMap.layerIds.forEach(function (layerId) {
-                if (app.currentMap._layers[layerId].url !== 'http://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer' &&
-                    app.currentMap._layers[layerId].url !== 'http://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Reference/MapServer' &&
-                    app.currentMap._layers[layerId].url !== 'http://seamlessrnc.nauticalcharts.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer' &&
-                    app.currentMap._layers[layerId].url !== 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer')
-                    share.layerIds.push(layerId);
-            });
-
             app.shareUrl = JSON.stringify(share);
         }
 
@@ -1608,6 +1596,18 @@ define([
                     });
                 });
             }
+        }
+
+        getActiveLayerIds = function () {
+            var layerIds = [];
+            app.currentMap.layerIds.forEach(function (layerId) {
+                if (app.currentMap._layers[layerId].url !== 'http://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer' &&
+                    app.currentMap._layers[layerId].url !== 'http://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Reference/MapServer' &&
+                    app.currentMap._layers[layerId].url !== 'http://seamlessrnc.nauticalcharts.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer' &&
+                    app.currentMap._layers[layerId].url !== 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer')
+                    layerIds.push(layerId);
+            });
+            return layerIds;
         }
 
         return {
