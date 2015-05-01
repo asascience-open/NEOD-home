@@ -5,12 +5,11 @@ app.lastSubTheme = 0,
 app.sidePanelVisible = true,
 app.legendVisible = true,
 app.layerInfos = [],
-app.timeoutID,
 app.lv = false,
 app.firstLV_load = true,
 app.url = window.location.href,
 app.shareUrl = '',
-app.timeout = 2500;
+app.timeout = 6000;
 define([
     'esri/map',
     'esri/layers/FeatureLayer',
@@ -372,7 +371,11 @@ define([
                 label: 'Share',
                 onClick: function() {
                     var longUrl = window.location.origin + window.location.pathname + '?' + app.shareUrl;
-                    dojoRequest.get('http://api.bit.ly/v3/shorten?apiKey=R_3802a64a9ae967439f44d5aebe7eabb8&login=ssontag&format=json&longUrl=' + longUrl).then(function (data) {
+                    dojoRequest.get('http://api.bit.ly/v3/shorten?apiKey=R_3802a64a9ae967439f44d5aebe7eabb8&login=ssontag&format=json&longUrl=' + longUrl, {
+                        headers: {
+                            'X-Requested-With': null
+                        }
+                    }).then(function (data) {
                             var url = JSON.parse(data).data.url;
                             dojo.query('#shareModal').modal('show');
                             dojo.query('#url').html('<a href="' + url + '">' + url + '</a>');
@@ -688,7 +691,10 @@ define([
                                 resizeSidePanel();
                                 dojoRequest(serviceUrl + '?f=json', {
                                     handleAs: "json",
-                                    timeout: app.timeout
+                                    timeout: app.timeout,
+                                    headers: {
+                                        'X-Requested-With': null
+                                    }
                                 }).then(
                                     function(result) {
                                         if (app.searchResults)
@@ -854,7 +860,10 @@ define([
         sourceDataClick = function (layerName) {
             dojoRequest('http://50.19.218.171/arcgis1/rest/services/ClipZip/GPServer/Extract%20Data%20TaskKML/submitJob?Raster%5FFormat=File%20Geodatabase%20%2D%20GDB%20%2D%20%2Egdb&Area%5Fof%5FInterest=%7B%22spatialReference%22%3A%7B%22wkid%22%3A102100%7D%2C%22features%22%3A%5B%7B%22geometry%22%3A%7B%22rings%22%3A%5B%5B%5B%2D8374903%2E335905621%2C4717593%2E676607473%5D%2C%5B%2D7176370%2E7323943805%2C4717593%2E676607473%5D%2C%5B%2D7176370%2E7323943805%2C5570019%2E416043529%5D%2C%5B%2D8374903%2E335905621%2C5570019%2E416043529%5D%2C%5B%2D8374903%2E335905621%2C4717593%2E676607473%5D%5D%5D%2C%22spatialReference%22%3A%7B%22wkid%22%3A102100%7D%7D%7D%5D%7D&Layers%5Fto%5FClip=%5B%22' + layerName + '%22%5D&env%3AoutSR=102100&env%3AprocessSR=102100&f=json&Feature%5FFormat=File%20Geodatabase%20%2D%20GDB%20%2D%20%2Egdb&Spatial%5FReference=WGS%201984?f=json', {
                 handleAs: "json",
-                timeout: app.timeout
+                timeout: app.timeout,
+                headers: {
+                    'X-Requested-With': null
+                }
             }).then(
                 function(result) {
                     dojo.setStyle(dojo.byId('source-download-loading'), 'visibility', 'visible');
@@ -901,7 +910,10 @@ define([
                                     dynamicLayerCount++;
                                     dojoRequest(dynamicLayer.URL + 'layers?f=json', {
                                         handleAs: "json",
-                                        timeout: app.timeout
+                                        timeout: app.timeout,
+                                        headers: {
+                                            'X-Requested-With': null
+                                        }
                                     }).then(
                                         function(data) {
                                             requestCount++;
@@ -941,7 +953,10 @@ define([
                     array.forEach(group.serviceURLs, function (serviceURL, i) {
                         dojoRequest(serviceURL + 'layers?f=json', {
                             handleAs: "json",
-                            timeout: app.timeout
+                            timeout: app.timeout,
+                            headers: {
+                                'X-Requested-With': null
+                            }
                         }).then(
                             function(data) {
                                 app.mapserverResponse++;
