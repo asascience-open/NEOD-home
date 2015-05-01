@@ -9,7 +9,9 @@ app.lv = false,
 app.firstLV_load = true,
 app.url = window.location.href,
 app.shareUrl = '',
-app.timeout = 6000;
+app.shareObj = {},
+app.timeout = 6000,
+app.setMap = false;
 define([
     'esri/map',
     'esri/layers/FeatureLayer',
@@ -108,14 +110,13 @@ define([
             app.sidePanel = dom.byId('side-panel');
 
             on(dojo.query('#themeButtonGroup button'), 'click', function (e) {
-                app.currentThemeIndex = parseInt(this.attributes["data-theme-id"].value, 10);
+                app.themeIndex = parseInt(this.attributes["data-theme-id"].value, 10);
                 domClass.remove(query('#themeButtonGroup .active-theme')[0], 'active-theme');
-                if (app.currentThemeIndex !== 10) { // 10 is data viewer
-                    if (app.currentThemeIndex === 0) { // 0 is maritime commerce
+                if (app.themeIndex !== 10) { // 10 is data viewer
+                    if (app.themeIndex === 0) { // 0 is maritime commerce
                         domClass.add(this, 'active-theme');
                         app.lv = true;
                         getLayerIds(app.lv);
-                        app.currentThemeIndex = parseInt(this.attributes["data-theme-id"].value, 10);
                     }
                 }
                 else {
@@ -391,13 +392,21 @@ define([
 
         function share()
         {
-            var share = {
+            var shareObj = {
                 point       :   new esri.geometry.Point(app.currentMap.extent.getCenter()),
                 zoom        :   app.currentMap.getLevel(),
-                basemap     :   app.currentMap._basemap,
-                layerIds    :   getActiveLayerIds()
+                basemap     :   app.currentMap._basemap
             };
-            app.shareUrl = JSON.stringify(share);
+            if (app.lv) {
+                shareObj.themeIndex = app.themeIndex,
+                shareObj.subthemeIndex = app.subthemeIndex;
+                if (configOptions.themes[app.themeIndex].maps[app.subthemeIndex].hasRadioBtns)
+                    shareObj.radioSelection = app.radioSelection;
+            }
+            else
+                shareObj.layerIds = getActiveLayerIds();
+
+            app.shareUrl = JSON.stringify(shareObj);
         }
 
         function createMap()
@@ -429,7 +438,8 @@ define([
                 dom.byId('loading').style.display ='none';
                 if (app.legend)
                     app.legend.refresh();
-                share();
+                if (!app.setMap)
+                    share();
             });
 
             app.currentMap.chart = new ArcGISImageServiceLayer('http://seamlessrnc.nauticalcharts.noaa.gov/ArcGIS/rest/services/RNC/NOAA_RNC/ImageServer', 'chart');
@@ -917,7 +927,7 @@ define([
                                             if (requestCount === dynamicLayerCount)
                                             {
                                                 configOptions.themes[app.themeIndex].loaded = true;
-                                                loadMainTheme(app.currentThemeIndex);
+                                                loadMainTheme(app.themeIndex);
                                             }
                                         }, function(error) {
                                             console.log("Error: ", error.message);
@@ -928,7 +938,7 @@ define([
                     }
                 }
                 else
-                    loadMainTheme(app.currentThemeIndex);
+                    loadMainTheme(app.themeIndex);
             }
             else {
                 app.layersLoaded = 0,
@@ -1167,7 +1177,7 @@ define([
                             fadeOutLegend.play();
                         }
                     });
-;
+
                     app.firstLV_load = false;
                 }
 
@@ -1214,24 +1224,20 @@ define([
                             if (layer.hasOwnProperty("checked")) {
                                 if (layerIndex === 0)
                                      dojo.place("<div id='radioWrapper'></div>", "legendWrapper");
-                                //dojo.place("<input type='radio' name='radio-buttons' id='radio_" + layer.ID + "' data-id='" + layer.ID + "'" + 
-                                //(layer.checked ? 'checked' : '') + " /><label for='radio_" + layer.ID + "'>" + layer.name + "</label><br />", "radioWrapper");
-
                                 radio = new dijit.form.RadioButton({
                                     id          : 'radio_' + layer.ID,
                                     label       : layer.name,
                                     value       : layer.ID,
-                                    name        : 'radio-buttons', //layer[i].group,
-                                    //'class'     : layer[i].group,
+                                    name        : 'radio-buttons',
                                     checked     : layer.checked,
                                     onClick     : function(e) {radioClick(this.value);
                                                   }
                                 }, dojo.create('input', null, dojo.byId('radioWrapper')));
                                 dojo.create('label', { 'for' : 'radio_' + layer.ID , innerHTML : layer.name, 'class' : 'radio-buttons' }, dojo.byId('radioWrapper'));
-
-
-                                if (layer.checked)
-                                    visibleLayers.push(layer.ID)
+                                if (layer.checked) {
+                                    visibleLayers.push(layer.ID);
+                                    app.radioSelection = layer.ID;
+                                }
                             }
                             else
                                 visibleLayers.push(layer.ID);
@@ -1372,9 +1378,21 @@ define([
                 });
 
                 mapDeferred.on('update-end', function(){
-                    if (mapDeferred.loaded && mapDeferred === app.currentMap)
-                        //share();
+                    if (mapDeferred.loaded && mapDeferred === app.currentMap) {
+                        if (app.setMap) {
+                            on.emit(dom.byId('subThemeButton' + app.shareObj.subthemeIndex), 'click', {bubbles: true, cancelable: true});
+                            if (app.shareObj.basemap === 'satellite')
+                                on.emit(dom.byId('dijit_MenuItem_1'), 'click', {bubbles: true, cancelable: true});
+                            else if (app.shareObj.basemap === 'chart')
+                                on.emit(dom.byId('dijit_MenuItem_2'), 'click', {bubbles: true, cancelable: true});
+                            app.currentMap.centerAndZoom(app.shareObj.point, app.shareObj.zoom);
+                            if (app.shareObj.hasOwnProperty('radioSelection'))
+                                on.emit(dom.byId('radio_' + app.shareObj.radioSelection), 'click', {bubbles: true, cancelable: true});
+                            app.setMap = false;
+                        }
+                        share();
                         query('#loading').style("display", "none");
+                    }
                 });
 
                 if (mapIndex == 0)
@@ -1391,8 +1409,9 @@ define([
                 });
 
                 mapDeferred.on('load', function(){
-                    if (mapDeferred === app.currentMap)
+                    if (mapDeferred === app.currentMap) {
                         query('#scale')[0].innerHTML = "Scale 1:" + mapDeferred.__LOD.scale.toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    }
                 });
             });
 
@@ -1499,6 +1518,7 @@ define([
                 query('#flex-link')[0].href = configOptions.themes[app.themeIndex].maps[mapIndex].flexLink;
 
             query('#legendAbout p').text(configOptions.themes[app.themeIndex].title + ': ' + configOptions.themes[app.themeIndex].maps[mapIndex].title);
+            share();
         }
 
         updateAboutText = function (subthemeIndex)
@@ -1547,7 +1567,7 @@ define([
         radioClick = function (id)
         {
             app.currentMap.layer.setVisibleLayers([id]);
-            radioSelection = id;
+            app.radioSelection = id;
             app.currentMap.legend.refresh();
             behavior.apply();
             array.forEach(configOptions.themes[app.themeIndex].maps[app.subthemeIndex].layers.dynamicLayers[0].layers, function (v, i) {
@@ -1577,24 +1597,30 @@ define([
         }
 
         setMap = function () {
+            app.setMap = true;
             var shareString = decodeURI(app.url.substr(app.url.indexOf('?') + 1));
-            var share = JSON.parse(shareString);
+            app.shareObj = JSON.parse(shareString);
 
-            if (share.basemap === 'satellite')
-                on.emit(dom.byId('dijit_MenuItem_1'), 'click', {bubbles: true, cancelable: true});
-            else if (share.basemap === 'chart')
-                on.emit(dom.byId('dijit_MenuItem_2'), 'click', {bubbles: true, cancelable: true});
+            if (!app.shareObj.hasOwnProperty('themeIndex')) {
+                if (app.shareObj.basemap === 'satellite')
+                    on.emit(dom.byId('dijit_MenuItem_1'), 'click', {bubbles: true, cancelable: true});
+                else if (app.shareObj.basemap === 'chart')
+                    on.emit(dom.byId('dijit_MenuItem_2'), 'click', {bubbles: true, cancelable: true});
 
-            app.currentMap.centerAndZoom(share.point, share.zoom);
+                app.currentMap.centerAndZoom(app.shareObj.point, app.shareObj.zoom);
 
-            if (share.layerIds.length > 0) {
-                share.layerIds.forEach(function (layerId) {
-                    registry.toArray().forEach(function (widget, i) {
-                        if (widget.type === 'checkbox')
-                            if (widget.id === layerId)
-                                widget.set('checked', true);
+                if (app.shareObj.layerIds.length > 0) {
+                    app.shareObj.layerIds.forEach(function (layerId) {
+                        registry.toArray().forEach(function (widget, i) {
+                            if (widget.type === 'checkbox')
+                                if (widget.id === layerId)
+                                    widget.set('checked', true);
+                        });
                     });
-                });
+                }
+            }
+            else {
+                on.emit(dom.byId('theme' + app.shareObj.themeIndex), 'click', {bubbles: true, cancelable: true});
             }
         }
 
