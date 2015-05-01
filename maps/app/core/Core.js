@@ -9,10 +9,10 @@ app.timeoutID,
 app.lv = false,
 app.firstLV_load = true,
 app.url = window.location.href,
-app.shareUrl = '';
+app.shareUrl = '',
+app.timeout = 2500;
 define([
     'esri/map',
-    'esri/request',
     'esri/layers/FeatureLayer',
     'esri/layers/ArcGISDynamicMapServiceLayer',
     'esri/layers/ArcGISImageServiceLayer',
@@ -57,7 +57,6 @@ define([
     ], 
     function(
         Map,
-        EsriRequest,
         FeatureLayer,
         ArcGISDynamicMapServiceLayer,
         ArcGISImageServiceLayer,
@@ -558,45 +557,6 @@ define([
             });
         }
 
-        // function getFullServices() {
-        //     var requestCount = 0;
-        //     array.forEach(app.fullServiceUrls, function (serviceUrl, mapIndex) {
-        //         var request = EsriRequest({
-        //             url: serviceUrl,
-        //             content: {
-        //                 f: "json"
-        //             },
-        //             handleAs: "json",
-        //             callbackParamName: "callback"
-        //         });
-
-        //         request.then(
-        //             function(result) {
-        //                 result.url = app.fullServiceUrls[mapIndex];
-        //                 result.documentInfo.Title = configOptions.comp_viewer.fullServices[mapIndex].title;
-        //                 result.index = configOptions.comp_viewer.fullServices[mapIndex].index;
-        //                 array.forEach(configOptions.comp_viewer.fullServices[mapIndex].layers, function (configLayer) {
-        //                     array.forEach(result.layers, function (layer) {
-        //                         if (layer.name === configLayer.name) {
-        //                             layer.metadata = configLayer.metadata;
-        //                             if (configLayer.external)
-        //                                 layer.external = configLayer.external;
-        //                             if (configLayer.noSource)
-        //                                 layer.noSource = configLayer.noSource;
-        //                             layer.index = configOptions.comp_viewer.fullServices[mapIndex].index;
-        //                         }
-        //                     });
-        //                 });
-        //                 app.fullServices.push(result);
-        //                 requestCount++;
-        //                 if (requestCount == app.fullServiceUrls.length)
-        //                     createTree();
-        //             }, function(error) {
-        //                 console.log("Error: ", error.message);
-        //         });
-        //     });
-        // }
-
         function createTree() {
             app.myStore = new Memory({getChildren: function (object) {
                     return this.query({parent: object.id});
@@ -726,16 +686,10 @@ define([
                                 dojo.query('#tree, #search-container, #search-results-header').hide();
                                 dojo.query('#layer-info').show();
                                 resizeSidePanel();
-                                var request = EsriRequest({
-                                    url: serviceUrl,
-                                    content: {
-                                        f: "json"
-                                    },
+                                dojoRequest(serviceUrl + '?f=json', {
                                     handleAs: "json",
-                                    callbackParamName: "callback"
-                                });
-
-                                request.then(
+                                    timeout: app.timeout
+                                }).then(
                                     function(result) {
                                         if (app.searchResults)
                                             returnSearchRows();
@@ -898,17 +852,10 @@ define([
         }
 
         sourceDataClick = function (layerName) {
-            console.log(layerName);
-            var request = EsriRequest({
-                url: 'http://50.19.218.171/arcgis1/rest/services/ClipZip/GPServer/Extract%20Data%20TaskKML/submitJob?Raster%5FFormat=File%20Geodatabase%20%2D%20GDB%20%2D%20%2Egdb&Area%5Fof%5FInterest=%7B%22spatialReference%22%3A%7B%22wkid%22%3A102100%7D%2C%22features%22%3A%5B%7B%22geometry%22%3A%7B%22rings%22%3A%5B%5B%5B%2D8374903%2E335905621%2C4717593%2E676607473%5D%2C%5B%2D7176370%2E7323943805%2C4717593%2E676607473%5D%2C%5B%2D7176370%2E7323943805%2C5570019%2E416043529%5D%2C%5B%2D8374903%2E335905621%2C5570019%2E416043529%5D%2C%5B%2D8374903%2E335905621%2C4717593%2E676607473%5D%5D%5D%2C%22spatialReference%22%3A%7B%22wkid%22%3A102100%7D%7D%7D%5D%7D&Layers%5Fto%5FClip=%5B%22' + layerName + '%22%5D&env%3AoutSR=102100&env%3AprocessSR=102100&f=json&Feature%5FFormat=File%20Geodatabase%20%2D%20GDB%20%2D%20%2Egdb&Spatial%5FReference=WGS%201984',
-                content: {
-                    f: "json"
-                },
+            dojoRequest('http://50.19.218.171/arcgis1/rest/services/ClipZip/GPServer/Extract%20Data%20TaskKML/submitJob?Raster%5FFormat=File%20Geodatabase%20%2D%20GDB%20%2D%20%2Egdb&Area%5Fof%5FInterest=%7B%22spatialReference%22%3A%7B%22wkid%22%3A102100%7D%2C%22features%22%3A%5B%7B%22geometry%22%3A%7B%22rings%22%3A%5B%5B%5B%2D8374903%2E335905621%2C4717593%2E676607473%5D%2C%5B%2D7176370%2E7323943805%2C4717593%2E676607473%5D%2C%5B%2D7176370%2E7323943805%2C5570019%2E416043529%5D%2C%5B%2D8374903%2E335905621%2C5570019%2E416043529%5D%2C%5B%2D8374903%2E335905621%2C4717593%2E676607473%5D%5D%5D%2C%22spatialReference%22%3A%7B%22wkid%22%3A102100%7D%7D%7D%5D%7D&Layers%5Fto%5FClip=%5B%22' + layerName + '%22%5D&env%3AoutSR=102100&env%3AprocessSR=102100&f=json&Feature%5FFormat=File%20Geodatabase%20%2D%20GDB%20%2D%20%2Egdb&Spatial%5FReference=WGS%201984?f=json', {
                 handleAs: "json",
-                callbackParamName: "callback"
-            });
-
-            request.then(
+                timeout: app.timeout
+            }).then(
                 function(result) {
                     dojo.setStyle(dojo.byId('source-download-loading'), 'visibility', 'visible');
                     dojo.setStyle(dojo.byId('loading-message'), 'display', 'block');
@@ -922,17 +869,7 @@ define([
 
         checkJobStatus = function (jobId) {
             timeoutId = window.setTimeout( function() {
-                var request = EsriRequest({
-                    url: 'http://50.19.218.171/arcgis1/rest/services/ClipZip/GPServer/Extract%20Data%20TaskKML/jobs/' + jobId,
-                    content: {
-                        _ts : Date.now(),
-                        f   : 'json'
-                    },
-                    handleAs: "json",
-                    callbackParamName: "callback"
-                });
-
-                request.then(
+                dojoRequest('http://50.19.218.171/arcgis1/rest/services/ClipZip/GPServer/Extract%20Data%20TaskKML/jobs/' + jobId + '?_ts=' + Date.now() + '&f=json').then(
                     function(result) {
                         if (result.jobStatus == "esriJobSucceeded") {
                             dojo.setStyle(dojo.byId('source-download-loading'), 'visibility', 'hidden');
@@ -962,16 +899,10 @@ define([
                             {
                                 array.forEach(map.layers.dynamicLayers, function (dynamicLayer, dynamicLayerIndex) {
                                     dynamicLayerCount++;
-                                    var request = EsriRequest({
-                                        url: dynamicLayer.URL + 'layers',
-                                        content: {
-                                            f: "json"
-                                        },
+                                    dojoRequest(dynamicLayer.URL + 'layers?f=json', {
                                         handleAs: "json",
-                                        callbackParamName: "callback"
-                                    });
-
-                                    request.then(
+                                        timeout: app.timeout
+                                    }).then(
                                         function(data) {
                                             requestCount++;
                                             array.forEach(data.layers, function (layerObj, i){
@@ -1008,16 +939,10 @@ define([
                     app.layersUnloaded += group.layers.length;
                     app.mapservers += group.serviceURLs.length;
                     array.forEach(group.serviceURLs, function (serviceURL, i) {
-                        request = EsriRequest({
-                            url: serviceURL + 'layers',
-                            content: {
-                                f: "json"
-                            },
+                        dojoRequest(serviceURL + 'layers?f=json', {
                             handleAs: "json",
-                            callbackParamName: "callback"
-                        });
-
-                        request.then(
+                            timeout: app.timeout
+                        }).then(
                             function(data) {
                                 app.mapserverResponse++;
                                 array.forEach(data.layers, function (layerObj, i) {
@@ -1041,8 +966,7 @@ define([
                                         g.layers.forEach(function(l){
                                             if (l.id === undefined) {
                                                 invalidLayers.push(l);
-                                                console.log('***LAYER ERROR***');
-                                                console.log(l);
+                                                console.log('****** layer error ******\n' + l);
                                             }
                                         });
                                     });
@@ -1063,8 +987,33 @@ define([
                                         createMap();
                                     }
                                 }
-                            }, function(error) {
-                                console.log("Error: ", error.message);
+                            }, function(error, io) {
+                                var url = error.response.url.substr(0, error.response.url.indexOf('layers'));
+                                console.log('****** mapserver timout ****** \n' + error.response.url);
+                                app.mapserverResponse++;
+
+                                configOptions.comp_viewer.groups.forEach(function (g) {
+                                    g.serviceURLs.forEach(function (serviceUrl) {
+                                        if (serviceUrl === url) {
+                                            var validLayers = [];
+                                            g.layers.forEach(function (groupLayer) {
+                                                if (groupLayer.serviceURL !== url)
+                                                    validLayers.push(groupLayer)
+                                                else
+                                                    app.layersUnloaded--;
+                                            });
+                                            g.layers = validLayers;
+                                            console.log('MODIFIED: ' + g.title);
+                                        }
+                                    });
+                                });
+
+                                // if (app.mapservers === app.mapserverResponse) {
+                                //     createMap();
+                                // }
+                                if (app.layersLoaded === app.layersUnloaded) {
+                                                createMap();
+                                            }
                         });
                     });
                 });
