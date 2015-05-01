@@ -303,7 +303,7 @@ li.dropdown {
 #mapControls {
   position: absolute;
   right: 10px;
-  z-index: 999999;
+  z-index: 999;
   top: 67px;
 }
 
