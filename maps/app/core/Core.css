@@ -78,6 +78,34 @@ button.close {
   border-right-color: white;
 }
 
+#scrollable-container .panel-heading-arrow {
+  top             : 37px;
+  z-index         : 2;
+  margin-left     : 0;
+  margin-right    : 0;
+  background-color: #fff;
+  cursor          : default;
+}
+  #scrollable-container .panel-heading-arrow:hover {
+    border-right-color: #697396;
+    border-left-color: #697396;
+  }
+
+#left-arrow.panel-heading-arrow {
+  left          : 0;
+  border-top    : 37px solid transparent;
+  border-bottom : 37px solid transparent;
+  border-right  : 37px solid #D1D2D4;
+}
+
+#right-arrow.panel-heading-arrow {
+  right         : 0;
+  border-top    : 37px solid transparent;
+  border-bottom : 37px solid transparent;
+  border-left   : 37px solid #D1D2D4;
+  border-right  : 0;
+}
+
 #show-hide-btn-container {
   width: 30px;
   height: 30px;
@@ -134,7 +162,7 @@ li.dropdown {
 
 .navbar-fixed-top {
   margin: 0;
-  height: 63px;
+  height: 115px;
 }
 
 .navbar-inner {
@@ -188,14 +216,20 @@ li.dropdown {
   text-align: center;
 }
 
-#mapList .btn,
-.carousel .btn {
+#mapList .btn
+/*, .carousel .btn*/ {
   color: #fff;
   background-color: rgb(209, 210, 212);
   border-bottom: none;
   border-color: #fff;
-  padding: 2px 4px 2px 4px;
+  /*padding: 2px 4px 2px 4px;*/
   font-weight: bold;
+  width             : 100px;
+  background-size   : 100px;
+  background-repeat : no-repeat;
+  margin-right      : 12px;
+  height            : 74px;
+  z-index           : 1;
 }
 
 /*#mapList .btn:hover,
@@ -209,7 +243,7 @@ li.dropdown {
 }
 
 .map-pane {
-    margin-top: 63px;
+    margin-top: 115px;
     min-height: 100%; 
     max-height: 100%;
     width: 100%;
@@ -304,7 +338,7 @@ li.dropdown {
   position: absolute;
   right: 10px;
   z-index: 999;
-  top: 67px;
+  top: 117px;
 }
 
 .no-bottom-border {
@@ -464,7 +498,7 @@ table.esriLegendLayer tr td {
 }
 
 #legendModal.modal {
-  top: 100px;
+  top: 115px;
   left: 65px;
   z-index: 9999999999;
 }
@@ -848,7 +882,7 @@ img[src="img/ais-legend.png"] {
 }
 
 #subthemeButtonGroup {
-  margin-top: 63px;
+  margin-top: 115px;
   margin-left: auto;
   margin-right: auto;
   position: absolute;
@@ -986,118 +1020,122 @@ td.dijitMenuItemIconCell span{
   left      : 15px;
 }
 
+#theme-button-container {
+  width: 1333px;
+  margin-left: 33px;
+}
+
 /* theme buttons */
 
 #theme0 {
   border-top-left-radius: 0;
-  background-image: url('../../img/theme-buttons/top/maritimecommerce-off.png');
-  width: 73px;
+  background-image: url('../../img/theme-buttons/top/maritime-commerce-out.png');
 }
 
   #theme0:hover {
-    background-image: url('../../img/theme-buttons/top/maritimecommerce-mouseover.png');
+    background-image: url('../../img/theme-buttons/top/maritime-commerce-over.png');
   }
 
   #theme0.active-theme {
-    background-image: url('../../img/theme-buttons/top/maritimecommerce-on.png');
+    background-image: url('../../img/theme-buttons/top/maritime-commerce-over.png');
   }
 
 #theme1 {
-  background-image: url('../../img/theme-buttons/top/energy-off.png');
-  width: 57px;
+  background-image: url('../../img/theme-buttons/top/energy-and-infrastructure-out.png');
 }
 
   #theme1:hover {
-    background-image: url('../../img/theme-buttons/top/energy-mouseover.png');
+    background-image: url('../../img/theme-buttons/top/energy-and-infrastructure-over.png');
   }
 
 #theme2 {
-  background-image: url('../../img/theme-buttons/top/recreation-off.png');
-  width: 87px;
+  background-image: url('../../img/theme-buttons/top/recreation-out.png');
 }
 
   #theme2:hover {
-    background-image: url('../../img/theme-buttons/top/recreation-mouseover.png');
+    background-image: url('../../img/theme-buttons/top/recreation-over.png');
   }
 
 #theme3 {
-  background-image: url('../../img/theme-buttons/top/commercialfishing-off.png');
-  width: 141px;
+  background-image: url('../../img/theme-buttons/top/commercial-fishing-out.png');
 }
 
   #theme3:hover {
-    background-image: url('../../img/theme-buttons/top/commercialfishing-mouseover.png');
+    background-image: url('../../img/theme-buttons/top/commercial-fishing-over.png');
   }
 
 #theme4 {
-  background-image: url('../../img/theme-buttons/top/aquaculture-off.png');
-  width: 95px;
+  background-image: url('../../img/theme-buttons/top/aquaculture-out.png');
 }
 
   #theme4:hover {
-    background-image: url('../../img/theme-buttons/top/aquaculture-mouseover.png');
+    background-image: url('../../img/theme-buttons/top/aquaculture-over.png');
   }
 
 #theme5 {
-  background-image: url('../../img/theme-buttons/top/culture-off.png');
-  width: 59px;
+  background-image: url('../../img/theme-buttons/top/culture-out.png');
 }
 
   #theme5:hover {
-    background-image: url('../../img/theme-buttons/top/culture-mouseover.png');
+    background-image: url('../../img/theme-buttons/top/culture-over.png');
   }
 
 #theme6 {
-  background-image: url('../../img/theme-buttons/top/fish-shellfish-off.png');
-  width: 111px;
+  background-image: url('../../img/theme-buttons/top/fish-and-shellfish-out.png');
 }
 
   #theme6:hover {
-    background-image: url('../../img/theme-buttons/top/fish-shellfish-mouseover.png');
+    background-image: url('../../img/theme-buttons/top/fish-and-shellfish-over.png');
   }
 
 #theme7 {
-  background-image: url('../../img/theme-buttons/top/mammals-off.png');
-  width: 157px;
+  background-image: url('../../img/theme-buttons/top/mammals-and-turtles-out.png');
 }
 
   #theme7:hover {
-    background-image: url('../../img/theme-buttons/top/mammals-mouseover.png');
+    background-image: url('../../img/theme-buttons/top/mammals-and-turtles-over.png');
   }
 
 #theme8 {
-  background-image: url('../../img/theme-buttons/top/othermarinelife-off.png');
-  width: 128px;
+  background-image: url('../../img/theme-buttons/top/other-marine-life-out.png');
 }
 
   #theme8:hover {
-    background-image: url('../../img/theme-buttons/top/othermarinelife-mouseover.png');
+    background-image: url('../../img/theme-buttons/top/other-marine-life-over.png');
   }
 
 #theme9 {
   border-top-right-radius: 0;
-  background-image: url('../../img/theme-buttons/top/waterquality-off.png');
-  width: 105px;
+  background-image: url('../../img/theme-buttons/top/water-quality-out.png');
 }
 
   #theme9:hover {
-    background-image: url('../../img/theme-buttons/top/waterquality-mouseover.png');
+    background-image: url('../../img/theme-buttons/top/water-quality-over.png');
+  }
+
+#theme10 {
+  border-top-right-radius: 0;
+  background-image: url('../../img/theme-buttons/top/restoration-out.png');
+}
+
+  #theme10:hover {
+    background-image: url('../../img/theme-buttons/top/restoration-over.png');
   }
 
 /* for data viewer button */
 
-button#theme10 {
+button#theme11 {
   width       : 93px;
   text-indent : 0;
   border-top-right-radius: 0;
 }
 
-button#theme10:hover {
+button#theme11:hover {
   background-color: #999;
   border-top-right-radius: 0;
 }
 
-button#theme10.active-theme {
+button#theme11.active-theme {
   background-color: #697396;
 }
 
@@ -1183,11 +1221,11 @@ button#theme10.active-theme {
 }
 
   #side-tabs img:nth-child(1) {
-    top: 100px;
+    top: 145px;
   }
 
   #side-tabs img:nth-child(2) {
-    top: 200px;
+    top: 245px;
   }
 
   #side-tabs img:nth-child(3) {

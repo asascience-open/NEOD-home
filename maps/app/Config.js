@@ -336,8 +336,12 @@ define([],
 				{
 					title: "Water Quality",
 					maps: []
-				}
-				,{
+				},
+				{
+					title: "Restoration",
+					maps: []
+				},
+				{
 					title: "Data Viewer",
 					maps: []
 				}

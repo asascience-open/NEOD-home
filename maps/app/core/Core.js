@@ -40,6 +40,7 @@ define([
     'dojo/dom',
     'dojo/dom-attr',
     'dojo/dom-style',
+    'dojo/mouse',
     'dijit/registry',
     'dojo/store/Memory',
     'dijit/tree/ObjectStoreModel',
@@ -84,6 +85,7 @@ define([
         dom,
         domAttr,
         domStyle,
+        mouse,
         registry,
         Memory,
         ObjectStoreModel,
@@ -111,15 +113,16 @@ define([
 
             on(dojo.query('#themeButtonGroup button'), 'click', function (e) {
                 app.themeIndex = parseInt(this.attributes["data-theme-id"].value, 10);
-                domClass.remove(query('#themeButtonGroup .active-theme')[0], 'active-theme');
-                if (app.themeIndex !== 10) { // 10 is data viewer
-                    if (app.themeIndex === 0) { // 0 is maritime commerce
+                if (app.themeIndex !== 11) { // 11 is data viewer
+                    if (app.themeIndex === 0 && !domClass.contains(this, 'active-theme')) { // 0 is maritime commerce
+                        domClass.remove(query('#themeButtonGroup .active-theme')[0], 'active-theme');
                         domClass.add(this, 'active-theme');
                         app.lv = true;
                         getLayerIds(app.lv);
                     }
                 }
                 else {
+                    domClass.remove(query('#themeButtonGroup .active-theme')[0], 'active-theme');
                     domClass.add(this, 'active-theme');
                     app.sidePanel.style.display = 'block';
                     query('.legendDiv').forEach(domConstruct.destroy);
@@ -555,6 +558,54 @@ define([
                     });
                     domAttr.set(this, 'title', 'Hide Legend');
                 }
+            });
+
+            app.buttons = dom.byId('themeButtonGroup');
+
+            var shiftLeftIntervalID,
+                shiftRightIntervalID;
+
+            app.buttonsLeftPosition = domStyle.get(app.buttons, 'left');
+            app.buttonsContainerWidth = domStyle.get(app.buttons, 'width');
+
+            var shiftRight = function () {
+                if (app.buttonsLeftPosition < 0) {
+                    app.buttonsLeftPosition += 20;
+                    fx.animateProperty({
+                        node: app.buttons,
+                        properties: {
+                            left: app.buttonsLeftPosition
+                        }
+                    }).play();
+                }
+            }
+
+            var shiftLeft = function () {
+                if (app.buttonsLeftPosition + (app.buttonsContainerWidth + 80) >= app.screenWidth) {
+                    app.buttonsLeftPosition -= 20;
+                    fx.animateProperty({
+                        node: app.buttons,
+                        properties: {
+                            left: app.buttonsLeftPosition
+                        }
+                    }).play();
+                }
+            }
+
+            on(dom.byId('left-arrow'), mouse.enter, function (e) {
+                shiftRightIntervalID = setInterval(shiftRight, 150);
+            });
+
+            on(dom.byId('left-arrow'), mouse.leave, function (e) {
+                clearInterval(shiftRightIntervalID);
+            });
+
+            on(dom.byId('right-arrow'), mouse.enter, function (e) {
+                shiftLeftIntervalID = setInterval(shiftLeft, 150);
+            });
+
+            on(dom.byId('right-arrow'), mouse.leave, function (e) {
+                clearInterval(shiftLeftIntervalID);
             });
         }
 
@@ -1115,29 +1166,17 @@ define([
                 dojo.query('.lv').style({'display' : 'block'});
                 domClass.remove('data-viewer', 'active');
 
-                //query('#mapCarousel').carousel({interval: false});
-
-                // query('#mapCarousel button').on('click', function (e){
-                //     query('#loading').style("display", "block");
-                //     domClass.remove(query('#mapCarousel button.btn.active')[0], 'active');
-                //     domClass.add(query(e.target), 'active');
-                //     app.themeIndex = parseInt(e.currentTarget.id.substring(e.currentTarget.id.length - 1), 10);
-                //     getLayerIds();
-                // });
-
                 if (app.screenWidth < 1024)
                     domClass.remove("legendButton", "active");
                 else
                     query('#legendModal').style({
-                        'display'   : 'block',
-                        'top'       : '100px',
-                        'left'      : '65px'
+                        'display'   : 'block'
                     });
 
                 if (app.firstLV_load) {
                     var constraintBox = {
                         l:  0,
-                        t:  63,
+                        t:  115,
                         w:  app.screenWidth,
                         h:  app.mapHeight
                     };
