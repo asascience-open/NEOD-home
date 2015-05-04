@@ -498,7 +498,7 @@ table.esriLegendLayer tr td {
 }
 
 #legendModal.modal {
-  top: 115px;
+  top: 145px;
   left: 65px;
   z-index: 9999999999;
 }
