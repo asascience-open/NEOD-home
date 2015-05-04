@@ -138,6 +138,7 @@ define([
                     });
                     domConstruct.destroy("radioWrapper");
                     domStyle.set(query('#legendModal')[0], 'display', 'none');
+                    domStyle.set(query('#side-tabs')[0], 'display', 'none');
                     domClass.add(query('#data-viewer')[0], 'active');
                     app.currentMap = app.dataViewer;
                     app.lv = false;
