@@ -666,7 +666,7 @@ define([
                                         checkboxChange(b, service, id, theme, tile, duplicate);
                                     }
                                 }, checkboxId).startup();
-                                domConstruct.place('<span role="presentation" class="dijitInline dijitIcon dijitTreeIcon dijitIconFile" data-dojo-attach-point="iconNode" title="Layer Information" data-service_layer="' + checkboxId + '"></span><div class="slider-container" data-service_layer="' + checkboxId + '"></div>', element, 'last');
+                                domConstruct.place('<img src="../images/extlink.gif" title="Layer Information" data-service_layer="' + checkboxId + '" /><div class="slider-container" data-service_layer="' + checkboxId + '"></div>', element, 'last');
                                 if (subGroup) {
                                     domConstruct.place('<div class="subGroup">' + subGroup + '</div>', element, 'first');
                                 }
@@ -682,7 +682,7 @@ define([
                             dojo.query('#tree').show();
                             firstCompLoad = false;
 
-                            on(query('.dijitIconFile'), 'click', function (e) {
+                            on(query('#side-panel img[title="Layer Information"]'), 'click', function (e) {
                                 dom.byId('loading').style.display = 'block';
                                 var serviceUrl = e.target.attributes['data-service_layer'].value;
                                 if (serviceUrl.match(/duplicate/))

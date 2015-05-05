@@ -787,11 +787,11 @@ img[src="img/ais-legend.png"] {
   margin-bottom : 6px;
 }
 
-.dijitInline.dijitIcon.dijitTreeIcon.dijitIconFile {
+#side-panel img[title="Layer Information"] {
   float       : right !important;
   cursor      : pointer !important;
-  margin-right: 5px;
-  margin-top  : 2px;
+  margin-right: 7px;
+  margin-top  : 6px;
   display     : inline-block;
 }
 
