@@ -338,7 +338,7 @@ define([],
 					maps: []
 				}
 				,{
-					title: "Data Viewer",
+					title: "All Data",
 					maps: []
 				}
 			],
