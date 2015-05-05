@@ -515,7 +515,7 @@ table.esriLegendLayer tr td {
 }
 
 #legendModal.modal {
-  top: 145px;
+  top: 170px;
   left: 65px;
   z-index: 9999999999;
 }
@@ -1243,11 +1243,11 @@ button#theme12.active-theme {
 }
 
   #side-tabs img:nth-child(1) {
-    top: 145px;
+    top: 170px;
   }
 
   #side-tabs img:nth-child(2) {
-    top: 245px;
+    top: 270px;
   }
 
   #side-tabs img:nth-child(3) {

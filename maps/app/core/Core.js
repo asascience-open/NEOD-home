@@ -570,9 +570,11 @@ define([
             app.buttonsLeftPosition = domStyle.get(app.buttons, 'left');
             app.buttonsContainerWidth = domStyle.get(app.buttons, 'width');
 
+            var pixelsToShift = 25;
+
             var shiftRight = function () {
                 if (app.buttonsLeftPosition < 0) {
-                    app.buttonsLeftPosition += 20;
+                    app.buttonsLeftPosition += pixelsToShift;
                     fx.animateProperty({
                         node: app.buttons,
                         properties: {
@@ -583,8 +585,8 @@ define([
             }
 
             var shiftLeft = function () {
-                if (app.buttonsLeftPosition + (app.buttonsContainerWidth + 80) >= app.screenWidth) {
-                    app.buttonsLeftPosition -= 20;
+                if (app.buttonsLeftPosition + (app.buttonsContainerWidth + 75) >= app.screenWidth) {
+                    app.buttonsLeftPosition -= pixelsToShift;
                     fx.animateProperty({
                         node: app.buttons,
                         properties: {
@@ -1178,7 +1180,7 @@ define([
                 if (app.firstLV_load) {
                     var constraintBox = {
                         l:  0,
-                        t:  115,
+                        t:  135,
                         w:  app.screenWidth,
                         h:  app.mapHeight
                     };
