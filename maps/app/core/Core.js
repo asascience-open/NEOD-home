@@ -113,7 +113,7 @@ define([
 
             on(dojo.query('#themeButtonGroup button'), 'click', function (e) {
                 var themeIndex = parseInt(this.attributes["data-theme-id"].value, 10);
-                if (themeIndex !== 11) { // 11 is data viewer
+                if (themeIndex !== 12) { // 11 is data viewer
                     if (themeIndex === 0 && !domClass.contains(this, 'active-theme')) { // 0 is maritime commerce
                         app.themeIndex = themeIndex;
                         domClass.remove(query('#themeButtonGroup .active-theme')[0], 'active-theme');
@@ -122,7 +122,7 @@ define([
                         getLayerIds(app.lv);
                     }
                 }
-                else if (themeIndex === 11) {
+                else if (themeIndex === 12) {
                     domClass.remove(query('#themeButtonGroup .active-theme')[0], 'active-theme');
                     domClass.add(this, 'active-theme');
                     app.sidePanel.style.display = 'block';

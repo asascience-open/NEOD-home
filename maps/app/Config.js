@@ -342,6 +342,10 @@ define([],
 					maps: []
 				},
 				{
+					title: "Birds",
+					maps: []
+				},
+				{
 					title: "Data Viewer",
 					maps: []
 				}

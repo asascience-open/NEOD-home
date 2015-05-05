@@ -78,13 +78,34 @@ button.close {
   border-right-color: white;
 }
 
+#scrollable-container .arrow-container {
+  height            : 79px;
+  width             : 48px;
+  position          : absolute;
+  top               : 0;
+  background-color  : #fff;
+  z-index           : 2;
+  margin-top        : 40px;
+}
+
+#left-arrow-container {
+  left: 0;
+}
+
+#right-arrow-container {
+  right: 0;
+}
+
 #scrollable-container .panel-heading-arrow {
-  top             : 37px;
+  margin-top      : 0;
+  top             : 11px;
   z-index         : 2;
   margin-left     : 0;
   margin-right    : 0;
   background-color: #fff;
   cursor          : default;
+  border-top      : 30px solid transparent;
+  border-bottom   : 30px solid transparent;
 }
   #scrollable-container .panel-heading-arrow:hover {
     border-right-color: #697396;
@@ -92,17 +113,13 @@ button.close {
   }
 
 #left-arrow.panel-heading-arrow {
-  left          : 0;
-  border-top    : 37px solid transparent;
-  border-bottom : 37px solid transparent;
-  border-right  : 37px solid #D1D2D4;
+  left          : 9px;
+  border-right  : 28px solid #D1D2D4;
 }
 
 #right-arrow.panel-heading-arrow {
-  right         : 0;
-  border-top    : 37px solid transparent;
-  border-bottom : 37px solid transparent;
-  border-left   : 37px solid #D1D2D4;
+  right         : 9px;
+  border-left   : 28px solid #D1D2D4;
   border-right  : 0;
 }
 
@@ -162,7 +179,7 @@ li.dropdown {
 
 .navbar-fixed-top {
   margin: 0;
-  height: 115px;
+  height: 135px;
 }
 
 .navbar-inner {
@@ -224,11 +241,11 @@ li.dropdown {
   border-color: #fff;
   /*padding: 2px 4px 2px 4px;*/
   font-weight: bold;
-  width             : 100px;
-  background-size   : 100px;
+  width             : 141px;
+  background-size   : 141px;
   background-repeat : no-repeat;
   margin-right      : 12px;
-  height            : 74px;
+  height            : 79px;
   z-index           : 1;
 }
 
@@ -243,7 +260,7 @@ li.dropdown {
 }
 
 .map-pane {
-    margin-top: 115px;
+    margin-top: 135px;
     min-height: 100%; 
     max-height: 100%;
     width: 100%;
@@ -338,7 +355,7 @@ li.dropdown {
   position: absolute;
   right: 10px;
   z-index: 999;
-  top: 117px;
+  top: 137px;
 }
 
 .no-bottom-border {
@@ -882,7 +899,7 @@ img[src="img/ais-legend.png"] {
 }
 
 #subthemeButtonGroup {
-  margin-top: 115px;
+  margin-top: 135px;
   margin-left: auto;
   margin-right: auto;
   position: absolute;
@@ -1021,7 +1038,7 @@ td.dijitMenuItemIconCell span{
 }
 
 #theme-button-container {
-  width: 1333px;
+  width: 1977px;
   margin-left: 33px;
 }
 
@@ -1029,113 +1046,118 @@ td.dijitMenuItemIconCell span{
 
 #theme0 {
   border-top-left-radius: 0;
-  background-image: url('../../img/theme-buttons/top/maritime-commerce-out.png');
+  background-image: url('../../img/theme-buttons/top/maritime_commerce.png');
 }
 
-  #theme0:hover {
+  /*#theme0:hover {
     background-image: url('../../img/theme-buttons/top/maritime-commerce-over.png');
-  }
+  }*/
 
-  #theme0.active-theme {
+ /* #theme0.active-theme {
     background-image: url('../../img/theme-buttons/top/maritime-commerce-over.png');
-  }
+  }*/
 
 #theme1 {
-  background-image: url('../../img/theme-buttons/top/energy-and-infrastructure-out.png');
+  background-image: url('../../img/theme-buttons/top/energy_infrastructure.png');
 }
 
-  #theme1:hover {
+  /*#theme1:hover {
     background-image: url('../../img/theme-buttons/top/energy-and-infrastructure-over.png');
-  }
+  }*/
 
 #theme2 {
-  background-image: url('../../img/theme-buttons/top/recreation-out.png');
+  background-image: url('../../img/theme-buttons/top/recreation.png');
 }
 
-  #theme2:hover {
+  /*#theme2:hover {
     background-image: url('../../img/theme-buttons/top/recreation-over.png');
-  }
+  }*/
 
 #theme3 {
-  background-image: url('../../img/theme-buttons/top/commercial-fishing-out.png');
+  background-image: url('../../img/theme-buttons/top/commercial_fishing.png');
 }
 
-  #theme3:hover {
+  /*#theme3:hover {
     background-image: url('../../img/theme-buttons/top/commercial-fishing-over.png');
-  }
+  }*/
 
 #theme4 {
-  background-image: url('../../img/theme-buttons/top/aquaculture-out.png');
+  background-image: url('../../img/theme-buttons/top/aquaculture.png');
 }
 
-  #theme4:hover {
+  /*#theme4:hover {
     background-image: url('../../img/theme-buttons/top/aquaculture-over.png');
-  }
+  }*/
 
 #theme5 {
-  background-image: url('../../img/theme-buttons/top/culture-out.png');
+  background-image: url('../../img/theme-buttons/top/culture.png');
 }
 
-  #theme5:hover {
+  /*#theme5:hover {
     background-image: url('../../img/theme-buttons/top/culture-over.png');
-  }
+  }*/
 
 #theme6 {
-  background-image: url('../../img/theme-buttons/top/fish-and-shellfish-out.png');
+  background-image: url('../../img/theme-buttons/top/fish_shellfish.png');
 }
 
-  #theme6:hover {
+  /*#theme6:hover {
     background-image: url('../../img/theme-buttons/top/fish-and-shellfish-over.png');
-  }
+  }*/
 
 #theme7 {
-  background-image: url('../../img/theme-buttons/top/mammals-and-turtles-out.png');
+  background-image: url('../../img/theme-buttons/top/mammals_turtles.png');
 }
 
-  #theme7:hover {
+  /*#theme7:hover {
     background-image: url('../../img/theme-buttons/top/mammals-and-turtles-over.png');
-  }
+  }*/
 
 #theme8 {
-  background-image: url('../../img/theme-buttons/top/other-marine-life-out.png');
+  background-image: url('../../img/theme-buttons/top/other_marine_life.png');
 }
 
-  #theme8:hover {
+  /*#theme8:hover {
     background-image: url('../../img/theme-buttons/top/other-marine-life-over.png');
-  }
+  }*/
 
 #theme9 {
   border-top-right-radius: 0;
-  background-image: url('../../img/theme-buttons/top/water-quality-out.png');
+  background-image: url('../../img/theme-buttons/top/water_quality.png');
 }
 
-  #theme9:hover {
+  /*#theme9:hover {
     background-image: url('../../img/theme-buttons/top/water-quality-over.png');
-  }
+  }*/
 
 #theme10 {
   border-top-right-radius: 0;
-  background-image: url('../../img/theme-buttons/top/restoration-out.png');
+  background-image: url('../../img/theme-buttons/top/restoration.png');
 }
 
-  #theme10:hover {
+  /*#theme10:hover {
     background-image: url('../../img/theme-buttons/top/restoration-over.png');
-  }
+  }*/
+
+#theme11 {
+  border-top-right-radius: 0;
+  background-image: url('../../img/theme-buttons/top/birds.png');
+}
 
 /* for data viewer button */
 
-button#theme11 {
+button#theme12 {
   width       : 93px;
   text-indent : 0;
   border-top-right-radius: 0;
 }
 
-button#theme11:hover {
+button#theme12:hover {
   background-color: #999;
   border-top-right-radius: 0;
 }
 
-button#theme11.active-theme {
+button#theme12.active-theme {
   background-color: #697396;
 }
 
