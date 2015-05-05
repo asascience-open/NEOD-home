@@ -145,7 +145,7 @@ body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom
 
 .dijitSliderBumperH,
 .dijitSliderBarH {
-  height: 6px;
+  height: 4px;
 }
 
 .dijitRuleLabel.dijitRuleLabelH {
