@@ -1180,7 +1180,7 @@ define([
                 if (app.firstLV_load) {
                     var constraintBox = {
                         l:  0,
-                        t:  135,
+                        t:  143,
                         w:  app.screenWidth,
                         h:  app.mapHeight
                     };

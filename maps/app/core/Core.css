@@ -79,7 +79,7 @@ button.close {
 }
 
 #scrollable-container .arrow-container {
-  height            : 79px;
+  height            : 94px;
   width             : 48px;
   position          : absolute;
   top               : 0;
@@ -179,7 +179,7 @@ li.dropdown {
 
 .navbar-fixed-top {
   margin: 0;
-  height: 135px;
+  height: 143px;
 }
 
 .navbar-inner {
@@ -245,7 +245,7 @@ li.dropdown {
   background-size   : 141px;
   background-repeat : no-repeat;
   margin-right      : 12px;
-  height            : 79px;
+  height            : 94px;
   z-index           : 1;
 }
 
@@ -260,7 +260,7 @@ li.dropdown {
 }
 
 .map-pane {
-    margin-top: 135px;
+    margin-top: 143px;
     min-height: 100%; 
     max-height: 100%;
     width: 100%;
@@ -355,7 +355,7 @@ li.dropdown {
   position: absolute;
   right: 10px;
   z-index: 999;
-  top: 137px;
+  top: 145px;
 }
 
 .no-bottom-border {
@@ -515,7 +515,7 @@ table.esriLegendLayer tr td {
 }
 
 #legendModal.modal {
-  top: 170px;
+  top: 190px;
   left: 65px;
   z-index: 9999999999;
 }
@@ -899,7 +899,7 @@ img[src="img/ais-legend.png"] {
 }
 
 #subthemeButtonGroup {
-  margin-top: 135px;
+  margin-top: 143px;
   margin-left: auto;
   margin-right: auto;
   position: absolute;
@@ -1038,7 +1038,7 @@ td.dijitMenuItemIconCell span{
 }
 
 #theme-button-container {
-  width: 1977px;
+  width: 1985px;
   margin-left: 33px;
 }
 
@@ -1058,6 +1058,8 @@ td.dijitMenuItemIconCell span{
   }*/
 
 #theme1 {
+  width: 149px !important;
+  background-size: 149px !important;
   background-image: url('../../img/theme-buttons/top/energy_infrastructure.png');
 }
 
@@ -1148,6 +1150,7 @@ td.dijitMenuItemIconCell span{
 
 button#theme12 {
   width       : 93px;
+  height      : 79px !important;
   text-indent : 0;
   border-top-right-radius: 0;
 }
@@ -1243,16 +1246,16 @@ button#theme12.active-theme {
 }
 
   #side-tabs img:nth-child(1) {
-    top: 170px;
+    top: 190px;
   }
 
   #side-tabs img:nth-child(2) {
-    top: 270px;
+    top: 290px;
   }
 
-  #side-tabs img:nth-child(3) {
+  /*#side-tabs img:nth-child(3) {
     top: 300px;
-  }
+  }*/
 
 .new-map-box-head {
   padding-right: 20px;
