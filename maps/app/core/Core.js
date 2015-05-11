@@ -1046,9 +1046,9 @@ define([
             if (b) {
                 if (theme) {
                     if (tile)
-                        var layer = new ArcGISTiledMapServiceLayer(service, {id : layerId});
+                        var layer = new ArcGISTiledMapServiceLayer(service, {id : layerId, opacity : 0.8});
                     else {
-                        var layer = new ArcGISDynamicMapServiceLayer(service, {id : layerId});
+                        var layer = new ArcGISDynamicMapServiceLayer(service, {id : layerId, opacity : 0.8});
                         layer.setVisibleLayers([id]);
                     }
                 }
@@ -1065,7 +1065,7 @@ define([
 
                 var slider = new HorizontalSlider({
                     name                : 'slider_' + layerId,
-                    value               : 10,
+                    value               : 8,
                     minimum             : 0,
                     maximum             : 10,
                     discreteValues      : 1,
