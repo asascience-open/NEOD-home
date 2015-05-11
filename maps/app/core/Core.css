@@ -384,8 +384,9 @@ div#watermark{
     text-shadow: #fff 1px 1px;
     font-size: 15px;
     z-index: 2;
-    margin-left: 315px;
+    left: 315px;
     width: 150px;
+    display: none;
 }
 span#scale {
     position: fixed;

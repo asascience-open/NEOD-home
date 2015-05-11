@@ -116,6 +116,7 @@ define([
                         app.themeIndex = themeIndex;
                         domClass.remove(query('#themeButtonGroup .active-theme')[0], 'active-theme');
                         domClass.add(this, 'active-theme');
+                        dom.byId('watermark').style.left = '9px';
                         app.lv = true;
                         getLayerIds(app.lv);
                     }
@@ -124,6 +125,7 @@ define([
                     domClass.remove(query('#themeButtonGroup .active-theme')[0], 'active-theme');
                     domClass.add(this, 'active-theme');
                     app.sidePanel.style.display = 'block';
+                    dom.byId('watermark').style.left = '315px';
                     query('.legendDiv').forEach(domConstruct.destroy);
                     query('.lite-viewer.map').forEach(domConstruct.destroy);
                     query('#legendWrapper .notice').forEach(domConstruct.destroy);
@@ -460,7 +462,8 @@ define([
                 query('#mapList .button-container').style({'visibility' : 'visible'});
                 createBasemapGallery();
                 domStyle.set(dom.byId('themeButtonGroup'), 'visibility', 'visible');
-                domStyle.set(dom.byId('side-panel'), 'visibility', 'visible');
+                app.sidePanel.style.visibility = 'visible';
+                dom.byId('watermark').style.display = 'block';
                 domStyle.set(dom.byId('loading'), 'visibility', 'visible');
                 resizeSidePanel();
                 app.legend = new Legend({map: app.currentMap}, 'legend-dv');
@@ -488,7 +491,10 @@ define([
             on(dom.byId('show-hide-btn'), 'click', function (e){
                 var width = '100%';
                 if (app.sidePanelVisible) {
-                    coreFx.slideTo({ node:  app.sidePanel, left: (domStyle.get(app.sidePanel, 'width') * -1), top: 0 }).play();
+                    var sidePanelWidth = domStyle.get(app.sidePanel, 'width');
+                    var hideSidePanel = coreFx.slideTo({ node:  app.sidePanel, left: sidePanelWidth * -1, top: 0 });
+                    var slideWatermarkLeft = fx.animateProperty({ node:  dom.byId('watermark'), properties : { left : 9}});
+                    coreFx.combine([hideSidePanel, slideWatermarkLeft]).play();
                     coreFx.slideTo({ node:  this.parentNode, left: 31, top: 0 }).play();
                     app.currentMap.resize(true);
                     app.sidePanelVisible = false;
@@ -499,7 +505,9 @@ define([
                     domAttr.set(this, 'title', 'Show Panel');
                 }
                 else {
-                    coreFx.slideTo({ node:  app.sidePanel, left: 0, top: 0 }).play();
+                    var showSidePanel = coreFx.slideTo({ node:  app.sidePanel, left: 0, top: 0 });
+                    var slideWatermarkRight = fx.animateProperty({ node:  dom.byId('watermark'), properties : { left : 315}});
+                    coreFx.combine([showSidePanel, slideWatermarkRight]).play();
                     app.sidePanelVisible = true;
                     domStyle.set(this, {
                         borderRight : '10px solid #D1D2D4',
