@@ -995,7 +995,8 @@ define([
                                         g.layers.forEach(function(l){
                                             if (l.id === undefined) {
                                                 invalidLayers.push(l);
-                                                console.log('****** layer error ******\n' + l);
+                                                console.log('****** layer error ******');
+                                                console.log(l);
                                             }
                                         });
                                     });
