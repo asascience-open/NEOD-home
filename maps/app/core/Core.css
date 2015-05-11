@@ -781,10 +781,15 @@ img[src="img/ais-legend.png"] {
   white-space: normal !important;
 }
 
+.dijitTreeIsRoot > div:first-child {
+  color: #006633;
+}
+
 .dijitTreeRow .subGroup {
   font-weight   : bold;
   margin-left   : -12px;
   margin-bottom : 6px;
+  color         : #006633;
 }
 
 #side-panel img[title="Layer Information"] {
