@@ -801,6 +801,10 @@ img[src="img/ais-legend.png"] {
   display     : inline-block;
 }
 
+#dijit_Tree_0 {
+  overflow-y: hidden;
+}
+
 .no-children span.dijitTreeLabel {
   display     : inline-block;
   max-width   : 120px;
