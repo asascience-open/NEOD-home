@@ -1,9 +1,9 @@
 define([],
 	function ()
 	{
-		var serviceURL 			= "http://50.19.218.171/arcgis1/rest/services/",
+		var serviceURL 			= 'http://50.19.218.171/arcgis1/rest/services/',
 			marineCadastre		= 'http://coast.noaa.gov/arcgis/rest/services/MarineCadastre/',
-			oceanUses 			= serviceURL + "OceanUses/MapServer/",
+			oceanUses 			= serviceURL + 'OceanUses/MapServer/',
 			maritimeCommerce 	= serviceURL + 'SiteDev/MaritimeCommerce/MapServer/',
 			aquaculture			= serviceURL + 'SiteDev/Aquaculture/MapServer/',
 			otherMarineLife		= serviceURL + 'SiteDev/OtherMarineLife/MapServer/',
@@ -18,6 +18,10 @@ define([],
 			securedLands		= serviceURL + 'SecuredLands2012/MapServer/',
 			administrative		= serviceURL + 'Administrative/MapServer/',
 			marineMammals		= serviceURL + 'SiteDev/MarineMammalsAndSeaTurtles/MapServer/',
+			mtkBathy			= serviceURL + 'Bathymetry/MontaukToNantucketShoalsBathymetry/MapServer/',
+			physOcean			= serviceURL + 'PhysicalOceanography/MapServer/',
+			bio					= serviceURL + 'Biology/MapServer/',
+			reference			= serviceURL + 'Reference/MapServer/',
 			noaaEFH				= 'http://egisws02.nos.noaa.gov/ArcGIS/rest/services/NMFS/EFHAreasProtectedFromFishing/MapServer/',
 			noaaHAPC			= 'http://egisws02.nos.noaa.gov/ArcGIS/rest/services/NMFS/HAPC/MapServer/',
 			tncDemersal			= 'http://50.18.215.52/arcgis/rest/services/NAMERA/EUSD_NAM_DEMERSAL/MapServer/',
@@ -37,7 +41,10 @@ define([],
 			pcs					= 'http://geodata.epa.gov/arcgis/rest/services/OEI/FRS_INTERESTS/MapServer/',
 			hucs				= 'http://50.19.218.171/arcgis1/rest/services/HydrologicUnitCodes/MapServer/',
 			tncChlorophyll		= 'http://50.18.215.52/arcgis/rest/services/NAMERA/EUSD_NAM_ocean/MapServer/',
-			metadataURL 		= "http://www.northeastoceandata.org/files/metadata/";
+			boem				= 'http://gis.boemre.gov/arcgis/rest/services/BOEM_BSEE/MMC_Layers/MapServer/',
+			eez					= 'http://maritimeboundaries.noaa.gov/arcgis/rest/services/MaritimeBoundaries/US_Maritime_Limits_Boundaries/MapServer/',
+			esiShore			= 'http://egisws02.nos.noaa.gov/ArcGIS/rest/services/ESI_Shoreline/ESI_Shoreline_Aggregate/MapServer/',
+			metadataURL 		= 'http://www.northeastoceandata.org/files/metadata/';
 		configOptions = {
 			themes: [
 				{
@@ -1367,42 +1374,126 @@ define([],
 						]
 					},
 					{
-						title	: 'Administrative',
+						title	: 'Reference',
 						serviceURLs: [
-							administrative
+							boem,
+							eez,
+							administrative,
+							mmc,
+							noaaPhysOcean,
+							mtkBathy,
+							oceanUses,
+							physOcean,
+							bio,
+							esiShore,
+							reference
 						],
 						layers	: [
 							{
-								name		: 'Marine Jurisdictions',
-								metadata	: metadataURL + 'Administrative/MarineJurisdictions.htm',
-								serviceURL	: administrative
+								name		: 	'Submerged Lands Act Boundary',
+								metadata	: 	'',
+								serviceURL	: 	boem
 							},
 							{
-								name		: 'Coastal Barrier Resource System',
-								metadata	: metadataURL + 'Administrative/CoastalBarrierResourceSystem.htm',
-								serviceURL	: administrative
+								name		: 	'200NM EEZ and Maritime Boundaries',
+								metadata	: 	'',
+								serviceURL	: 	eez
 							},
 							{
-								name		: 'National Marine Sanctuary',
-								metadata	: metadataURL + 'Administrative/NationalMarineSanctuary.htm',
-								serviceURL	: administrative
+								name		: 	'Outer Continental Shelf Lease Blocks',
+								metadata	: 	'',
+								serviceURL	: 	boem
 							},
 							{
-								name		: 'Outer Continental Lease Blocks',
-								metadata	: metadataURL + 'Administrative/OuterContinentalShelfLeaseBlocks.htm',
-								serviceURL	: administrative,
-								external	: 'http://www.boem.gov/Oil-and-Gas-Energy-Program/Mapping-and-Data/ATL_BLKCLIP(3).aspx'
+								name		: 	'Coastal Barrier Resource System',
+								metadata	: 	metadataURL + 'Administrative/CoastalBarrierResourceSystem.htm',
+								serviceURL	: 	administrative
 							},
 							{
-								name		: 'Counties',
-								metadata	: metadataURL + 'Administrative/CountyBoundaries.htm',
-								serviceURL	: administrative,
-								noSource	: true
+								name		: 	'States',
+								metadata	: 	metadataURL + 'Administrative/States.htm',
+								serviceURL	: 	administrative
 							},
 							{
-								name		: 'States',
-								metadata	: metadataURL + 'Administrative/States.htm',
-								serviceURL	: administrative
+								name		: 	'Counties',
+								metadata	: 	metadataURL + 'Administrative/CountyBoundaries.htm',
+								serviceURL	: 	administrative,
+								noSource	: 	true
+							},
+							{
+								name		: 	'Undersea Feature Place Names',
+								metadata	:	'',
+								serviceURL	:	mmc
+							},
+							{
+								name		: 	'Bathymetric Contours',
+								metadata	:	'',
+								serviceURL	:	noaaPhysOcean
+							},
+							{
+								name		: 	'Montauk to Nantucket Shoals Bathymetry',
+								metadata	:	'',
+								serviceURL	:	mtkBathy
+							},
+							{
+								name		: 	'EPA-Regulated Facilities',
+								metadata	:	'',
+								serviceURL	:	oceanUses
+							},
+							{
+								name		: 	'Ocean Observing Buoys and Stations',
+								metadata	:	'',
+								serviceURL	:	physOcean
+							},
+							{
+								name		: 	'Seabed Topographic Forms',
+								metadata	:	'',
+								serviceURL	:	physOcean
+							},
+							{
+								name		: 	'Bird Nest Sites',
+								metadata	:	'',
+								serviceURL	:	bio
+							},
+							{
+								name		: 	'Bird Habitat',
+								metadata	:	'',
+								serviceURL	:	bio
+							},
+							{
+								name		: 	'ESI Shoreline Aggregate',
+								metadata	:	'',
+								serviceURL	:	esiShore
+							},
+							{
+								name		: 	'10 Degrees Latitude and Longitude',
+								metadata	:	'',
+								serviceURL	:	reference
+							},
+							{
+								name		: 	'5 Degrees Latitude and Longitude',
+								metadata	:	'',
+								serviceURL	:	reference
+							},
+							{
+								name		: 	'1 Degree Latitude and Longitude',
+								metadata	:	'',
+								serviceURL	:	reference
+							},
+							{
+								name		: 	'15 Minutes Latitude and Longitude',
+								metadata	:	'',
+								serviceURL	:	reference
+							},
+							{
+								name		: 	'Population By State',
+								metadata	:	'',
+								serviceURL	:	reference
+							},
+							{
+								name		: 	'Population By County',
+								metadata	:	'',
+								serviceURL	:	reference
 							}
 						]
 					}
