@@ -734,6 +734,11 @@ define([
                                         console.log("Error: ", error.message);
                                 });
                             });
+
+                            //  set left padding
+                            query('div[data-dojo-attach-point="rowNode"]').forEach(function (n) {
+                                n.style.paddingLeft = (domStyle.get(n, 'padding-left') + 6) + 'px';
+                            });
                         }
                     }
                 }
