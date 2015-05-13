@@ -113,55 +113,14 @@ define([],
 												outField: "aidName"
 											}
 										]
-									}
-								]
-							}
-						},
-						{
-							title: "Potential Hazards",
-							group: 'hazards',
-							menuWidth: 271,
-							flexLink: 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=ocean=9999,13,14,15,19,24,25;admin=9999;HereIsMyMap#',
-							about: {
-								overview: "This map shows the locations of some potential hazards on the seabed, including unexploded ordnance, disposal sites, cables, and pipelines.",
-								dataConsiderations: "This map can be used to help identify areas of risk to human health and property. People should take caution with the use of these data and recognize that the original sources are known to be incomplete.",
-								status: "We are actively working with the telecommunications industry to improve the submarine cable layer. We are not planning updates to the other datasets at this time."
-							},
-							scaleRestriction: {
-								minLevel : 10,
-								text : 'Submarine Cable and Pipeline Areas'
-							},
-							layers: {
-								dynamicLayers: [
+									},
 									{
-										URL: oceanUses,
+										URL	:	mmc,
 										layers: [
 											{
-												name: "Unexploded Ordnance Locations",
-												metadata	: metadataURL + "OceanUses/UnexplodedOrdnanceLocations.pdf",
-												outField: "description"
-											},
-											{
-												name: "Unexploded Ordnance Areas",
-												metadata	: metadataURL + "OceanUses/UnexplodedOrdnanceAreas.pdf",
-												outField: "description"
-											},
-											{
-												name: "Ocean Disposal Sites",
-												metadata	: metadataURL + "OceanUses/OceanDisposalSites.pdf",
-												outField: "description"
-											},
-											{
-												name: "Submarine Cables",
-												metadata	: metadataURL + "OceanUses/SubmarineCables"
-											},
-											{
-												name: "Submarine Cable Areas",
-												metadata	: metadataURL + "OceanUses/CableAreas"
-											},
-											{
-												name: "Submarine Pipeline Areas",
-												metadata	: metadataURL + "OceanUses/PipelineAreas"
+												name		:	'Unexploded Ordnances',
+												metadata	:	'http://coast.noaa.gov/dataservices/Metadata/TransformMetadata?u=http://coast.noaa.gov/data/Documents/Metadata/harvest/MarineCadastre/UnexplodedOrdnances.xml&f=html',
+												outField	:	'chartDescription'
 											}
 										]
 									}

@@ -560,7 +560,7 @@ table.esriLegendLayer tr td {
   display: none !important;
 }
 
-#legend-lv .esriLegendService > div > table.esriLegendLayerLabel,
+#legend-lv .esriLegendService > div:first-child > table.esriLegendLayerLabel,
 #radioWrapper {
   display: none;
 }
@@ -1139,26 +1139,14 @@ button#theme10.active-theme {
     }
 
   .theme_0:nth-child(2) {
-    background-image: url('../../img/theme-buttons/sub/potentialhazards-off.png');
-  }
-
-    .theme_0:nth-child(2):hover {
-      background-image: url('../../img/theme-buttons/sub/potentialhazards-mouseover.png');
-    }
-
-    .theme_0.active-subtheme:nth-child(2) {
-      background-image: url('../../img/theme-buttons/sub/potentialhazards-on.png');
-    }
-
-  .theme_0:nth-child(3) {
     background-image: url('../../img/theme-buttons/sub/commercialtraffic-off.png');
   }
 
-    .theme_0:nth-child(3):hover {
+    .theme_0:nth-child(2):hover {
       background-image: url('../../img/theme-buttons/sub/commercialtraffic-mouseover.png');
     }
 
-    .theme_0.active-subtheme:nth-child(3) {
+    .theme_0.active-subtheme:nth-child(2) {
       background-image: url('../../img/theme-buttons/sub/commercialtraffic-on.png');
     }
 

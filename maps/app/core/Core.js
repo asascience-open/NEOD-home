@@ -1106,10 +1106,18 @@ define([
             query('#timeSliderDiv').style('display', 'none');
             domConstruct.destroy("radioWrapper");
 
+            app.dynamicLegends = 0;
+
+            configOptions.themes[app.themeIndex].maps.forEach(function (subtheme) {
+                app.dynamicLegends += subtheme.layers.dynamicLayers.length;
+            });
+
             if (domStyle.get(app.sidePanel, 'display') === 'block') {
                 behavior.add({
-                    '.esriLegendService' : {
-                        found: function(){updateLegend();}
+                    '#legendWrapper .esriLegendService' : {
+                        found: function (e) {
+                            updateLegend();
+                        }
                     }
                 });
 
@@ -1120,8 +1128,7 @@ define([
                         if (responseOrError.url.match(/legend?/i))
                         {
                             notifyCount++;
-                            if (notifyCount === configOptions.themes[app.themeIndex].maps.length) {
-                                notifyCount = 0;
+                            if (notifyCount === app.dynamicLegends) {
                                 behavior.apply();
                             }
                         }
@@ -1233,8 +1240,11 @@ define([
 
                 var visibleLayers = [];
 
+                var dynamicLayers = [];
+
                 if (map.layers.hasOwnProperty("dynamicLayers")) {
                     array.forEach(map.layers.dynamicLayers, function (dynamicLayer, i) {
+                        visibleLayers = [];
                         var dl = new ArcGISDynamicMapServiceLayer(dynamicLayer.URL);
                         mapDeferred.layer = dl;
                         array.forEach(dynamicLayer.layers, function (layer, layerIndex) {
@@ -1304,6 +1314,8 @@ define([
                             }
                         });
                         dl.setVisibleLayers(visibleLayers);
+                        layerInfo.push({layer : dl});
+                        dynamicLayers.push(dl);
                         // map.flexLink = 'http://northeastoceanviewer.org/?XY=-71.71000000080706;42.06&level=2&basemap=Ocean&layers=cart=9999;demo=9999;physocean=9999;bio=9999;admin=9999;hapc=9999;efh=9999;ngdc=9999;ocean=9999';
                         // array.forEach(visibleLayers, function (layerID) {
                         //     map.flexLink += (',' + layerID);
@@ -1311,14 +1323,11 @@ define([
                         // map.flexLink += ';HereIsMyMap#';
                         // if (mapIndex === 0)
                             // query('#flex-link')[0].href = map.flexLink;
-                        mapDeferred.addLayers([dl]);
                     });
+                    mapDeferred.addLayers(dynamicLayers);
                 }
 
-                mapDeferred.on('layers-add-result', function (e){
-                    array.forEach(e.layers, function (layer){
-                        layerInfo.push({layer: layer.layer});
-                    });
+                mapDeferred.on('layers-add-result', function (e) {
                     createLegend(layerInfo, mapIndex);
                 });
 
@@ -1573,7 +1582,7 @@ define([
                 if (map.layers.hasOwnProperty("dynamicLayers"))
                     array.forEach(map.layers.dynamicLayers, function (dynamicLayer) {
                         array.forEach(dynamicLayer.layers, function (layer, i) {
-                            var td = query('#legend-lv .esriLegendService div table.esriLegendLayerLabel tr td:contains("' + layer.name + '")')
+                            var td = query('#legend-lv .legendDiv .esriLegendService div table.esriLegendLayerLabel tr td:contains("' + layer.name + '")')
                             if (td.text() == layer.name)td.html('<a href="' + layer.metadata + '" target="_blank" rel="tooltip" data-toggle="tooltip" data-placement="right" title="' + layer.description +  ' <br /><br />click link for metadata">' + layer.name + '</a>');
                         });
                     });
