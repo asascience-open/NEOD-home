@@ -170,13 +170,12 @@
             <div id='remove-button-div'><a href="" id="remove-layers">Turn all Layers Off</a></div>
             <div id='search-container'><input id='layer-select' /><input type='submit' value='Search' id='layer-search-button' /></div>
             <div id='layer-info'>
-                    <div id='back-to-layers'>
-                        <span role="presentation" class="dijitInline dijitIcon dijitEditorIcon dijitEditorIconUndo"></span>
-                        Back to Layers
-                    </div>
-                    <div id='search-results-header'>Search Results</div>
-                    <div id='search-results-container'></div>
-                <div id='layer-info-content'></div>
+                <div id='back-to-layers'>
+                    <span role="presentation" class="dijitInline dijitIcon dijitEditorIcon dijitEditorIconUndo"></span>
+                    Back to Layers
+                </div>
+                <div id='search-results-header'>Search Results</div>
+                <div id='search-results-container'></div>
             </div>
             <div id='tree'></div>
             <div id='legend-dv'></div>
@@ -241,6 +240,17 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
                     <div class='modal-body'></div>
+                </div>
+            </div>
+            <div id='layerInfoModal' class='modal' data-backdrop='false' tabindex='-1'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <span></span>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class='modal-body'>
+                        <div id='layer-info-content'></div>
+                    </div>
                 </div>
             </div>
         </div>    

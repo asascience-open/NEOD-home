@@ -536,15 +536,15 @@ define([
                 constraints: function(){return app.constraintBox;}
             });
 
-            query('#legendModal-dv').modal({show : false});
+            query('#legendModal-dv, #layerInfoModal').modal({show : false});
 
-            var fadeInLegendDV = fx.fadeIn({node:'legendModal-dv'});
-            var fadeOutLegendDV = fx.fadeOut({node:'legendModal-dv'});
+            var fadeInLegendDV = fx.fadeIn({node:'legendModal-dv'}),
+                fadeOutLegendDV = fx.fadeOut({node:'legendModal-dv'});
 
             on(fadeOutLegendDV, 'End', function(){
-                        domStyle.set(dom.byId('legendModal-dv'),'display', 'none');
-                        domConstruct.place(dom.byId('legend-dv'), dom.byId('tree'), 'after');
-                    });
+                domStyle.set(dom.byId('legendModal-dv'),'display', 'none');
+                domConstruct.place(dom.byId('legend-dv'), dom.byId('tree'), 'after');
+            });
 
             query('#legendModal-dv .modal-header button.close').on('click', function (e){
                 on.emit(dom.byId('show-hide-legend-btn'), 'click', {bubbles: true, cancelable: true});
@@ -729,14 +729,32 @@ define([
                             dojo.query('#tree').show();
                             firstCompLoad = false;
 
+                            var fadeInLayerInfo = fx.fadeIn({node:'layerInfoModal'}),
+                                fadeOutLayerInfo = fx.fadeOut({node:'layerInfoModal'});
+
+                            var moveableLayerInfo =  new move.constrainedMoveable("layerInfoModal", {
+                                within: true,
+                                handle: query('#layerInfoModal .modal-header'),
+                                constraints: function(){return app.constraintBox;}
+                            });
+
+                            on(fadeOutLayerInfo, 'End', function(){
+                                domStyle.set(dom.byId('layerInfoModal'),'display', 'none');
+                            });
+
+                            query('#layerInfoModal .modal-header button.close').on('click', function (e){
+                                fadeOutLayerInfo.play();
+                            });
+
                             on(query('#side-panel img[title="Layer Information"]'), 'click', function (e) {
                                 dom.byId('loading').style.display = 'block';
                                 var serviceUrl = e.target.attributes['data-service_layer'].value;
                                 if (serviceUrl.match(/duplicate/))
                                     serviceUrl = serviceUrl.substr(0, serviceUrl.indexOf('duplicate'));
-                                dojo.query('#tree, #search-container, #search-results-header').hide();
-                                dojo.query('#layer-info').show();
-                                resizeSidePanel();
+                                if (domStyle.get('layerInfoModal', 'display') === 'none') {
+                                    domStyle.set(dom.byId('layerInfoModal'),'display', 'block');
+                                    fadeInLayerInfo.play();
+                                }
                                 dojoRequest(serviceUrl + '?f=json', {
                                     handleAs: "json",
                                     timeout: app.timeout,
@@ -745,10 +763,8 @@ define([
                                     }
                                 }).then(
                                     function(result) {
-                                        if (app.searchResults)
-                                            returnSearchRows();
-                                        var contentHtml = '<div id="layer-info-content"><h5>' + result.name + '</h5>';
-                                        contentHtml += '<div class="color-gradient"></div>';
+                                        query('#layerInfoModal span').html(result.name);
+                                        var contentHtml = '';
                                         if (result.copyrightText != '')
                                             contentHtml += '<p><strong>Source:</strong> ' + result.copyrightText + '</p>';
                                         contentHtml += '<strong>Description:</strong><p id="description-text">' + result.description;
@@ -776,7 +792,7 @@ define([
                                         var centerPoint = extent.getCenter();
                                         contentHtml += sourceDataHtml + ' | <a href="' + serviceUrl + '" target="_blank">Web Service</a> | <a href="#" onClick="app.currentMap.centerAndZoom(new esri.geometry.Point(' + centerPoint.getLongitude() + ', ' + centerPoint.getLatitude() + '), 7);">Zoom to Layer</a>';
                                         dom.byId('loading').style.display = 'none';
-                                        domConstruct.place(contentHtml + '</p></div>', dojo.byId('layer-info-content'), 'replace');
+                                        query('#layer-info-content').html(contentHtml + '</p></div>');
                                     }, function(error) {
                                         console.log("Error: ", error.message);
                                 });
@@ -1691,7 +1707,6 @@ define([
             domStyle.set(dom.byId('layer-info'), 'height', layerInfoHeight + 'px');
             dojo.query('#layer-info, #search-results-header').show();
             dojo.query('#tree, #search-container').hide();
-            dom.byId('layer-info-content').innerHTML = '';
             app.searchResults = true;
             app.treeHeight += app.searchContainerHeight;
             resizeSidePanel();

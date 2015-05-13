@@ -251,7 +251,8 @@ li.dropdown {
   border-bottom-right-radius: 5px;
 }
 
-#legendModal-dv {
+#legendModal-dv,
+#layerInfoModal {
   top     : 90px;
   left    : 350px;
   opacity : 0;
@@ -259,7 +260,12 @@ li.dropdown {
   background-color: #697396;
 }
 
-  #legendModal-dv .modal-header {
+#layerInfoModal {
+  width : 450px;
+}
+
+  #legendModal-dv .modal-header,
+  #layerInfoModal .modal-header {
     padding         : 5px;
     background-color: #697396;
     color           : #fff;
@@ -268,7 +274,8 @@ li.dropdown {
     font-weight     : bold;
   }
 
-  #legendModal-dv .modal-body {
+  #legendModal-dv .modal-body,
+  #layerInfoModal .modal-body {
     padding: 0;
   }
 
@@ -966,7 +973,8 @@ td.dijitMenuItemIconCell span{
 
 #side-panel a,
 #legendWrapper a,
-#shareModal a{
+#shareModal a,
+#layerInfoModal a {
   color: #006633;
 }
 
@@ -984,7 +992,7 @@ td.dijitMenuItemIconCell span{
 }
 
 #layer-info-content {
-  padding: 0 15px 15px 15px;
+  padding: 5px 8px 0 8px;
 }
 
 #layer-info-content h5 {
@@ -1210,21 +1218,6 @@ button#theme10.active-theme {
 .active-theme,
 .active-subtheme {
   cursor: default !important;
-}
-
-.color-gradient {
-  background: rgba(221,221,221,1);
-  background: -moz-linear-gradient(left, rgba(221,221,221,1) 0%, rgba(246,246,246,1) 70%, rgba(255,255,255,1) 100%);
-  background: -webkit-gradient(left top, right top, color-stop(0%, rgba(221,221,221,1)), color-stop(70%, rgba(246,246,246,1)), color-stop(100%, rgba(255,255,255,1)));
-  background: -webkit-linear-gradient(left, rgba(221,221,221,1) 0%, rgba(246,246,246,1) 70%, rgba(255,255,255,1) 100%);
-  background: -o-linear-gradient(left, rgba(221,221,221,1) 0%, rgba(246,246,246,1) 70%, rgba(255,255,255,1) 100%);
-  background: -ms-linear-gradient(left, rgba(221,221,221,1) 0%, rgba(246,246,246,1) 70%, rgba(255,255,255,1) 100%);
-  background: linear-gradient(to right, rgba(221,221,221,1) 0%, rgba(246,246,246,1) 70%, rgba(255,255,255,1) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dddddd', endColorstr='#ffffff', GradientType=1 );
-
-  width         : 100%;
-  height        : 5px;
-  margin-bottom : 10px;
 }
 
 .lv {
