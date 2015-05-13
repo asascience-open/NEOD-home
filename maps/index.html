@@ -187,7 +187,7 @@
         </div>
         <div id='side-tabs' class='lv'>
             <img src='img/side-buttons/legend-tab-out-on.png' id='legend-tab' />
-            <!-- <img src='img/side-buttons/about-tab-out-off.png' /> -->
+            <img src='img/side-buttons/about-tab-out-off.png' id='about-tab' />
             <img src='img/side-buttons/feedback-tab-out-off.png' />
         </div>
         <div class='button-container lv'>
@@ -208,26 +208,39 @@
             <div id='legendModal' class='modal' data-backdrop='false' tabindex='-1'>
                 <div class='modal-content'>
                     <div class='modal-header'>
+                        legend
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <ul id='tabs' class='nav nav-tabs'>
-                            <li class='active'><a href='#legend-lv' data-toggle='tab'>Legend</a></li>
-                            <li><a href='#about' data-toggle='tab'>About</a></li>
-                        </ul>
                     </div>
-                    <div class='modal-body'>
-                        <div class='tab-content'>
-                            <div id='legend-lv' class='tab-pane fade active in'>
-                                <div id='legendWrapper'></div>
-                                <div id='timeSliderDiv'></div>
-                                <div class='modal-footer'><a id='flex-link' target='_blank'>View this data with other layers</a></div>
-                            </div>
-                            <div id='about' class='tab-pane fade'>
-                                <strong>Overview</strong><div id='overview'><p>blah</p></div>
-                                <strong>Data Considerations</strong><div id='data-considerations'><p>blah</p></div>
-                                <strong>Status</strong><div id='status'><p>blah</p></div>
-                            </div>
+                    <div id='legend-lv' class='modal-body'>
+                        <div id='title-header'>
+                            <span id='theme-title'></span>:&nbsp;<span id='sub-theme-title'></span>
                         </div>
+                        <div id='legendWrapper'></div>
+                        <div id='timeSliderDiv'></div>
+                        <div class='modal-footer'><a id='flex-link' target='_blank'>View this data with other layers</a></div>
                     </div>
+                </div>
+            </div>
+            <div id='aboutModal' class='modal' data-backdrop='false' tabindex='-1'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        about
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div id='about' class='modal-body'>
+                        <strong>Overview</strong><div id='overview'><p>blah</p></div>
+                        <strong>Data Considerations</strong><div id='data-considerations'><p>blah</p></div>
+                        <strong>Status</strong><div id='status'><p>blah</p></div>
+                    </div>
+                </div>
+            </div>
+            <div id='legendModal-dv' class='modal' data-backdrop='false' tabindex='-1'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        legend
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class='modal-body'></div>
                 </div>
             </div>
         </div>    

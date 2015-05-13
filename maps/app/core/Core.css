@@ -30,7 +30,7 @@ button.close {
 
 #side-panel {
   width: 300px;
-  background-color: #697396;
+  background-color: #fff;
   border-right: 1px solid #ddd;
   z-index: 10;
   position: absolute;
@@ -38,8 +38,8 @@ button.close {
   visibility: hidden;
 }
   #side-panel #remove-button-div {
-    margin: 0 0 0 10px;
-    padding: 5px 0;
+    padding: 5px 0 5px 10px;
+    background-color: #697396;
   }
     #side-panel #remove-button-div a {
       color: #fff;
@@ -243,12 +243,34 @@ li.dropdown {
 }
 
 #legend-dv {
-  overflow-y      : auto;
-  border-top      : 2px solid #ddd;
-  padding         : 10px 0 10px 15px;
-  background-color: #FFF;
-  z-index         : -1;
+  overflow-y                : auto;
+  border-top                : 2px solid #ddd;
+  padding                   : 10px 0 10px 15px;
+  background-color          : #FFF;
+  border-bottom-left-radius : 5px;
+  border-bottom-right-radius: 5px;
 }
+
+#legendModal-dv {
+  top     : 90px;
+  left    : 350px;
+  opacity : 0;
+  width   : 250px;
+  background-color: #697396;
+}
+
+  #legendModal-dv .modal-header {
+    padding         : 5px;
+    background-color: #697396;
+    color           : #fff;
+    text-transform  : uppercase;
+    cursor          : move;
+    font-weight     : bold;
+  }
+
+  #legendModal-dv .modal-body {
+    padding: 0;
+  }
 
 .legend {
   overflow-y  : auto;
@@ -259,6 +281,23 @@ li.dropdown {
   color: #006633;
   text-decoration: underline;
 }
+
+#aboutModal {
+  width     : 245px;
+  left      : 395px;
+  top       : 100px;
+  z-index   : 9999999999;
+  opacity   : 0;
+}
+
+  #aboutModal .close {
+    margin-right: 3px;
+  }
+
+  #aboutModal .modal-body {
+    max-height: 527px;
+    overflow-y: auto;
+  }
 
 #about {
   padding-top: 7px !important;
@@ -464,7 +503,7 @@ table.esriLegendLayer tr td {
   background-color: #fff;
 }
 
-#legendModal.modal {
+#legendModal.modal{
   top: 100px;
   left: 65px;
   z-index: 9999999999;
@@ -476,8 +515,9 @@ table.esriLegendLayer tr td {
     margin-bottom: 0;
   }
 
-  #legendModal .modal-header {
-    padding: 0;
+  #legendModal .modal-header,
+  #aboutModal .modal-header {
+    padding: 0 0 0 10px;
     background-color: rgb(104, 115, 150);
     color: white;
     -webkit-border-top-left-radius: 6px;
@@ -486,6 +526,9 @@ table.esriLegendLayer tr td {
     -webkit-border-top-right-radius: 6px;
     -moz-border-radius-topright: 6px;
     border-top-right-radius: 6px;
+    text-transform: uppercase;
+    cursor: move;
+    font-weight: bold;
   }
 
   #legendModal .modal-header button.close {
@@ -497,12 +540,20 @@ table.esriLegendLayer tr td {
   max-height: 443px;
   height: auto;
   overflow-y: auto;
+  padding-left: 5px;
 }
 
 #legendModal .modal-body {
     height: auto;
     padding: 0;
   }
+
+#title-header {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 11px;
+  padding: 2px 0 0 10px;
+}
 
 #legendModal .modal-header #tabs {
     margin-bottom: 0;
@@ -549,7 +600,8 @@ table.esriLegendLayer tr td {
     border-bottom-right-radius: 6px;
   }
 
-#side-panel table.esriLegendLayerLabel {
+#side-panel table.esriLegendLayerLabel,
+#legendModal-dv table.esriLegendLayerLabel {
   padding-top: 5px;
   font-weight: bold;
 }
@@ -960,16 +1012,16 @@ td.dijitMenuItemIconCell span{
   position: absolute;
   width: 0;
   height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 10px solid #D1D2D4;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 10px solid #D1D2D4;
   cursor: pointer;
-  margin-top: -14px;
+  margin-top: -20px;
   margin-left: 66px;
 }
 
 .panel-heading-arrow-vert:hover {
-  border-top-color: #697396;
+  border-left-color: #697396;
 }
 
 #source-data-modal .modal-dialog {
@@ -1244,7 +1296,7 @@ span#legendAbout p {
 }
 
 #radioWrapper {
-  padding: 10px;
+  padding: 5px 0 0 4px;
 }
 
   #radioWrapper label {
@@ -1282,7 +1334,8 @@ span#legendAbout p {
   padding-right: 10px;
   font-size: 9px;
   line-height: 13px;
-  padding-top: 10px;
+  padding-top: 7px;
+  padding-bottom: 8px;
 }
 
 #flex-div {

@@ -48,7 +48,7 @@ define([],
 		configOptions = {
 			themes: [
 				{
-					title: "Maritime Commerce",
+					title: "Commerce",
 					maps: [
 						{
 							title: "Navigation",
@@ -130,7 +130,7 @@ define([],
 						{
 							title: "Commercial Traffic",
 							group: 'traffic',
-							menuWidth: 229,
+							menuWidth: 234,
 							hasRadioBtns : true,
 							about: {
 								overview: "This map shows the concentration of commercial vessel traffic in 2011 for cargo, tanker, tug and tow, passenger, and all vessels, based on data received from Automatic Identification Systems (AIS).",

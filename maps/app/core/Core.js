@@ -3,7 +3,7 @@ app.themeIndex = 0,
 app.timeSlider = [],
 app.lastSubTheme = 0,
 app.sidePanelVisible = true,
-app.legendVisible = true,
+app.legendIn = true,
 app.layerInfos = [],
 app.lv = false,
 app.firstLV_load = true,
@@ -150,6 +150,13 @@ define([
 
             resizeMap();
 
+            app.constraintBox = {
+                l:  0,
+                t:  63,
+                w:  app.screenWidth,
+                h:  app.mapHeight
+            };
+
             esri.config.defaults.io.proxyUrl = "http://services.asascience.com/Proxy/esriproxy/proxy.ashx";
 
             app.subthemeIndex = 0,
@@ -191,9 +198,10 @@ define([
             app.treeHeight = app.treeHeight - legendControl - removeButton;
             if (!app.searchResults)
                 app.treeHeight -= app.searchContainerHeight;
-            if (app.legendVisible)
+            if (app.legendIn) {
                 app.treeHeight *= .5;
-            dojo.query('#legend-dv').style('height', app.treeHeight + 'px');
+                dojo.query('#legend-dv').style('height', app.treeHeight + 'px');
+            }
             dojo.query('#tree').style('height', app.treeHeight + 'px');
             dojo.query('#layer-info').style('height', (app.treeHeight + app.searchContainerHeight) + 'px');
         }
@@ -518,10 +526,30 @@ define([
                 }
             });
 
+            var moveableLegendDV =  new move.constrainedMoveable("legendModal-dv", {
+                within: true,
+                handle: query('#legendModal-dv .modal-header'),
+                constraints: function(){return app.constraintBox;}
+            });
+
+            query('#legendModal-dv').modal({show : false});
+
+            var fadeInLegendDV = fx.fadeIn({node:'legendModal-dv'});
+            var fadeOutLegendDV = fx.fadeOut({node:'legendModal-dv'});
+
+            on(fadeOutLegendDV, 'End', function(){
+                        domStyle.set(dom.byId('legendModal-dv'),'display', 'none');
+                        domConstruct.place(dom.byId('legend-dv'), dom.byId('tree'), 'after');
+                    });
+
+            query('#legendModal-dv .modal-header button.close').on('click', function (e){
+                on.emit(dom.byId('show-hide-legend-btn'), 'click', {bubbles: true, cancelable: true});
+            });
+
             on(dom.byId('show-hide-legend-btn'), 'click', function (e) {
                 var tree = dom.byId('tree'),
                     layerInfo = dom.byId('layer-info');
-                if (app.legendVisible) {
+                if (app.legendIn) {
                     app.treeHeight = app.treeHeight *2;
                     var expandTree = fx.animateProperty({
                         node: tree,
@@ -529,17 +557,21 @@ define([
                             height: app.treeHeight
                         }
                     });
+
                     var expandLayerInfo = fx.animateProperty({
                         node: layerInfo,
                         properties: {
                             height: app.treeHeight
                         }
                     });
-                    coreFx.combine([expandTree, expandLayerInfo]).play();
-                    app.legendVisible = false;
+
+                    domConstruct.place(dom.byId('legend-dv'), query('#legendModal-dv .modal-body')[0]);
+                    domStyle.set(dom.byId('legendModal-dv'), 'display', 'block');
+                    coreFx.combine([expandTree, expandLayerInfo, fadeInLegendDV]).play();
+                    app.legendIn = false;
                     domStyle.set(this, {
-                        borderBottom  : '10px solid #D1D2D4',
-                        borderTop : '0'
+                        borderRight  : '10px solid #D1D2D4',
+                        borderLeft   : '0'
                     });
                     domAttr.set(this, 'title', 'Show Legend');
                 }
@@ -551,18 +583,21 @@ define([
                             height: app.treeHeight
                         }
                     });
+
                     var collapseLayerInfo = fx.animateProperty({
                         node: layerInfo,
                         properties: {
                             height: app.treeHeight
                         }
                     });
+
                     dojo.query('#legend-dv').style('height', app.treeHeight + 'px');
-                    coreFx.combine([collapseTree, collapseLayerInfo]).play();
-                    app.legendVisible = true;
+                    coreFx.combine([collapseTree, collapseLayerInfo, fadeOutLegendDV]).play();
+
+                    app.legendIn = true;
                     domStyle.set(this, {
-                        borderTop : '10px solid #D1D2D4',
-                        borderBottom  : '0'
+                        borderLeft : '10px solid #D1D2D4',
+                        borderRight  : '0'
                     });
                     domAttr.set(this, 'title', 'Hide Legend');
                 }
@@ -1159,28 +1194,35 @@ define([
                     });
 
                 if (app.firstLV_load) {
-                    var constraintBox = {
-                        l:  0,
-                        t:  63,
-                        w:  app.screenWidth,
-                        h:  app.mapHeight
-                    };
-
                     var moveableLegend =  new move.constrainedMoveable("legendModal", {
                         within: true,
                         handle: query('#legendModal .modal-header'),
-                        constraints: function(){return constraintBox;}
+                        constraints: function(){return app.constraintBox;}
+                    });
+
+                    var moveableAbout =  new move.constrainedMoveable("aboutModal", {
+                        within: true,
+                        handle: query('#aboutModal .modal-header'),
+                        constraints: function(){return app.constraintBox;}
                     });
 
                     query('#legendModal .modal-header button.close').on('click', function (e){
-                        domAttr.set(query('#side-tabs img:eq(0)')[0], 'src', 'img/side-buttons/legend-tab-out-off.png');
+                        domAttr.set(dom.byId('legend-tab'), 'src', 'img/side-buttons/legend-tab-out-off.png');
                         fadeOutLegend.play();
                     });
 
-                    query('#legendModal').modal({show : false});
+                    query('#aboutModal .modal-header button.close').on('click', function (e){
+                        domAttr.set(dom.byId('about-tab'), 'src', 'img/side-buttons/about-tab-out-off.png');
+                        fadeOutAbout.play();
+                    });
 
-                    var fadeInLegend = fx.fadeIn({node:'legendModal'});
-                    var fadeOutLegend = fx.fadeOut({node:'legendModal'});
+                    query('#legendModal, #aboutModal').modal({show : false});
+
+                    var fadeInLegend = fx.fadeIn({node:'legendModal'}),
+                        fadeOutLegend = fx.fadeOut({node:'legendModal'}),
+                        fadeInAbout = fx.fadeIn({node:'aboutModal'}),
+                        fadeOutAbout = fx.fadeOut({node:'aboutModal'});
+
 
                     on(fadeOutLegend, 'End', function(){
                         query('#legendModal').style('display', 'none');
@@ -1190,15 +1232,35 @@ define([
                         query('#legendModal').style('display', 'block');
                     });
 
+                    on(fadeOutAbout, 'End', function(){
+                        query('#aboutModal').style('display', 'none');
+                    });
+
+                    on(fadeInAbout, 'End', function(){
+                        query('#aboutModal').style('display', 'block');
+                    });
+
                     query('#legend-tab').on('click', function (e){
                         if (query('#legendModal').style('display') == 'none') {
-                            domAttr.set(query('#side-tabs img:eq(0)')[0], 'src', 'img/side-buttons/legend-tab-out-on.png');
+                            domAttr.set(dom.byId('legend-tab'), 'src', 'img/side-buttons/legend-tab-out-on.png');
                             query('#legendModal').style('display', 'block');
                             fadeInLegend.play();
                         }
                         else {
-                            domAttr.set(query('#side-tabs img:eq(0)')[0], 'src', 'img/side-buttons/legend-tab-out-off.png');
+                            domAttr.set(dom.byId('legend-tab'), 'src', 'img/side-buttons/legend-tab-out-off.png');
                             fadeOutLegend.play();
+                        }
+                    });
+
+                    query('#about-tab').on('click', function (e){
+                        if (query('#aboutModal').style('display') == 'none') {
+                            domAttr.set(dom.byId('about-tab'), 'src', 'img/side-buttons/about-tab-out-on.png');
+                            query('#aboutModal').style('display', 'block');
+                            fadeInAbout.play();
+                        }
+                        else {
+                            domAttr.set(dom.byId('about-tab'), 'src', 'img/side-buttons/about-tab-out-off.png');
+                            fadeOutAbout.play();
                         }
                     });
 
@@ -1209,7 +1271,6 @@ define([
             }
 
             app.subthemeIndex = themeIndex;
-            //updateAboutText(app.subthemeIndex);
             app.maps = [];
 
             createSubThemeButtons();
@@ -1446,7 +1507,8 @@ define([
             var menuWidth = configOptions.themes[app.themeIndex].maps[app.subthemeIndex].menuWidth;
             query('#legendModal').style('width', menuWidth + 'px');
             //query('#legend-lv').style('width', (menuWidth + 2) + 'px');
-            query('#flex-link')[0].href = configOptions.themes[app.themeIndex].maps[app.subthemeIndex].flexLink;
+            dom.byId('flex-link').href = configOptions.themes[app.themeIndex].maps[app.subthemeIndex].flexLink;
+            dom.byId('theme-title').innerHTML = configOptions.themes[app.themeIndex].title;
         }
 
         createSubThemeButtons = function ()
@@ -1553,17 +1615,18 @@ define([
             query('#data-considerations p')[0].innerHTML = configOptions.themes[app.themeIndex].maps[subthemeIndex].about.dataConsiderations;
             query('#status p')[0].innerHTML = configOptions.themes[app.themeIndex].maps[subthemeIndex].about.status +
                 "<br><br>For information about how these data and maps are being developed with stakeholder input and used to support regional ocean planning, please visit the <a href='http://neoceanplanning.org/projects/maritime-commerce/' target='_blank'>maritime commerce</a> page on the Northeast Regional Planning Body's website.";
+            dom.byId('sub-theme-title').innerHTML = configOptions.themes[app.themeIndex].maps[subthemeIndex].title;
         }
 
         createLegend = function (layerInfos, i)
         {
-            var noticeHTML = '';
             if (configOptions.themes[app.themeIndex].maps[i].scaleRestriction){
-                noticeHTML = "<div class='" + configOptions.themes[app.themeIndex].maps[i].group + (i === 0 ? ' active' : '') +
+                var noticeHTML = "<div class='" + configOptions.themes[app.themeIndex].maps[i].group + (i === 0 ? ' active' : '') +
                 " notice'>Zoom in to view '" + configOptions.themes[app.themeIndex].maps[i].scaleRestriction.text + "'</div>";
+                domConstruct.place(noticeHTML, dom.byId('title-header'), 'after');
             }
             var legendContentDiv = query('#legendWrapper')[0];
-            var legendDivHTML = (noticeHTML + '<div id="legendDiv' + i + '" class="legendDiv' + (i == 0 ? ' active"' : '"') + '></div>');
+            var legendDivHTML = '<div id="legendDiv' + i + '" class="legendDiv' + (i == 0 ? ' active"' : '"') + '></div>';
             domConstruct.place(legendDivHTML, legendContentDiv);
             var legend = new Legend({
                 map         : app.maps[i],
@@ -1588,6 +1651,11 @@ define([
                     });
             });
             query('.esriLegendService').tooltip({selector: 'a[rel="tooltip"]'});
+            if (dom.byId('legendWrapper').scrollHeight >= 443) {
+                dom.byId('legendWrapper').style.borderTop = '1px solid #ccc';
+            }
+            else
+                dom.byId('legendWrapper').style.borderTop = 'none';
         }
 
         radioClick = function (id)
