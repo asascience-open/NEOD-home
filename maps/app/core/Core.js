@@ -128,7 +128,7 @@ define([
                     dom.byId('watermark').style.left = '315px';
                     query('.legendDiv').forEach(domConstruct.destroy);
                     query('.lite-viewer.map').forEach(domConstruct.destroy);
-                    query('#legendWrapper .notice').forEach(domConstruct.destroy);
+                    query('#legend-lv .notice').forEach(domConstruct.destroy);
                     query('#subthemeButtonGroup div').forEach(domConstruct.destroy);
                     array.forEach(registry.toArray(), function (widget, i) {
                         if(widget.type == 'radio')
@@ -139,6 +139,10 @@ define([
                     });
                     domConstruct.destroy("radioWrapper");
                     domStyle.set(query('#legendModal')[0], 'display', 'none');
+                    if (domStyle.get(query('#aboutModal')[0], 'display') === 'block') {
+                        domStyle.set(query('#aboutModal')[0], 'display', 'none');
+                        domAttr.set(dom.byId('legend-tab'), 'src', 'img/side-buttons/legend-tab-out-off.png');
+                    }
                     domStyle.set(query('#side-tabs')[0], 'display', 'none');
                     domClass.add(query('#data-viewer')[0], 'active');
                     app.currentMap = app.dataViewer;
@@ -1170,6 +1174,10 @@ define([
                 });
 
                 domStyle.set(app.sidePanel, 'display', 'none');
+                if (domStyle.get(dom.byId('legendModal-dv'), 'display')  === 'block') {
+                    domStyle.set(dom.byId('legendModal-dv'), 'display', 'none');
+                    on.emit(dom.byId('show-hide-legend-btn'), 'click', {bubbles: true, cancelable: true});
+                }
                 domStyle.set('data-viewer', 'display', 'none');
                 dojo.query('.lv').style({'display' : 'block'});
                 domClass.remove('data-viewer', 'active');

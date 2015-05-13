@@ -499,6 +499,11 @@ table.esriLegendLayer tr td {
   text-decoration: none;
 }
 
+#legendModal,
+#aboutModal {
+    background-color: #687396;
+}
+
 #legendModal .modal-content {
   background-color: #fff;
 }
