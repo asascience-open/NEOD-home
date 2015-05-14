@@ -578,6 +578,7 @@ define([
                         borderLeft   : '0'
                     });
                     domAttr.set(this, 'title', 'Show Legend');
+                    setIndices(e, 'legendModal-dv');
                 }
                 else {
                     app.treeHeight = app.treeHeight / 2;
@@ -735,7 +736,8 @@ define([
                             var moveableLayerInfo =  new move.constrainedMoveable("layerInfoModal", {
                                 within: true,
                                 handle: query('#layerInfoModal .modal-header'),
-                                constraints: function(){return app.constraintBox;}
+                                constraints: function(){return app.constraintBox;},
+                                onMoveStart: function(){setIndices(this)}
                             });
 
                             on(fadeOutLayerInfo, 'End', function(){
@@ -793,6 +795,7 @@ define([
                                         contentHtml += sourceDataHtml + ' | <a href="' + serviceUrl + '" target="_blank">Web Service</a> | <a href="#" onClick="app.currentMap.centerAndZoom(new esri.geometry.Point(' + centerPoint.getLongitude() + ', ' + centerPoint.getLatitude() + '), 7);">Zoom to Layer</a>';
                                         dom.byId('loading').style.display = 'none';
                                         query('#layer-info-content').html(contentHtml + '</p></div>');
+                                        setIndices('e', 'layerInfoModal');
                                     }, function(error) {
                                         console.log("Error: ", error.message);
                                 });
@@ -1194,6 +1197,9 @@ define([
                     domStyle.set(dom.byId('legendModal-dv'), 'display', 'none');
                     on.emit(dom.byId('show-hide-legend-btn'), 'click', {bubbles: true, cancelable: true});
                 }
+                if (domStyle.get(dom.byId('layerInfoModal'), 'display')  === 'block') {
+                    domStyle.set(dom.byId('layerInfoModal'), 'display', 'none');
+                }
                 domStyle.set('data-viewer', 'display', 'none');
                 dojo.query('.lv').style({'display' : 'block'});
                 domClass.remove('data-viewer', 'active');
@@ -1268,6 +1274,7 @@ define([
                         if (query('#legendModal').style('display') == 'none') {
                             domAttr.set(dom.byId('legend-tab'), 'src', 'img/side-buttons/legend-tab-out-on.png');
                             query('#legendModal').style('display', 'block');
+                            setIndices('e', 'legendModal');
                             fadeInLegend.play();
                         }
                         else {
@@ -1280,6 +1287,7 @@ define([
                         if (query('#aboutModal').style('display') == 'none') {
                             domAttr.set(dom.byId('about-tab'), 'src', 'img/side-buttons/about-tab-out-on.png');
                             query('#aboutModal').style('display', 'block');
+                            setIndices('e', 'aboutModal');
                             fadeInAbout.play();
                         }
                         else {
@@ -1751,6 +1759,20 @@ define([
                     layerIds.push(layerId);
             });
             return layerIds;
+        }
+
+        setIndices = function (e, modalId) {
+            var id = '';
+            if (modalId)
+                id = modalId;
+            else
+                id = e.currentTarget.parentElement.parentElement.id;
+            var zIndices = [];
+            query('.moveable').forEach(function (n) {
+                if (domAttr.get(n, 'id') !== id && domStyle.get(n, 'display') === 'block')
+                    zIndices.push(domStyle.get(n, 'z-index'));
+            });
+            domStyle.set(dom.byId(id), 'z-index', Math.max.apply(null, zIndices) + 1);
         }
 
         return {

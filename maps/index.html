@@ -204,10 +204,10 @@
             <div id='watermark'>Northeast Ocean Data</div>
             <div id='data-viewer' class='map-pane active'> </div>
 
-            <div id='legendModal' class='modal' data-backdrop='false' tabindex='-1'>
+            <div id='legendModal' class='modal moveable' data-backdrop='false' tabindex='-1'>
                 <div class='modal-content'>
-                    <div class='modal-header'>
-                        legend
+                    <div class='modal-header' onmousedown='setIndices(event);'>
+                        <span>legend</span>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
                     <div id='legend-lv' class='modal-body'>
@@ -220,10 +220,10 @@
                     </div>
                 </div>
             </div>
-            <div id='aboutModal' class='modal' data-backdrop='false' tabindex='-1'>
+            <div id='aboutModal' class='modal moveable' data-backdrop='false' tabindex='-1'>
                 <div class='modal-content'>
-                    <div class='modal-header'>
-                        about
+                    <div class='modal-header' onmousedown='setIndices(event);'>
+                        <span>about</span>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
                     <div id='about' class='modal-body'>
@@ -233,18 +233,18 @@
                     </div>
                 </div>
             </div>
-            <div id='legendModal-dv' class='modal' data-backdrop='false' tabindex='-1'>
+            <div id='legendModal-dv' class='modal moveable' data-backdrop='false' tabindex='-1'>
                 <div class='modal-content'>
-                    <div class='modal-header'>
-                        legend
+                    <div class='modal-header' onmousedown='setIndices(event);'>
+                        <span>legend</span>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
                     <div class='modal-body'></div>
                 </div>
             </div>
-            <div id='layerInfoModal' class='modal' data-backdrop='false' tabindex='-1'>
+            <div id='layerInfoModal' class='modal moveable' data-backdrop='false' tabindex='-1'>
                 <div class='modal-content'>
-                    <div class='modal-header'>
+                    <div class='modal-header' onmousedown='setIndices(event);'>
                         <span></span>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>

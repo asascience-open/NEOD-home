@@ -293,7 +293,6 @@ li.dropdown {
   width     : 245px;
   left      : 395px;
   top       : 100px;
-  z-index   : 9999999999;
   opacity   : 0;
 }
 
@@ -518,7 +517,6 @@ table.esriLegendLayer tr td {
 #legendModal.modal{
   top: 100px;
   left: 65px;
-  z-index: 9999999999;
 }
   
   #legendModal.modal .modal-dialog {
