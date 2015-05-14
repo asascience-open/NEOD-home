@@ -11,7 +11,8 @@ app.url = window.location.href,
 app.shareUrl = '',
 app.shareObj = {},
 app.timeout = 6000,
-app.setMap = false;
+app.setMap = false,
+app.mutationCount = 0;
 define([
     'esri/map',
     'esri/layers/FeatureLayer',
@@ -32,7 +33,6 @@ define([
     'dojo/dnd/move',
     'dojo/dom-class',
     'dojo/request',
-    'dojo/request/notify',
     'dojo/fx',
     'dojo/_base/fx',
     'dojo/_base/array',
@@ -74,7 +74,6 @@ define([
         move,
         domClass,
         dojoRequest,
-        notify,
         coreFx,
         fx,
         array,
@@ -98,6 +97,20 @@ define([
 
         function init()
         {
+            app.MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+
+            app.observer = new MutationObserver(function (mutations) {
+                mutations.forEach(function (mutation) {
+                    if (mutation.target.className === 'esriLegendService') {
+                        app.mutationCount++;
+                        if (app.mutationCount === app.dynamicLegends) {
+                            updateLegend();
+                            app.mutationCount = 0;
+                        }
+                    }
+                });
+            });
+
             // create buttons for each theme
             array.forEach(configOptions.themes, function (theme, themeIndex){
                 domConstruct.place('<button id="theme' + themeIndex + '" data-theme-id="' + themeIndex + '" type="button" class="btn no-bottom-border-radius' + (themeIndex === (configOptions.themes.length - 1) ? ' active-theme no-bottom-right-border-radius"' : '"') + ' data-toggle="button">' + theme.title.toUpperCase() + '</button>', 'themeButtonGroup');
@@ -1176,17 +1189,9 @@ define([
             });
 
             if (domStyle.get(app.sidePanel, 'display') === 'block') {
-                var notifyCount = 0;
-
-                notify('done',function(responseOrError){
-                    if (responseOrError.hasOwnProperty('url'))
-                        if (responseOrError.url.match(/legend?/i))
-                        {
-                            notifyCount++;
-                            if (notifyCount === app.dynamicLegends) {
-                                updateLegend();
-                            }
-                        }
+                app.observer.observe(dom.byId('legendWrapper'), {
+                    attributes: true,
+                    subtree: true
                 });
 
                 domStyle.set(app.sidePanel, 'display', 'none');
