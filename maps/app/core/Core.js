@@ -36,7 +36,6 @@ define([
     'dojo/fx',
     'dojo/_base/fx',
     'dojo/_base/array',
-    'dojo/behavior',
     'dojo/dom',
     'dojo/dom-attr',
     'dojo/dom-style',
@@ -79,7 +78,6 @@ define([
         coreFx,
         fx,
         array,
-        behavior,
         dom,
         domAttr,
         domStyle,
@@ -1178,14 +1176,6 @@ define([
             });
 
             if (domStyle.get(app.sidePanel, 'display') === 'block') {
-                behavior.add({
-                    '#legendWrapper .esriLegendService' : {
-                        found: function (e) {
-                            updateLegend();
-                        }
-                    }
-                });
-
                 var notifyCount = 0;
 
                 notify('done',function(responseOrError){
@@ -1194,7 +1184,7 @@ define([
                         {
                             notifyCount++;
                             if (notifyCount === app.dynamicLegends) {
-                                behavior.apply();
+                                updateLegend();
                             }
                         }
                 });
@@ -1448,7 +1438,7 @@ define([
                             if ((e.level >= minLevel && app.oldZoomLevel < minLevel) || (e.level < minLevel && app.oldZoomLevel >= minLevel)) {
                                 checkScale(e.level, minLevel);
                                 app.currentMap.legend.refresh();
-                                behavior.apply();
+                                updateLegend();
                             }
                         }
                         // //updateNotice();
@@ -1637,7 +1627,6 @@ define([
             app.subthemeIndex = mapIndex;
             app.currentMap = app.maps[mapIndex];
             app.currentMap.legend.refresh();
-            behavior.apply();
             if (configOptions.themes[app.themeIndex].maps[app.subthemeIndex].scaleRestriction)
                 checkScale(app.currentMap.getLevel(), configOptions.themes[app.themeIndex].maps[app.subthemeIndex].scaleRestriction.minLevel)
 
@@ -1648,6 +1637,7 @@ define([
             share();
             domStyle.set(dom.byId('layerInfoModal'),'display', 'none');
             domStyle.set(dom.byId('aboutModal'),'display', 'none');
+            updateLegend();
         }
 
         updateAboutText = function (subthemeIndex)
@@ -1712,7 +1702,7 @@ define([
             app.currentMap.layer.setVisibleLayers([id]);
             app.radioSelection = id;
             app.currentMap.legend.refresh();
-            behavior.apply();
+            updateLegend();
             array.forEach(configOptions.themes[app.themeIndex].maps[app.subthemeIndex].layers.dynamicLayers[0].layers, function (v, i) {
                 if (v.ID === id)
                     query('#flex-link')[0].href = v.flexLink;
