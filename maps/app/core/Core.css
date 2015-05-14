@@ -266,7 +266,7 @@ li.dropdown {
 
   #legendModal-dv .modal-header,
   #layerInfoModal .modal-header {
-    padding         : 5px;
+    padding         : 0 0 0 10px;
     background-color: #697396;
     color           : #fff;
     text-transform  : uppercase;
@@ -296,8 +296,8 @@ li.dropdown {
   opacity   : 0;
 }
 
-  #aboutModal .close {
-    margin-right: 3px;
+  .modal .close {
+    margin-right: 4px;
   }
 
   #aboutModal .modal-body {
