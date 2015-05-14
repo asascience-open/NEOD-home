@@ -1340,7 +1340,7 @@ define([
                 if (map.layers.hasOwnProperty("dynamicLayers")) {
                     array.forEach(map.layers.dynamicLayers, function (dynamicLayer, i) {
                         visibleLayers = [];
-                        var dl = new ArcGISDynamicMapServiceLayer(dynamicLayer.URL);
+                        var dl = new ArcGISDynamicMapServiceLayer(dynamicLayer.URL, {id : dynamicLayer.name});
                         mapDeferred.layer = dl;
                         array.forEach(dynamicLayer.layers, function (layer, layerIndex) {
                             if (layer.hasOwnProperty("checked")) {
@@ -1700,6 +1700,10 @@ define([
             }
             else
                 dom.byId('legendWrapper').style.borderTop = 'none';
+
+            if (app.themeIndex === 0 && app.subthemeIndex === 0) {
+                domConstruct.place('legendDiv0_oceanUses_19', 'legendDiv0_oceanUses_28', 'after');
+            }
         }
 
         radioClick = function (id)

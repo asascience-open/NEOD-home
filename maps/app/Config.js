@@ -68,11 +68,17 @@ define([],
 								dynamicLayers: [
 									{
 										URL : oceanUses,
+										name : 'oceanUses',
 										layers: [
 											{
 												name: "Maintained Channels",
 												metadata	: metadataURL + "OceanUses/MaintainedChannels.pdf",
 												outField: "location"
+											},
+											{
+												name: "Ocean Disposal Sites",
+												metadata	: metadataURL + "OceanUses/OceanDisposalSites.pdf",
+												outField: "description"
 											},
 											{
 												name: "Danger Zone and Restricted Areas",
@@ -116,6 +122,7 @@ define([],
 									},
 									{
 										URL	:	mmc,
+										name : 'mmc',
 										layers: [
 											{
 												name		:	'Unexploded Ordnances',
