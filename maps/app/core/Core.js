@@ -51,7 +51,6 @@ define([
     'dijit/MenuItem',
     'dijit/form/Button',
     'dijit/form/FilteringSelect',
-    'bootstrap/Tooltip',
     'bootstrap/Modal',
     'bootstrap/Tab',
     'dojo/domReady!'
@@ -143,8 +142,9 @@ define([
                         domStyle.set(query('#aboutModal')[0], 'display', 'none');
                         domAttr.set(dom.byId('legend-tab'), 'src', 'img/side-buttons/legend-tab-out-off.png');
                     }
-                    domStyle.set(query('#side-tabs')[0], 'display', 'none');
-                    domClass.add(query('#data-viewer')[0], 'active');
+                    domStyle.set(dom.byId('side-tabs'), 'display', 'none');
+                    domStyle.set(dom.byId('layerInfoModal'),'display', 'none');
+                    domClass.add(dom.byId('data-viewer'), 'active');
                     app.currentMap = app.dataViewer;
                     app.lv = false;
                 }
@@ -750,55 +750,62 @@ define([
 
                             on(query('#side-panel img[title="Layer Information"]'), 'click', function (e) {
                                 dom.byId('loading').style.display = 'block';
-                                var serviceUrl = e.target.attributes['data-service_layer'].value;
-                                if (serviceUrl.match(/duplicate/))
-                                    serviceUrl = serviceUrl.substr(0, serviceUrl.indexOf('duplicate'));
+                                if (!e.desc) {
+                                    var serviceUrl = e.target.attributes['data-service_layer'].value;
+                                    if (serviceUrl.match(/duplicate/))
+                                        serviceUrl = serviceUrl.substr(0, serviceUrl.indexOf('duplicate'));
+                                    dojoRequest(serviceUrl + '?f=json', {
+                                        handleAs: "json",
+                                        timeout: app.timeout,
+                                        headers: {
+                                            'X-Requested-With': null
+                                        }
+                                    }).then(
+                                        function(result) {
+                                            query('#layerInfoModal span').html(result.name);
+                                            var contentHtml = '';
+                                            if (result.copyrightText != '')
+                                                contentHtml += '<p><strong>Source:</strong> ' + result.copyrightText + '</p>';
+                                            contentHtml += '<strong>Description:</strong><p id="description-text">' + result.description;
+                                            var id = parseInt(serviceUrl.substr(serviceUrl.lastIndexOf('/') + 1), 10),
+                                                metadataLink = '';
+                                            var sourceDataHtml = '<a href="#" onClick="sourceDataClick(\'' + result.name + '\')">Source Data</a>';
+                                            var dataIndex = 0;
+                                            array.forEach(app.tree.model.store.data, function (v, i) {
+                                                if (v.name === result.name || v.realName === result.name) {
+                                                    dataIndex = i;
+                                                    return false;
+                                                }
+                                            });
+                                            metadataLink = app.tree.model.store.data[dataIndex].metadata;
+                                            if (app.tree.model.store.data[dataIndex].noSource)
+                                                sourceDataHtml = 'Source Data';
+                                            if (app.tree.model.store.data[dataIndex].external)
+                                                sourceDataHtml = '<a href="' + app.tree.model.store.data[dataIndex].external + '" target="_blank">Source Data (External)</a>';
+                                            contentHtml += '<br /><br /><strong>Data:</strong> ';
+                                            if (metadataLink === '')
+                                                contentHtml += 'Metadata | ';
+                                            else
+                                                contentHtml += '<a href="' + metadataLink + '" target="_blank">Metadata</a> | ';
+                                            var extent = new esri.geometry.Extent(result.extent);
+                                            var centerPoint = extent.getCenter();
+                                            contentHtml += sourceDataHtml + ' | <a href="' + serviceUrl + '" target="_blank">Web Service</a> | <a href="#" onClick="app.currentMap.centerAndZoom(new esri.geometry.Point(' + centerPoint.getLongitude() + ', ' + centerPoint.getLatitude() + '), 7);">Zoom to Layer</a>';
+                                            dom.byId('loading').style.display = 'none';
+                                            query('#layer-info-content').html(contentHtml + '</p></div>');
+                                        }, function(error) {
+                                            console.log("Error: ", error.message);
+                                    });
+                                }
+                                else {
+                                    query('#layerInfoModal span').html(e.name);
+                                    query('#layer-info-content').html(e.desc);
+                                    dom.byId('loading').style.display = 'none';
+                                }
                                 if (domStyle.get('layerInfoModal', 'display') === 'none') {
                                     domStyle.set(dom.byId('layerInfoModal'),'display', 'block');
                                     fadeInLayerInfo.play();
                                 }
-                                dojoRequest(serviceUrl + '?f=json', {
-                                    handleAs: "json",
-                                    timeout: app.timeout,
-                                    headers: {
-                                        'X-Requested-With': null
-                                    }
-                                }).then(
-                                    function(result) {
-                                        query('#layerInfoModal span').html(result.name);
-                                        var contentHtml = '';
-                                        if (result.copyrightText != '')
-                                            contentHtml += '<p><strong>Source:</strong> ' + result.copyrightText + '</p>';
-                                        contentHtml += '<strong>Description:</strong><p id="description-text">' + result.description;
-                                        var id = parseInt(serviceUrl.substr(serviceUrl.lastIndexOf('/') + 1), 10),
-                                            metadataLink = '';
-                                        var sourceDataHtml = '<a href="#" onClick="sourceDataClick(\'' + result.name + '\')">Source Data</a>';
-                                        var dataIndex = 0;
-                                        array.forEach(app.tree.model.store.data, function (v, i) {
-                                            if (v.name === result.name || v.realName === result.name) {
-                                                dataIndex = i;
-                                                return false;
-                                            }
-                                        });
-                                        metadataLink = app.tree.model.store.data[dataIndex].metadata;
-                                        if (app.tree.model.store.data[dataIndex].noSource)
-                                            sourceDataHtml = 'Source Data';
-                                        if (app.tree.model.store.data[dataIndex].external)
-                                            sourceDataHtml = '<a href="' + app.tree.model.store.data[dataIndex].external + '" target="_blank">Source Data (External)</a>';
-                                        contentHtml += '<br /><br /><strong>Data:</strong> ';
-                                        if (metadataLink === '')
-                                            contentHtml += 'Metadata | ';
-                                        else
-                                            contentHtml += '<a href="' + metadataLink + '" target="_blank">Metadata</a> | ';
-                                        var extent = new esri.geometry.Extent(result.extent);
-                                        var centerPoint = extent.getCenter();
-                                        contentHtml += sourceDataHtml + ' | <a href="' + serviceUrl + '" target="_blank">Web Service</a> | <a href="#" onClick="app.currentMap.centerAndZoom(new esri.geometry.Point(' + centerPoint.getLongitude() + ', ' + centerPoint.getLatitude() + '), 7);">Zoom to Layer</a>';
-                                        dom.byId('loading').style.display = 'none';
-                                        query('#layer-info-content').html(contentHtml + '</p></div>');
-                                        setIndices('e', 'layerInfoModal');
-                                    }, function(error) {
-                                        console.log("Error: ", error.message);
-                                });
+                                setIndices('e', 'layerInfoModal');
                             });
 
                             //  set left padding
@@ -1639,6 +1646,8 @@ define([
 
             query('#legendAbout p').text(configOptions.themes[app.themeIndex].title + ': ' + configOptions.themes[app.themeIndex].maps[mapIndex].title);
             share();
+            domStyle.set(dom.byId('layerInfoModal'),'display', 'none');
+            domStyle.set(dom.byId('aboutModal'),'display', 'none');
         }
 
         updateAboutText = function (subthemeIndex)
@@ -1678,11 +1687,19 @@ define([
                     array.forEach(map.layers.dynamicLayers, function (dynamicLayer) {
                         array.forEach(dynamicLayer.layers, function (layer, i) {
                             var td = query('#legend-lv .legendDiv .esriLegendService div table.esriLegendLayerLabel tr td:contains("' + layer.name + '")')
-                            if (td.text() == layer.name)td.html('<a href="' + layer.metadata + '" target="_blank" rel="tooltip" data-toggle="tooltip" data-placement="right" title="' + layer.description +  ' <br /><br />click link for metadata">' + layer.name + '</a>');
+                            if (td.text() == layer.name)td.html('<a href="" data-name="' + layer.name + '" data-description="<p>' + layer.description +  '<br><br><a href=\'' + layer.metadata + '\' target=\'_blank\' style=\'text-decoration:underline;color:#063;\'>Metadata</a></p>" title="Layer Information">' + layer.name + '</a>');
                         });
                     });
             });
-            query('.esriLegendService').tooltip({selector: 'a[rel="tooltip"]'});
+            on(query('.legendDiv a'), 'click', function (e) {
+                e.preventDefault();
+                on.emit(query('#side-panel img[title="Layer Information"]')[0], 'click', {
+                    bubbles     : true,
+                    cancelable  : true,
+                    name        : e.currentTarget.attributes['data-name'].value,
+                    desc        : e.currentTarget.attributes['data-description'].value
+                });
+            });
             if (dom.byId('legendWrapper').scrollHeight >= 443) {
                 dom.byId('legendWrapper').style.borderTop = '1px solid #ccc';
             }
