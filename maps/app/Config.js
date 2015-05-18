@@ -1151,13 +1151,13 @@ define([],
 						layers	: [
 							{
 								name		: 	'Artificial Reefs',
-								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/ArtificialReefs.htm',
+								metadata	: 	'http://coast.noaa.gov/dataservices/Metadata/TransformMetadata?u=http://coast.noaa.gov/data/Documents/Metadata/harvest/MarineCadastre/ArtificialReefs.xml&f=html',
 								serviceURL	: 	noaaPhysOcean,
 								subGroup	:	'Habitat'
 							},
 							{
 								name		: 	'Critical Habitat Designations',
-								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/CriticalHabitatDesignations.htm',
+								metadata	: 	'http://coast.noaa.gov/dataservices/Metadata/TransformMetadata?u=http://coast.noaa.gov/data/Documents/Metadata/harvest/MarineCadastre/CriticalHabitatDesignations.xml&f=html',
 								serviceURL	: 	noaaPhysOcean
 							},
 							{
@@ -1177,43 +1177,43 @@ define([],
 							},
 							{
 								name		: 	'Alcyonacea',
-								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/Alcyonacea.htm',
+								metadata	: 	'http://coast.noaa.gov/dataservices/Metadata/TransformMetadata?u=http://coast.noaa.gov/data/Documents/Metadata/harvest/MarineCadastre/Alcyonacea.xml&f=html',
 								serviceURL	: 	noaaCoral,
 								subGroup	:	'Corals'
 							},
 							{
 								name		: 	'Gorgonian Alcyonacea',
-								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/GorgonianAlcyonacea.htm',
+								metadata	: 	'http://coast.noaa.gov/dataservices/Metadata/TransformMetadata?u=http://coast.noaa.gov/data/Documents/Metadata/harvest/MarineCadastre/GorgonianAlcyonacea.xml&f=html',
 								serviceURL	: 	noaaCoral
 							},
 							{
 								name		: 	'Non-Gorgonian Alcyonacea',
-								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/NonGorgonianAlcyonacea.htm',
+								metadata	: 	'http://coast.noaa.gov/dataservices/Metadata/TransformMetadata?u=http://coast.noaa.gov/data/Documents/Metadata/harvest/MarineCadastre/NonGorgonianAlcyonacea.xml&f=html',
 								serviceURL	: 	noaaCoral
 							},
 							{
 								name		: 	'Pennatulacea',
-								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/Pennatulacea.htm',
+								metadata	: 	'http://coast.noaa.gov/dataservices/Metadata/TransformMetadata?u=http://coast.noaa.gov/data/Documents/Metadata/harvest/MarineCadastre/Pennatulacea.xml&f=html',
 								serviceURL	: 	noaaCoral
 							},
 							{
 								name		: 	'Pennatulacea Sessiliflorae',
-								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/PennatulaceaSessiliflorae.htm',
+								metadata	: 	'http://coast.noaa.gov/dataservices/Metadata/TransformMetadata?u=http://coast.noaa.gov/data/Documents/Metadata/harvest/MarineCadastre/PennatulaceaSessiliflorae.xml&f=html',
 								serviceURL	: 	noaaCoral
 							},
 							{
 								name		: 	'Pennatulacea Subsessiliflorae',
-								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/PennatulaceaSubsessiliflorae.htm',
+								metadata	: 	'http://coast.noaa.gov/dataservices/Metadata/TransformMetadata?u=http://coast.noaa.gov/data/Documents/Metadata/harvest/MarineCadastre/PennatulaceaSubsessiliflorae.xml&f=html',
 								serviceURL	: 	noaaCoral
 							},
 							{
 								name		: 	'Scleractinia Caryophylliidae',
-								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/ScleractiniaCaryophylliidae.htm',
+								metadata	: 	'http://coast.noaa.gov/dataservices/Metadata/TransformMetadata?u=http://coast.noaa.gov/data/Documents/Metadata/harvest/MarineCadastre/ScleractiniaCaryophylliidae.xml&f=html',
 								serviceURL	: 	noaaCoral
 							},
 							{
 								name		: 	'Scleractinia Flabellidae',
-								metadata	: 	'http://coast.noaa.gov/htdata/CMSP/Metadata/ScleractiniaFlabellidae.htm',
+								metadata	: 	'http://coast.noaa.gov/dataservices/Metadata/TransformMetadata?u=http://coast.noaa.gov/data/Documents/Metadata/harvest/MarineCadastre/ScleractiniaFlabellidae.xml&f=html',
 								serviceURL	: 	noaaCoral
 							},
 							{
