@@ -41,7 +41,7 @@ define([],
 		configOptions = {
 			themes: [
 				{
-					title: "Maritime Commerce",
+					title: "Commerce",
 					maps: [
 						{
 							title: "Navigation",
@@ -326,7 +326,7 @@ define([],
 					maps: []
 				},
 				{
-					title: "Marine Mammals & Sea Turtles",
+					title: "Mammals & Turtles",
 					maps: []
 				},
 				{

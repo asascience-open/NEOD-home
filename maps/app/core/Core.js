@@ -174,6 +174,19 @@ define([
             query('.active.map').style({
                'height'        : app.mapHeight + 'px'
             });
+
+            if (app.screenWidth < 1080) {
+                query('.arrow-container').forEach(function (node) {
+                    domStyle.set(node, 'display', 'block');
+                });
+                domStyle.set(dom.byId('themeButtonGroup'), 'left', '25px');
+            }
+            else if (domStyle.get(dom.byId('left-arrow'), 'display', 'block')) {
+                query('.arrow-container').forEach(function (node) {
+                    domStyle.set(node, 'display', 'none');
+                });
+                domStyle.set(dom.byId('themeButtonGroup'), 'left', '0');
+            }
         }
 
         function resizeSidePanel() {
@@ -567,13 +580,19 @@ define([
             var shiftLeftIntervalID,
                 shiftRightIntervalID;
 
-            app.buttonsLeftPosition = domStyle.get(app.buttons, 'left');
             app.buttonsContainerWidth = domStyle.get(app.buttons, 'width');
 
+            // start list shifted to right since data viewer is active
+            if (app.screenWidth < 1080) {
+                domStyle.set(dom.byId('themeButtonGroup'), 'left', '-' + (app.buttonsContainerWidth - app.screenWidth + 25) + 'px');
+            }
+
+            app.buttonsLeftPosition = domStyle.get(app.buttons, 'left');
+            
             var pixelsToShift = 25;
 
             var shiftRight = function () {
-                if (app.buttonsLeftPosition < 0) {
+                if (app.buttonsLeftPosition < 25) {
                     app.buttonsLeftPosition += pixelsToShift;
                     fx.animateProperty({
                         node: app.buttons,
@@ -585,7 +604,7 @@ define([
             }
 
             var shiftLeft = function () {
-                if (app.buttonsLeftPosition + (app.buttonsContainerWidth + 75) >= app.screenWidth) {
+                if ((app.buttonsLeftPosition + app.buttonsContainerWidth + 20) >= app.screenWidth) {
                     app.buttonsLeftPosition -= pixelsToShift;
                     fx.animateProperty({
                         node: app.buttons,
