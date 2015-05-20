@@ -37,7 +37,7 @@
     <body class='claro'>
         <!-- navbar -->
         <div class="navbar navbar-default navbar-fixed-top" role="navigation" id="navbar">
-            <div class="container-fluid">
+            <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -78,8 +78,16 @@
                         <a class="carousel-control right" href="#mapCarousel" data-slide="next">&rsaquo;</a>
                     </div>
                 -->
-                    <div class='button-container' id='theme-button-container'>
-                        <div class='btn-group' data-toggle='buttons-radio' id='themeButtonGroup'></div>
+                    <div id='scrollable-container'>
+                        <div id='left-arrow-container' class='arrow-container'>
+                            <div id='left-arrow' class='panel-heading-arrow'></div>
+                        </div>
+                        <div class='button-container' id='theme-button-container'>
+                            <div class='btn-group' data-toggle='buttons-radio' id='themeButtonGroup'></div>
+                        </div>
+                        <div id='right-arrow-container' class='arrow-container'>
+                            <div id='right-arrow' class='panel-heading-arrow'></div>
+                        </div>
                     </div>
                 </div><!--/.nav-collapse -->
             </div>
@@ -202,7 +210,7 @@
                 <button id="printButton" class="button-container" type="button"></button>
             </div>
             <div id='watermark'>Northeast Ocean Data</div>
-            <div id='data-viewer' class='map-pane active'> </div>
+            <div id='data-viewer' class='map-pane active main'> </div>
 
             <div id='legendModal' class='modal moveable' data-backdrop='false' tabindex='-1'>
                 <div class='modal-content'>

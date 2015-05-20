@@ -99,7 +99,7 @@ h3.panel-title {
 
 .navbar-brand {
   margin-top  : 4px;
-  margin-left : -5px;
+  margin-left : 10px;
 }
 
 .navbar-default .navbar-nav > li > span,
@@ -196,6 +196,7 @@ li.dropdown {
   border-color: #fff;
   padding: 2px 4px 2px 4px;
   font-weight: bold;
+  z-index: 1;
 }
 
 /*#mapList .btn:hover,
@@ -205,7 +206,7 @@ li.dropdown {
 
 
 #mapList .navbar-right {
-  margin-right: 123px;
+  margin-right: 138px;
 }
 
 .map-pane {
@@ -915,7 +916,7 @@ img[src="img/ais-legend.png"] {
   font-size: 12px !important;
 }
 
-.button-container {
+#map-container .button-container {
   display: inline-block;
 }
 
@@ -1035,6 +1036,52 @@ td.dijitMenuItemIconCell span{
   border-left-color: #697396;
 }
 
+#scrollable-container .arrow-container {
+  height            : 25px;
+  width             : 33px;
+  position          : absolute;
+  top               : 0;
+  background-color  : #fff;
+  z-index           : 2;
+  margin-top        : 37px;
+  display           : none;
+}
+
+#left-arrow-container {
+  left: 0;
+}
+
+#right-arrow-container {
+  right: 0;
+}
+
+#scrollable-container .panel-heading-arrow {
+  margin-top      : 0;
+  top             : 6px;
+  z-index         : 2;
+  margin-left     : 0;
+  margin-right    : 0;
+  background-color: #fff;
+  cursor          : default;
+  border-top      : 8px solid transparent;
+  border-bottom   : 8px solid transparent;
+}
+  #scrollable-container .panel-heading-arrow:hover {
+    border-right-color: #697396;
+    border-left-color: #697396;
+  }
+
+#left-arrow.panel-heading-arrow {
+  left          : 13px;
+  border-right  : 11px solid #D1D2D4;
+}
+
+#right-arrow.panel-heading-arrow {
+  right         : 13px;
+  border-left   : 11px solid #D1D2D4;
+  border-right  : 0;
+}
+
 #source-data-modal .modal-dialog {
   margin-top: 100px;
 }
@@ -1057,6 +1104,12 @@ td.dijitMenuItemIconCell span{
   visibility: hidden;
   position  : absolute;
   left      : 15px;
+}
+
+#theme-button-container {
+  width       : 1096px;
+  margin-left : auto;
+  margin-right: auto;
 }
 
 /* theme buttons */

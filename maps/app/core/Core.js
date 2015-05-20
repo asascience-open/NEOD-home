@@ -39,6 +39,7 @@ define([
     'dojo/dom',
     'dojo/dom-attr',
     'dojo/dom-style',
+    'dojo/mouse',
     'dijit/registry',
     'dojo/store/Memory',
     'dijit/tree/ObjectStoreModel',
@@ -80,6 +81,7 @@ define([
         dom,
         domAttr,
         domStyle,
+        mouse,
         registry,
         Memory,
         ObjectStoreModel,
@@ -183,9 +185,6 @@ define([
             app.screenHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
             app.screenWidth = "innerWidth" in window ? window.innerWidth : document.documentElement.offsetWidth;
             app.headerOffset = query('.navbar-fixed-top').style('height')[0];
-            if (app.lv) {
-                app.headerOffset = app.headerOffset + 20;
-            }
             app.sidePanelWidth = 281;
             app.mapHeight = app.screenHeight - app.headerOffset;
 
@@ -193,9 +192,29 @@ define([
                 'height'        : (app.screenHeight - app.headerOffset) + 'px',
                 'marginTop'    : app.screenWidth < 980 ? '0' : app.headerOffset + 'px'
             });
+            
+            if (app.lv) {
+                query('#subthemeButtonGroup, .lite-viewer.map-pane').style({
+                    'marginTop'    : app.screenWidth < 980 ? '0' : app.headerOffset + 'px'
+                });
+            }
+            
             query('.active.map').style({
                'height'        : app.mapHeight + 'px'
             });
+
+            if (app.screenWidth < 1096) {
+                query('.arrow-container').forEach(function (node) {
+                    domStyle.set(node, 'display', 'block');
+                });
+                domStyle.set(dom.byId('themeButtonGroup'), 'left', '32px');
+            }
+            else if (domStyle.get(dom.byId('left-arrow'), 'display', 'block')) {
+                query('.arrow-container').forEach(function (node) {
+                    domStyle.set(node, 'display', 'none');
+                });
+                domStyle.set(dom.byId('themeButtonGroup'), 'left', '0');
+            }
         }
 
         function resizeSidePanel() {
@@ -617,6 +636,62 @@ define([
                     });
                     domAttr.set(this, 'title', 'Hide Legend');
                 }
+            });
+
+            app.buttons = dom.byId('themeButtonGroup');
+
+            var shiftLeftIntervalID,
+                shiftRightIntervalID;
+
+            app.buttonsContainerWidth = domStyle.get(app.buttons, 'width');
+
+            // start list shifted to right since data viewer is active
+            if (app.screenWidth < 1080) {
+                domStyle.set(dom.byId('themeButtonGroup'), 'left', '-' + (app.buttonsContainerWidth - app.screenWidth + 25) + 'px');
+            }
+
+            app.buttonsLeftPosition = domStyle.get(app.buttons, 'left');
+            
+            var pixelsToShift = 25;
+
+            var shiftRight = function () {
+                if (app.buttonsLeftPosition < 32) {
+                    app.buttonsLeftPosition += pixelsToShift;
+                    fx.animateProperty({
+                        node: app.buttons,
+                        properties: {
+                            left: app.buttonsLeftPosition
+                        }
+                    }).play();
+                }
+            }
+
+            var shiftLeft = function () {
+                if ((app.buttonsLeftPosition + app.buttonsContainerWidth + 20) >= app.screenWidth) {
+                    app.buttonsLeftPosition -= pixelsToShift;
+                    fx.animateProperty({
+                        node: app.buttons,
+                        properties: {
+                            left: app.buttonsLeftPosition
+                        }
+                    }).play();
+                }
+            }
+
+            on(dom.byId('left-arrow'), mouse.enter, function (e) {
+                shiftRightIntervalID = setInterval(shiftRight, 150);
+            });
+
+            on(dom.byId('left-arrow'), mouse.leave, function (e) {
+                clearInterval(shiftRightIntervalID);
+            });
+
+            on(dom.byId('right-arrow'), mouse.enter, function (e) {
+                shiftLeftIntervalID = setInterval(shiftLeft, 150);
+            });
+
+            on(dom.byId('right-arrow'), mouse.leave, function (e) {
+                clearInterval(shiftLeftIntervalID);
             });
         }
 
@@ -1216,14 +1291,14 @@ define([
                 //     getLayerIds();
                 // });
 
-                if (app.screenWidth < 1024)
-                    domClass.remove("legendButton", "active");
-                else
-                    query('#legendModal').style({
-                        'display'   : 'block',
-                        'top'       : '100px',
-                        'left'      : '65px'
-                    });
+                // if (app.screenWidth < 1024)
+                //     domClass.remove("legendButton", "active");
+                // else
+                query('#legendModal').style({
+                    'display'   : 'block',
+                    'top'       : '100px',
+                    'left'      : '65px'
+                });
 
                 if (app.firstLV_load) {
                     var moveableLegend =  new move.constrainedMoveable("legendModal", {
@@ -1311,7 +1386,7 @@ define([
 
             array.forEach(configOptions.themes[app.themeIndex].maps, function(map, mapIndex){
                 // place map div in map-pane
-                domConstruct.place('<div id="map' + mapIndex + '" class="map-pane lite-viewer' + ((mapIndex == 0) ? ' active"' : '"') + '></div>', 'map-container');
+                domConstruct.place('<div id="map' + mapIndex + '" class="map-pane main lite-viewer' + ((mapIndex == 0) ? ' active"' : '"') + '></div>', 'map-container');
                 // create map
                 var mapDeferred = new Map('map' + mapIndex,{
                     basemap                 : 'oceans',
@@ -1534,6 +1609,12 @@ define([
                         query('#scale')[0].innerHTML = "Scale 1:" + mapDeferred.__LOD.scale.toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     }
                 });
+            });
+            
+            app.headerOffset = query('.navbar-fixed-top').style('height')[0];
+
+            query('#subthemeButtonGroup, .lite-viewer.map-pane').style({
+                'marginTop'    : app.screenWidth < 980 ? '0' : app.headerOffset + 'px'
             });
 
             app.oldZoomLevel = app.currentMap.getLevel();
