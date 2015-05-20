@@ -1461,3 +1461,8 @@ span#legendAbout p {
   margin-top: 7px;
   float: right;
 }
+
+.modal-header .close {
+  color: #fff;
+  opacity: .75;
+}
