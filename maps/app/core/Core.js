@@ -443,7 +443,7 @@ define([
                     center                  : [-71.5, 42],
                     showAttribution         : false,
                     sliderPosition          : 'top-left',
-                    autoResize              : true
+                    autoResize              : false
                 });
 
             app.currentMap = app.dataViewer;
@@ -1189,12 +1189,12 @@ define([
                 dojo.query('.lv').style({'display' : 'block'});
                 domClass.remove('data-viewer', 'active');
 
-                if (app.screenWidth < 1024)
-                    domClass.remove("legendButton", "active");
-                else
-                    query('#legendModal').style({
-                        'display'   : 'block'
-                    });
+                // if (app.screenWidth < 1024)
+                //     domClass.remove("legendButton", "active");
+                // else
+                query('#legendModal').style({
+                    'display'   : 'block'
+                });
 
                 if (app.firstLV_load) {
                     var constraintBox = {
