@@ -198,6 +198,8 @@ define([
                     'marginTop'    : app.screenWidth < 980 ? '0' : app.headerOffset + 'px'
                 });
             }
+            else if (app.dataViewer)
+                app.dataViewer.resize();
             
             query('.active.map').style({
                'height'        : app.mapHeight + 'px'
@@ -472,7 +474,7 @@ define([
                     center                  : [-71.5, 42],
                     showAttribution         : false,
                     sliderPosition          : 'top-left',
-                    autoResize              : true
+                    autoResize              : false
                 });
 
             app.currentMap = app.dataViewer;
