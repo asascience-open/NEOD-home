@@ -143,6 +143,7 @@ define([
                     domClass.add(query('#data-viewer')[0], 'active');
                     app.currentMap = app.dataViewer;
                     app.lv = false;
+                    resizeMap();
                 }
             });
 
