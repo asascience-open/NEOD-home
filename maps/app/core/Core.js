@@ -164,6 +164,8 @@ define([
             if (app.lv) {
                 app.headerOffset = app.headerOffset + 20;
             }
+            else if (app.dataViewer)
+                app.dataViewer.resize();
             app.sidePanelWidth = 281;
             app.mapHeight = app.screenHeight - app.headerOffset;
 
