@@ -160,6 +160,7 @@ define([
                     domClass.add(dom.byId('data-viewer'), 'active');
                     app.currentMap = app.dataViewer;
                     app.lv = false;
+                    resizeMap();
                 }
             });
 
@@ -193,12 +194,7 @@ define([
                 'marginTop'    : app.screenWidth < 980 ? '0' : app.headerOffset + 'px'
             });
             
-            if (app.lv) {
-                query('#subthemeButtonGroup, .lite-viewer.map-pane').style({
-                    'marginTop'    : app.screenWidth < 980 ? '0' : app.headerOffset + 'px'
-                });
-            }
-            else if (app.dataViewer)
+            if (!app.lv && app.dataViewer)
                 app.dataViewer.resize();
             
             query('.active.map').style({
@@ -1614,10 +1610,6 @@ define([
             });
             
             app.headerOffset = query('.navbar-fixed-top').style('height')[0];
-
-            query('#subthemeButtonGroup, .lite-viewer.map-pane').style({
-                'marginTop'    : app.screenWidth < 980 ? '0' : app.headerOffset + 'px'
-            });
 
             app.oldZoomLevel = app.currentMap.getLevel();
 
