@@ -162,11 +162,6 @@ define([
             app.screenHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
             app.screenWidth = "innerWidth" in window ? window.innerWidth : document.documentElement.offsetWidth;
             app.headerOffset = query('.navbar-fixed-top').style('height')[0];
-            if (app.lv) {
-                app.headerOffset = app.headerOffset + 20;
-            }
-            else if (app.dataViewer)
-                app.dataViewer.resize();
             app.sidePanelWidth = 281;
             app.mapHeight = app.screenHeight - app.headerOffset;
 
@@ -174,6 +169,14 @@ define([
                 'height'        : (app.screenHeight - app.headerOffset) + 'px',
                 'marginTop'    : app.screenWidth < 980 ? '0' : app.headerOffset + 'px'
             });
+
+            if (app.lv)
+                query('#subthemeButtonGroup, .lite-viewer.map-pane').style({
+                    'marginTop'    : app.screenWidth < 980 ? '0' : app.headerOffset + 'px'
+                });
+            else if (app.dataViewer)
+                app.dataViewer.resize();
+
             query('.active.map').style({
                'height'        : app.mapHeight + 'px'
             });
@@ -1476,6 +1479,7 @@ define([
                 mapDeferred.on('load', function(){
                     if (mapDeferred === app.currentMap) {
                         query('#scale')[0].innerHTML = "Scale 1:" + mapDeferred.__LOD.scale.toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        resizeMap();
                     }
                 });
             });
