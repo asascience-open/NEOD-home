@@ -170,11 +170,7 @@ define([
                 'marginTop'    : app.screenWidth < 980 ? '0' : app.headerOffset + 'px'
             });
 
-            if (app.lv)
-                query('#subthemeButtonGroup, .lite-viewer.map-pane').style({
-                    'marginTop'    : app.screenWidth < 980 ? '0' : app.headerOffset + 'px'
-                });
-            else if (app.dataViewer)
+            if (!app.lv && app.dataViewer)
                 app.dataViewer.resize();
 
             query('.active.map').style({
@@ -1479,7 +1475,6 @@ define([
                 mapDeferred.on('load', function(){
                     if (mapDeferred === app.currentMap) {
                         query('#scale')[0].innerHTML = "Scale 1:" + mapDeferred.__LOD.scale.toFixed().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                        resizeMap();
                     }
                 });
             });
