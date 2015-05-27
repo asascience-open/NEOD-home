@@ -152,7 +152,7 @@ define([
                 'marginTop'    : app.screenWidth < 980 ? '0' : app.headerOffset + 'px'
             });
             
-            domStyle.set('theme-button-container', 'width', (app.screenWidth - 75) + 'px');
+            domStyle.set('theme-button-container', 'width', (app.screenWidth - 175) + 'px');
 
             if (!app.lv && app.dataViewer)
                 app.dataViewer.resize();
@@ -163,10 +163,10 @@ define([
 
             if (app.noCarousel) {
                 $('.theme-carousel').slick({
-                  centerMode: true,
                   ininite: true,
                   variableWidth: true,
                   slidesToShow: 10,
+                  slidesToScroll: 2,
                   arrows: true
                 });
                 $('.theme-carousel').slick('slickGoTo', 10, true);
@@ -1782,7 +1782,6 @@ define([
                         dom.byId('watermark').style.left = '9px';
                         app.lv = true;
                         getLayerIds(app.lv);
-                        $('.theme-carousel').slick('slickGoTo', app.themeIndex, true);
                     }
                 }
                 else if (themeIndex === 10) {
@@ -1817,7 +1816,6 @@ define([
                     app.currentMap = app.dataViewer;
                     app.lv = false;
                     resizeMap();
-                    $('.theme-carousel').slick('slickGoTo', 10, true);
                 }
         }
 
