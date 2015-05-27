@@ -157,53 +157,32 @@ li.dropdown {
   margin-right: 50px;
 }
 
-.navbar .carousel {
-  display: none;
-  margin: 0 auto 0 auto;
-  width: 217px;
-}
-
-  .navbar .carousel .item {
-    text-align: center;
-  }
-
-  .navbar .carousel .carousel-control {
-    font-size: 30px;
-    width: 22px;
-    height: 22px;
-    line-height: 15px;
-    top: 25px;
-    border: none;
-  }
-
-    .navbar .carousel .carousel-control.left {
-      left: -25px;
-    }
-
-    .navbar .carousel .carousel-control.right {
-      right: -25px;
-    }
-
 #mapList {
   text-align: center;
 }
 
-#mapList .btn,
-.carousel .btn {
-  color: #fff;
+#mapList p {
+  display: table-cell;
   background-color: rgb(209, 210, 212);
-  border-bottom: none;
-  border-color: #fff;
-  padding: 2px 4px 2px 4px;
-  font-weight: bold;
-  z-index: 1;
+  cursor          : pointer;
+  margin-right    : 1px;
+  color         : #fff;
+  font-weight   : bold;
+  z-index       : 1;
+  margin        : 0;
+  vertical-align: middle;
+  line-height   : 13px;
+  height: 21px;
 }
 
-/*#mapList .btn:hover,
-.carousel .btn:hover {
+#mapList p:hover {
   background-color: rgb(153, 153, 153);
-}*/
+}
 
+#mapList .slick-prev:before,
+#mapList .slick-next:before {
+  color: #697396;
+}
 
 #mapList .navbar-right {
   margin-right: 138px;
@@ -356,7 +335,7 @@ li.dropdown {
   position: absolute;
   right: 10px;
   z-index: 999;
-  top: 67px;
+  top: 66px;
 }
 
 .no-bottom-border {
@@ -904,7 +883,7 @@ img[src="img/ais-legend.png"] {
   visibility: hidden;
 }
 
-#themeButtonGroup button,
+#theme-button-container p,
 #subthemeButtonGroup div {
   text-indent: -99999px;
 }
@@ -1048,7 +1027,7 @@ td.dijitMenuItemIconCell span{
   border-left-color: #697396;
 }
 
-#scrollable-container .arrow-container {
+/*#scrollable-container .arrow-container {
   height            : 25px;
   width             : 33px;
   position          : absolute;
@@ -1081,7 +1060,7 @@ td.dijitMenuItemIconCell span{
   #scrollable-container .panel-heading-arrow:hover {
     border-right-color: #697396;
     border-left-color: #697396;
-  }
+  }*/
 
 #left-arrow.panel-heading-arrow {
   left          : 13px;
@@ -1118,124 +1097,145 @@ td.dijitMenuItemIconCell span{
   left      : 15px;
 }
 
-#theme-button-container {
-  width       : 1096px;
-  margin-left : auto;
-  margin-right: auto;
+.slick-slider {
+  margin-bottom: 0!important;
 }
+
+.slick-slide {
+  margin-right: 1px;
+}
+
+.theme-carousel {
+  margin: 41px auto 0;
+  width: 1200px;
+}
+
+#mapList .slick-prev {
+  left: -30px;
+}
+
+#mapList .slick-next {
+  right: -30px;
+}
+
 
 /* theme buttons */
 
-#theme0 {
+#mapList #themeButtonGroup div.active-theme {
+  background-color: #697396;
+}
+
+p[data-theme-id="0"] {
   border-top-left-radius: 0;
   background-image: url('../../img/theme-buttons/top/maritimecommerce-off.png');
   width: 73px;
 }
 
-  #theme0:hover {
+  p[data-theme-id="0"]:hover {
     background-image: url('../../img/theme-buttons/top/maritimecommerce-mouseover.png');
   }
 
-  #theme0.active-theme {
+  p[data-theme-id="0"].active-theme {
     background-image: url('../../img/theme-buttons/top/maritimecommerce-on.png');
   }
 
-#theme1 {
+p[data-theme-id="1"] {
   background-image: url('../../img/theme-buttons/top/energy-off.png');
   width: 57px;
 }
 
-  #theme1:hover {
+  p[data-theme-id="1"]:hover {
     background-image: url('../../img/theme-buttons/top/energy-mouseover.png');
   }
 
-#theme2 {
+p[data-theme-id="2"] {
   background-image: url('../../img/theme-buttons/top/recreation-off.png');
   width: 87px;
 }
 
-  #theme2:hover {
+  p[data-theme-id="2"]:hover {
     background-image: url('../../img/theme-buttons/top/recreation-mouseover.png');
   }
 
-#theme3 {
+p[data-theme-id="3"] {
   background-image: url('../../img/theme-buttons/top/commercialfishing-off.png');
   width: 141px;
 }
 
-  #theme3:hover {
+  p[data-theme-id="3"]:hover {
     background-image: url('../../img/theme-buttons/top/commercialfishing-mouseover.png');
   }
 
-#theme4 {
+p[data-theme-id="4"] {
   background-image: url('../../img/theme-buttons/top/aquaculture-off.png');
   width: 95px;
 }
 
-  #theme4:hover {
+  p[data-theme-id="4"]:hover {
     background-image: url('../../img/theme-buttons/top/aquaculture-mouseover.png');
   }
 
-#theme5 {
+p[data-theme-id="5"] {
   background-image: url('../../img/theme-buttons/top/culture-off.png');
   width: 59px;
 }
 
-  #theme5:hover {
+  p[data-theme-id="5"]:hover {
     background-image: url('../../img/theme-buttons/top/culture-mouseover.png');
   }
 
-#theme6 {
+p[data-theme-id="6"] {
   background-image: url('../../img/theme-buttons/top/fish-shellfish-off.png');
   width: 111px;
 }
 
-  #theme6:hover {
+  p[data-theme-id="6"]:hover {
     background-image: url('../../img/theme-buttons/top/fish-shellfish-mouseover.png');
   }
 
-#theme7 {
+p[data-theme-id="7"] {
   background-image: url('../../img/theme-buttons/top/mammals-off.png');
   width: 157px;
 }
 
-  #theme7:hover {
+  p[data-theme-id="7"]:hover {
     background-image: url('../../img/theme-buttons/top/mammals-mouseover.png');
   }
 
-#theme8 {
+p[data-theme-id="8"] {
   background-image: url('../../img/theme-buttons/top/othermarinelife-off.png');
   width: 128px;
 }
 
-  #theme8:hover {
+  p[data-theme-id="8"]:hover {
     background-image: url('../../img/theme-buttons/top/othermarinelife-mouseover.png');
   }
 
-#theme9 {
+p[data-theme-id="9"] {
   border-top-right-radius: 0;
   background-image: url('../../img/theme-buttons/top/waterquality-off.png');
   width: 105px;
 }
 
-  #theme9:hover {
+  p[data-theme-id="9"]:hover {
     background-image: url('../../img/theme-buttons/top/waterquality-mouseover.png');
   }
 
 /* for data viewer button */
 
-button#theme10 {
+#mapList p[data-theme-id="10"] {
   width       : 93px;
-  text-indent : 0;
+  text-indent : 0 !important;
   border-top-right-radius: 0;
+  font-size: 11px;
 }
 
-button#theme10:hover {
+#mapList p[data-theme-id="10"]:hover {
   background-color: #999;
   border-top-right-radius: 0;
 }
 
-button#theme10.active-theme {
+#mapList p[data-theme-id="10"].active-theme {
   background-color: #697396;
 }
 

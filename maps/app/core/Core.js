@@ -12,7 +12,8 @@ app.shareUrl = '',
 app.shareObj = {},
 app.timeout = 6000,
 app.setMap = false,
-app.mutationCount = 0;
+app.mutationCount = 0,
+app.noCarousel = true;
 define([
     'esri/map',
     'esri/layers/FeatureLayer',
@@ -115,54 +116,11 @@ define([
 
             // create buttons for each theme
             array.forEach(configOptions.themes, function (theme, themeIndex){
-                domConstruct.place('<button id="theme' + themeIndex + '" data-theme-id="' + themeIndex + '" type="button" class="btn no-bottom-border-radius' + (themeIndex === (configOptions.themes.length - 1) ? ' active-theme no-bottom-right-border-radius"' : '"') + ' data-toggle="button">' + theme.title.toUpperCase() + '</button>', 'themeButtonGroup');
+                domConstruct.place('<div><p onclick="themeClick(this);" ' + (themeIndex === (configOptions.themes.length - 1) ? ' class="active-theme"' : '') + ' data-theme-id="' + themeIndex + '">' + theme.title.toUpperCase() + '</p></div>', 'theme-button-container');
             });
 
             app.navbar = dom.byId('navbar'),
             app.sidePanel = dom.byId('side-panel');
-
-            on(dojo.query('#themeButtonGroup button'), 'click', function (e) {
-                var themeIndex = parseInt(this.attributes["data-theme-id"].value, 10);
-                if (themeIndex !== 10 && !domClass.contains(this, 'active-theme')) { // 10 is data viewer
-                    if (themeIndex === 0) { // 0 is maritime commerce
-                        app.themeIndex = themeIndex;
-                        domClass.remove(query('#themeButtonGroup .active-theme')[0], 'active-theme');
-                        domClass.add(this, 'active-theme');
-                        dom.byId('watermark').style.left = '9px';
-                        app.lv = true;
-                        getLayerIds(app.lv);
-                    }
-                }
-                else if (themeIndex === 10) {
-                    domClass.remove(query('#themeButtonGroup .active-theme')[0], 'active-theme');
-                    domClass.add(this, 'active-theme');
-                    app.sidePanel.style.display = 'block';
-                    dom.byId('watermark').style.left = '315px';
-                    query('.legendDiv').forEach(domConstruct.destroy);
-                    query('.lite-viewer.map').forEach(domConstruct.destroy);
-                    query('#legend-lv .notice').forEach(domConstruct.destroy);
-                    query('#subthemeButtonGroup div').forEach(domConstruct.destroy);
-                    array.forEach(registry.toArray(), function (widget, i) {
-                        if(widget.type == 'radio')
-                            widget.destroyRecursive(true);
-                    });
-                    array.forEach(app.maps, function(v, i){
-                        v.legend.destroyRecursive(true);
-                    });
-                    domConstruct.destroy("radioWrapper");
-                    domStyle.set(query('#legendModal')[0], 'display', 'none');
-                    if (domStyle.get(query('#aboutModal')[0], 'display') === 'block') {
-                        domStyle.set(query('#aboutModal')[0], 'display', 'none');
-                        domAttr.set(dom.byId('legend-tab'), 'src', 'img/side-buttons/legend-tab-out-off.png');
-                    }
-                    domStyle.set(dom.byId('side-tabs'), 'display', 'none');
-                    domStyle.set(dom.byId('layerInfoModal'),'display', 'none');
-                    domClass.add(dom.byId('data-viewer'), 'active');
-                    app.currentMap = app.dataViewer;
-                    app.lv = false;
-                    resizeMap();
-                }
-            });
 
             getLayerIds();
 
@@ -194,6 +152,8 @@ define([
                 'marginTop'    : app.screenWidth < 980 ? '0' : app.headerOffset + 'px'
             });
             
+            domStyle.set('theme-button-container', 'width', (app.screenWidth - 75) + 'px');
+
             if (!app.lv && app.dataViewer)
                 app.dataViewer.resize();
             
@@ -201,17 +161,16 @@ define([
                'height'        : app.mapHeight + 'px'
             });
 
-            if (app.screenWidth < 1096) {
-                query('.arrow-container').forEach(function (node) {
-                    domStyle.set(node, 'display', 'block');
+            if (app.noCarousel) {
+                $('.theme-carousel').slick({
+                  centerMode: true,
+                  ininite: true,
+                  variableWidth: true,
+                  slidesToShow: 10,
+                  arrows: true
                 });
-                domStyle.set(dom.byId('themeButtonGroup'), 'left', '32px');
-            }
-            else if (domStyle.get(dom.byId('left-arrow'), 'display', 'block')) {
-                query('.arrow-container').forEach(function (node) {
-                    domStyle.set(node, 'display', 'none');
-                });
-                domStyle.set(dom.byId('themeButtonGroup'), 'left', '0');
+                $('.theme-carousel').slick('slickGoTo', 10, true);
+                app.noCarousel = false;
             }
         }
 
@@ -501,7 +460,6 @@ define([
                 updateScale();
                 query('#mapList .button-container').style({'visibility' : 'visible'});
                 createBasemapGallery();
-                domStyle.set(dom.byId('themeButtonGroup'), 'visibility', 'visible');
                 app.sidePanel.style.visibility = 'visible';
                 dom.byId('watermark').style.display = 'block';
                 domStyle.set(dom.byId('loading'), 'visibility', 'visible');
@@ -634,62 +592,6 @@ define([
                     });
                     domAttr.set(this, 'title', 'Hide Legend');
                 }
-            });
-
-            app.buttons = dom.byId('themeButtonGroup');
-
-            var shiftLeftIntervalID,
-                shiftRightIntervalID;
-
-            app.buttonsContainerWidth = domStyle.get(app.buttons, 'width');
-
-            // start list shifted to right since data viewer is active
-            if (app.screenWidth < 1080) {
-                domStyle.set(dom.byId('themeButtonGroup'), 'left', '-' + (app.buttonsContainerWidth - app.screenWidth + 25) + 'px');
-            }
-
-            app.buttonsLeftPosition = domStyle.get(app.buttons, 'left');
-            
-            var pixelsToShift = 25;
-
-            var shiftRight = function () {
-                if (app.buttonsLeftPosition < 32) {
-                    app.buttonsLeftPosition += pixelsToShift;
-                    fx.animateProperty({
-                        node: app.buttons,
-                        properties: {
-                            left: app.buttonsLeftPosition
-                        }
-                    }).play();
-                }
-            }
-
-            var shiftLeft = function () {
-                if ((app.buttonsLeftPosition + app.buttonsContainerWidth + 20) >= app.screenWidth) {
-                    app.buttonsLeftPosition -= pixelsToShift;
-                    fx.animateProperty({
-                        node: app.buttons,
-                        properties: {
-                            left: app.buttonsLeftPosition
-                        }
-                    }).play();
-                }
-            }
-
-            on(dom.byId('left-arrow'), mouse.enter, function (e) {
-                shiftRightIntervalID = setInterval(shiftRight, 150);
-            });
-
-            on(dom.byId('left-arrow'), mouse.leave, function (e) {
-                clearInterval(shiftRightIntervalID);
-            });
-
-            on(dom.byId('right-arrow'), mouse.enter, function (e) {
-                shiftLeftIntervalID = setInterval(shiftLeft, 150);
-            });
-
-            on(dom.byId('right-arrow'), mouse.leave, function (e) {
-                clearInterval(shiftLeftIntervalID);
             });
         }
 
@@ -1836,7 +1738,7 @@ define([
                 }
             }
             else {
-                on.emit(dom.byId('theme' + app.shareObj.themeIndex), 'click', {bubbles: true, cancelable: true});
+                on.emit(query('p[data-theme-id="' + app.shareObj.themeIndex + '"')[0], 'click', {bubbles: true, cancelable: true});
             }
         }
 
@@ -1864,6 +1766,59 @@ define([
                     zIndices.push(domStyle.get(n, 'z-index'));
             });
             domStyle.set(dom.byId(id), 'z-index', Math.max.apply(null, zIndices) + 1);
+        }
+
+        themeClick = function(thisNode) {
+            var themeIndex = parseInt(thisNode.attributes["data-theme-id"].value, 10);
+                if (themeIndex !== 10 && !domClass.contains(thisNode, 'active-theme')) { // 10 is data viewer
+                    if (themeIndex === 0) { // 0 is maritime commerce
+                        app.themeIndex = themeIndex;
+                        query('#mapList .active-theme').forEach(function (n) {
+                            domClass.remove(n, 'active-theme');
+                        });
+                        query('#mapList p[data-theme-id="' + app.themeIndex + '"]').forEach( function(n) {
+                            domClass.add(n, 'active-theme');
+                        });
+                        dom.byId('watermark').style.left = '9px';
+                        app.lv = true;
+                        getLayerIds(app.lv);
+                        $('.theme-carousel').slick('slickGoTo', app.themeIndex, true);
+                    }
+                }
+                else if (themeIndex === 10) {
+                    query('#mapList .active-theme').forEach(function (n) {
+                            domClass.remove(n, 'active-theme');
+                        });
+                    query('#mapList p[data-theme-id="10"]').forEach( function(n) {
+                        domClass.add(n, 'active-theme');
+                    });
+                    app.sidePanel.style.display = 'block';
+                    dom.byId('watermark').style.left = '315px';
+                    query('.legendDiv').forEach(domConstruct.destroy);
+                    query('.lite-viewer.map').forEach(domConstruct.destroy);
+                    query('#legend-lv .notice').forEach(domConstruct.destroy);
+                    query('#subthemeButtonGroup div').forEach(domConstruct.destroy);
+                    array.forEach(registry.toArray(), function (widget, i) {
+                        if(widget.type == 'radio')
+                            widget.destroyRecursive(true);
+                    });
+                    array.forEach(app.maps, function(v, i){
+                        v.legend.destroyRecursive(true);
+                    });
+                    domConstruct.destroy("radioWrapper");
+                    domStyle.set(query('#legendModal')[0], 'display', 'none');
+                    if (domStyle.get(query('#aboutModal')[0], 'display') === 'block') {
+                        domStyle.set(query('#aboutModal')[0], 'display', 'none');
+                        domAttr.set(dom.byId('legend-tab'), 'src', 'img/side-buttons/legend-tab-out-off.png');
+                    }
+                    domStyle.set(dom.byId('side-tabs'), 'display', 'none');
+                    domStyle.set(dom.byId('layerInfoModal'),'display', 'none');
+                    domClass.add(dom.byId('data-viewer'), 'active');
+                    app.currentMap = app.dataViewer;
+                    app.lv = false;
+                    resizeMap();
+                    $('.theme-carousel').slick('slickGoTo', 10, true);
+                }
         }
 
         return {

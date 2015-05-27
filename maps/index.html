@@ -27,6 +27,8 @@
         <link rel="stylesheet" href="http://js.arcgis.com/3.13/esri/css/esri.css">
         
         <link rel="stylesheet" href="lib/bootstrapmap.css">
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.slick/1.5.0/slick.css"/>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.slick/1.5.0/slick-theme.css"/>
 
         <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -71,23 +73,7 @@
                             </ul> -->
                         </li>
                     </ul>
-                <!--
-                    <div id='mapCarousel' class='carousel slide'>
-                        <div class='carousel-inner' id="mapCarouselInner"></div>
-                        <a class="carousel-control left" href="#mapCarousel" data-slide="prev">&lsaquo;</a>
-                        <a class="carousel-control right" href="#mapCarousel" data-slide="next">&rsaquo;</a>
-                    </div>
-                -->
-                    <div id='scrollable-container'>
-                        <div id='left-arrow-container' class='arrow-container'>
-                            <div id='left-arrow' class='panel-heading-arrow'></div>
-                        </div>
-                        <div class='button-container' id='theme-button-container'>
-                            <div class='btn-group' data-toggle='buttons-radio' id='themeButtonGroup'></div>
-                        </div>
-                        <div id='right-arrow-container' class='arrow-container'>
-                            <div id='right-arrow' class='panel-heading-arrow'></div>
-                        </div>
+                    <div class="theme-carousel" id='theme-button-container'>
                     </div>
                 </div><!--/.nav-collapse -->
             </div>
@@ -266,6 +252,10 @@
             var djConfig = {
                 parseOnLoad: true,
                 isDebug: true,
+                aliases: [
+                    ['jquery', '//code.jquery.com/jquery-1.11.0.min.js'],
+                    ['slick', '//cdn.jsdelivr.net/jquery.slick/1.5.0/slick.min.js']
+                ],
                 packages: [
                 {
                     name: 'liteviewer',
@@ -280,7 +270,7 @@
 
         <script src="http://js.arcgis.com/3.13/"></script>
         <script type="text/javascript">
-            require(["liteviewer/Config"]);
+            require(["liteviewer/Config", 'jquery', 'slick']);
             require(["liteviewer/core/Core"], function(core){
                     core.init();
                 });
