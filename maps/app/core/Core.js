@@ -169,7 +169,6 @@ define([
                   slidesToScroll: 2,
                   arrows: true
                 });
-                $('.theme-carousel').slick('slickGoTo', 10, true);
                 app.noCarousel = false;
             }
         }
